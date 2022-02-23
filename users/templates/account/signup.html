@@ -1,0 +1,247 @@
+{% load i18n %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
+		
+		<link rel="stylesheet" href="{% static 'icons/fontawesome/css/fontawesome-all.min.css' %}"><!-- FontAwesome Icons -->
+		<link rel="stylesheet" href="{% static 'icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css' %}"><!-- iconsmind.com Icons -->
+		
+		<title>VES - Sign Up</title>
+	</head>
+	<body>
+		
+		<header id="masthead-pro">
+			<div class="container">
+				
+				<h1><a href="/"><img src="{% static 'images/ves_logo.png' %}" alt="VES TV"></a></h1>
+				
+				
+				
+			
+				
+				<button class="btn btn-header-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign In</button>
+				
+				<div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
+				
+				<div class="clearfix"></div>
+			</div><!-- close .container -->
+			
+		
+		</header>
+		
+
+		<div id="content-pro">
+		
+			
+			<div class="container">
+				<ul id="registration-steps-pro">
+					
+					<li class="current-menu-item">
+						<a href="#">
+							<div class="registration-step-circle-icon">01</div>
+							<div class="registration-step-number">Step 1</div>
+							<h5 class="registration-step-title">Create your account</h5>
+						</a>
+					</li>
+
+          			<li>
+						<a href="#">
+							<div class="registration-step-circle-icon">02</div>
+							<div class="registration-step-number">Step 2</div>
+							<h5 class="registration-step-title">Subscribe </h5>
+						</a>
+					</li>
+
+					
+					<li>
+						<a href="#">
+							<div class="registration-step-circle-icon">03</div>
+							<div class="registration-step-number">Step 3</div>
+							<h5 class="registration-step-title">Start Watching!</h5>
+						</a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			
+			
+			<div id="pricing-plans-background-image">
+				<div class="container">
+						<div class="registration-steps-page-container">
+							
+	  					 <form action="{% url 'account_signup' %}" class="registration-steps-form signup"  id="signup_form" method="POST">
+                {% csrf_token %}
+							 
+							 <div class="registration-social-login-container">
+
+    	  						 <div class="form-group">
+    								 <label for="id_username" class="col-form-label">Phone Number</label>
+    	  							 <input name="username" type="text" class="form-control" id="id_username" placeholder="080********" required>
+                       
+                        {% if form.username.errors %}
+                            {% for error in form.username.errors %}
+                            <div class="form-text">
+                                
+                                <p style="color: red !important; font-size:90%;">{{ error|escape }}</p>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    
+    	  						 </div>
+    	  						 <div class="form-group">
+    								 <label for="id_email" class="col-form-label">Email</label>
+    	  							 <input name="email" type="email" class="form-control" id="id_email" placeholder="jondoe@gmail.com">
+                       {% if form.email.errors %}
+                          {% for error in form.email.errors %}
+                          <div class="form-text">
+                              
+                              <p style="color: red !important; font-size:90%;">{{ error|escape }}</p>
+                          </div>
+                          {% endfor %}
+                      {% endif %}
+    	  						 </div>
+    	  						 
+    							
+                    <div class="form-group">
+                        <label for="id_password1" class="col-form-label">Password</label>
+                          <input name="password1" type="password" class="form-control" id="id_password1" placeholder="&middot;&middot;&middot;&middot;&middot;&middot;">
+                          {% if form.password1.errors %}
+                          {% for error in form.password1.errors %}
+                          <div class="form-text">
+                              <p style="color: red !important; font-size:90%;"> Password must be at least with 1 uppercase and 1 number</p>
+                              
+                          </div>
+                          {% endfor %}
+                          {% endif %}
+                    </div>
+
+                    
+                    <input type="hidden" name="{{ redirect_field_name }}" value="/u/onboarding" />
+
+							 </div>
+							 
+               <div class="registration-social-login-options">
+                <h6>Your Everyday Entertainment Box</h6>
+               <img src="{% static 'images/ves_logo.png' %}" alt="">
+              </div><!-- close .registration-social-login-options -->
+							 
+							 <div class="clearfix"></div>
+	  						 <div class="form-group last-form-group-continue">
+	  							 <button type="submit"  class="btn btn-green-pro">Continue</button>
+								 <span class="checkbox-remember-pro"><input type="checkbox" id="checkbox-terms"><label for="checkbox-terms" class="col-form-label">By clicking "Continue", you agree to our <a href="#!">Terms of Use</a> and 
+<a href="#!">Privacy Policy</a> including the use of cookies.</label></span>
+								 <div class="clearfix"></div>
+	  						 </div>
+	  					 </form>
+							
+						</div><!-- close .registration-steps-page-container -->
+					
+				</div><!-- close .container -->
+			</div><!-- close #pricing-plans-background-image -->
+			
+		</div><!-- close #content-pro -->
+		
+		<footer id="footer-pro">
+			<div class="container">
+				<div class="row">
+					<div class="col-md">
+						<div class="copyright-text-pro">&copy; <script>document.write(new Date().getFullYear())</script> Zamari TV. All Rights Reserved</div>
+					</div><!-- close .col -->
+					<div class="col-md">
+						<ul class="social-icons-pro">
+							<li class="facebook-color"><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+							<li class="twitter-color"><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+							<li class="youtube-color"><a href="#" target="_blank"><i class="fab fa-youtube"></i></a></li>
+
+						</ul>
+					</div><!-- close .col -->
+				</div><!-- close .row -->
+			</div><!-- close .container -->
+		</footer>
+		
+		<!-- <a href="#0" id="pro-scroll-top"><i class="fas fa-chevron-up"></i></a> -->
+		
+		
+		<!-- Modal -->
+		<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+			 <button type="button" class="close float-close-pro" data-dismiss="modal" aria-label="Close">
+			           <span aria-hidden="true">&times;</span>
+			</button>
+		  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+		    <div class="modal-content">
+				 <div class="modal-header-pro">
+					 <h2>Welcome Back</h2>
+					 <h6>Sign in to your zamari account </h6>
+				 </div>
+				 <div class="modal-body-pro social-login-modal-body-pro">
+					 
+					 <div class="registration-social-login-container">
+						 <form id="login" action="{% url 'account_login' %}" class="login"  method="POST" > 
+               {% csrf_token %}
+							 <div class="form-group">
+								 <input name="login" type="text" class="form-control" id="id_login" placeholder="Phone Number or Email">
+							 </div>
+							 <div class="form-group">
+								 <input name="password" type="password" class="form-control" id="id_password" placeholder="Password">
+							 </div>
+               {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+							 <div class="form-group">
+								 <button type="button" class="btn btn-green-pro btn-display-block">Sign In</button>
+							 </div>
+							 <div class="container-fluid">
+								 <div class="row no-gutters">
+							 		<div class="col checkbox-remember-pro"><input type="checkbox" id="checkbox-remember"><label for="checkbox-remember" class="col-form-label">Remember me</label></div>
+									<div class="col forgot-your-password"><a href="{% url 'account_reset_password' %}">Forgot your password?</a></div>
+								</div>
+							</div>
+						
+						 </form>
+					 
+					
+						 
+					 </div>
+					 
+					
+           <div class="registration-social-login-options">
+            <h6>Your Everyday Entertainment Box</h6>
+            <img src="{% static 'images/ves_logo.png' %}" alt="">
+          </div>
+
+
+					 <div class="clearfix"></div>
+
+
+					 
+
+ 		      </div>
+				
+			 
+		    </div><!-- close .modal-content -->
+		  </div><!-- close .modal-dialog -->
+		</div><!-- close .modal -->
+		
+
+		<!-- Required Framework JavaScript -->
+		<script src="{% static 'js/libs/jquery-3.3.1.min.js' %}"></script><!-- jQuery -->
+		<script src="{% static 'js/libs/popper.min.js' %}" defer></script><!-- Bootstrap Popper/Extras JS -->
+		<script src="{% static 'js/libs/bootstrap.min.js' %}" defer></script><!-- Bootstrap Main JS -->
+		<!-- All JavaScript in Footer -->
+		
+		<!-- Additional Plugins and JavaScript -->
+		<script src="{% static 'js/navigation.js' %}" defer></script><!-- Header Navigation JS -->
+		<script src="{% static 'js/jquery.flexslider-min.js' %}" defer></script><!-- Custom Document Ready JS -->		
+		<script src="{% static 'js/script.js' %}" defer></script><!-- Custom Document Ready JS -->
+
+		
+	</body>
+
+</html>

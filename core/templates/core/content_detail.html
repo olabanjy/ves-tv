@@ -1,0 +1,319 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<div id="content-sidebar-pro">
+			
+    <div id="content-sidebar-image">
+        <img src="{{the_content.img_detail_poster.url}}" alt="Movie Poster">
+    </div>
+    
+    <div class="content-sidebar-section">
+        <h2 class="content-sidebar-sub-header"> {{the_content.title}} </h2>
+        <ul class="progression-studios-slider-rating">
+            <!-- <li>PG-13</li><li>HD</li> -->
+        </ul>
+    </div><!-- close .content-sidebar-section -->
+    
+    <div class="content-sidebar-section">
+        <h4 class="content-sidebar-sub-header">Upload Date</h4>
+        <div class="content-sidebar-short-description">{{the_content.upload_date}}</div>
+    </div><!-- close .content-sidebar-section -->
+    
+    <div class="content-sidebar-section">
+        <h4 class="content-sidebar-sub-header">Duration</h4>
+        <div class="content-sidebar-short-description">{{the_content.timedelta}}</div>
+    </div><!-- close .content-sidebar-section -->
+    
+  
+
+</div><!-- close #content-sidebar-pro -->
+
+{% if the_content.category.slug == "movies" %}
+
+<main id="col-main-with-sidebar">
+    <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
+        <div class="progression-studios-slider-more-options">
+            <i class="fas fa-ellipsis-h"></i>
+            <ul>
+                <li><a href="#">Add to Favorites</a></li>
+                <li><a href="#">Share...</a></li>
+            </ul>
+        </div>
+        <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a> 
+     <video id="VideoLightbox-1"  poster="{{the_content.img_thumbnail.url}}" width="960" height="540">
+         <source src="{{the_content.file_mp4.url}}" type="video/mp4">
+         <source src="{{the_content.file_webm.url}}" type="video/webm">
+     </video>  
+        <div id="movie-detail-header-media">
+            <div class="dashboard-container">
+                <h5></h5>						
+                <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
+                            <div class="movie-detail-media-image">
+                                <img src="http://via.placeholder.com/500x300">
+                                <span><i class="fas fa-play"></i></span>
+                                <h6>Trailer</h6>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
+                            <div class="movie-detail-media-image">
+                                <img src="http://via.placeholder.com/500x300">
+                                <span><i class="fas fa-play"></i></span>
+                                <h6>Interview</h6>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div><!-- close .row -->
+            </div><!-- close .dashboard-container -->
+        </div><!-- close #movie-detail-header-media -->
+        
+        <div id="movie-detail-gradient-pro"></div>
+    </div><!-- close #movie-detail-header-pro -->
+    
+    
+    <div id="movie-detail-rating">
+        <div class="dashboard-container">
+            <div class="row">
+                <div class="col-sm">
+                    <h5></h5>
+                    <div class="rating-pro"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="dashboard-container">
+        
+        
+        <div class="movie-details-section">
+            <h2>Description</h2>
+            <p>{{the_content.description}}</p>
+        </div><!-- close .movie-details-section -->
+
+
+
+            
+        <div class="movie-details-section">
+            <h2>You May Also Like </h2>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                    <div class="item-listing-container-skrn">
+                        <a href="dashboard-movie-profile.html"><img src="http://via.placeholder.com/500x707" alt="Listing"></a>
+                        <div class="item-listing-text-skrn">
+                            <div class="item-listing-text-skrn-vertical-align"><h6><a href="dashboard-movie-profile.html">Bad Neighbors 2</a></h6>
+                              <div
+                                class="circle-rating-pro"
+                                data-value="0.72"
+                                data-animation-start-value="0.72"
+                                data-size="32"
+                                data-thickness="3"
+                                data-fill="{
+                                  &quot;color&quot;: &quot;#42b740&quot;
+                                }"
+                                data-empty-fill="#def6de"
+                                data-reverse="true"
+                              ><span style="color:#42b740;">7.2</span></div>
+                            </div><!-- close .item-listing-text-skrn-vertical-align -->
+                        </div><!-- close .item-listing-text-skrn -->
+                    </div><!-- close .item-listing-container-skrn -->
+                </div><!-- close .col -->
+            
+            
+                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                    <div class="item-listing-container-skrn">
+                        <a href="dashboard-movie-profile.html"><img src="http://via.placeholder.com/500x707" alt="Listing"></a>
+                        <div class="item-listing-text-skrn">
+                            <div class="item-listing-text-skrn-vertical-align"><h6><a href="dashboard-movie-profile.html">Star Wars: Rogue One</a></h6>
+                              <div
+                                class="circle-rating-pro"
+                                data-value="0.86"
+                                data-animation-start-value="0.86"
+                                data-size="32"
+                                data-thickness="3"
+                                data-fill="{
+                                  &quot;color&quot;: &quot;#42b740&quot;
+                                }"
+                                data-empty-fill="#def6de"
+                                data-reverse="true"
+                              ><span style="color:#42b740;">8.6</span></div>
+                            </div><!-- close .item-listing-text-skrn-vertical-align -->
+                        </div><!-- close .item-listing-text-skrn -->
+                    </div><!-- close .item-listing-container-skrn -->
+                </div><!-- close .col -->
+            
+                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                    <div class="item-listing-container-skrn">
+                        <a href="dashboard-movie-profile.html"><img src="http://via.placeholder.com/500x707" alt="Listing"></a>
+                        <div class="item-listing-text-skrn">
+                            <div class="item-listing-text-skrn-vertical-align"><h6><a href="dashboard-movie-profile.html">The Imitation Game</a></h6>
+                              <div
+                                class="circle-rating-pro"
+                                data-value="0.6"
+                                data-animation-start-value="0.6"
+                                data-size="32"
+                                data-thickness="3"
+                                data-fill="{
+                                  &quot;color&quot;: &quot;#ff4141&quot;
+                                }"
+                                data-empty-fill="#ffe1e1"
+                                data-reverse="true"
+                              ><span style="color:#ff4141;">6.0</span></div>
+                            </div><!-- close .item-listing-text-skrn-vertical-align -->
+                        </div><!-- close .item-listing-text-skrn -->
+                    </div><!-- close .item-listing-container-skrn -->
+                </div><!-- close .col -->
+            </div><!-- close .row -->
+        
+        </div><!-- close .movie-details-section -->
+        
+    </div><!-- close .dashboard-container -->
+</main>
+
+{% elif the_content.category.slug == "series" %}
+
+<main id="col-main-with-sidebar">
+			
+  <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
+    
+    <div class="progression-studios-slider-more-options">
+      <i class="fas fa-ellipsis-h"></i>
+      <ul>
+        <li><a href="#!">Add to Favorites</a></li>
+        <li><a href="#!">Share...</a></li>
+      </ul>
+    </div>
+    
+    <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a>
+    
+       <video id="VideoLightbox-1"  poster="{{the_content.img_detail_banner.url}}" width="960" height="540">
+           <source src="{{the_content.trailer_mp4.url}}" type="video/mp4">
+           <source src="{{the_content.trailer_webm.url}}" type="video/webm">
+       </video>
+    
+    <div id="movie-detail-header-media">
+      <div class="dashboard-container">
+        <h5></h5>						
+        <div class="row">
+          <div class="col-6 col-md-6 col-lg-6">
+            <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
+              <div class="movie-detail-media-image">
+                <img src="http://via.placeholder.com/500x300">
+                <span><i class="fas fa-play"></i></span>
+                <h6>Trailer</h6>
+              </div>
+            </a>
+          </div>
+          <div class="col-6 col-md-6 col-lg-6">
+            <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
+              <div class="movie-detail-media-image">
+                <img src="http://via.placeholder.com/500x300">
+                <span><i class="fas fa-play"></i></span>
+                <h6>Interview</h6>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="movie-detail-gradient-pro"></div>
+  </div>
+  
+  
+  <div id="movie-detail-rating">
+    <div class="dashboard-container">
+      <div class="row">
+        <div class="col-sm">
+          <h5></h5>
+          
+        </div>
+       
+      </div><!-- close .row -->
+    </div><!-- close .dashboard-container -->
+  </div><!-- close #movie-detail-rating -->
+  
+  <div class="dashboard-container">
+    
+    
+    <div class="movie-details-section">
+      <h2>Description</h2>
+      <p> {{the_content.description}} </p>
+    </div>
+
+    <div class="movie-details-section">
+      <h2>Episodes</h2>
+      {% if the_content.content_episodes.all %}
+      <div class="row">
+        {% for vid in the_content.content_episodes.all %}
+        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+          <div class="item-listing-container-skrn">
+            <a href="{% url 'core:episode_detail' the_content.slug vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/507x672{% endif %}" alt="Cast"></a>
+            <div class="item-listing-text-skrn item-listing-movie-casting">
+              <h6><a href="{% url 'core:episode_detail' the_content.slug vid.slug %}">{{vid.title}}</a></h6>
+              <div class="movie-casting-sub-title">Episode {{vid.position}}</div>
+            </div><!-- close .item-listing-text-skrn -->
+          </div><!-- close .item-listing-container-skrn -->
+        </div><!-- close .col -->
+        {% endfor %}
+    
+      </div>
+      {% else %}
+      <div class="row">
+        <h6> No Episodes </h6>
+      </div>
+      {% endif %}
+    </div>
+
+      
+    <div class="movie-details-section">
+      <h2> You May Also Like </h2>
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+          <div class="item-listing-container-skrn">
+            <a href="#"><img src="http://via.placeholder.com/500x707" alt="Listing"></a>
+            <div class="item-listing-text-skrn">
+              <div class="item-listing-text-skrn-vertical-align"><h6><a href="#">Bad Neighbors 2</a></h6>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      
+        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+          <div class="item-listing-container-skrn">
+            <a href="#"><img src="http://via.placeholder.com/500x707" alt="Listing"></a>
+            <div class="item-listing-text-skrn">
+              <div class="item-listing-text-skrn-vertical-align"><h6><a href="#">Star Wars: Rogue One</a></h6>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+          <div class="item-listing-container-skrn">
+            <a href="#"><img src="http://via.placeholder.com/500x707" alt="Listing"></a>
+            <div class="item-listing-text-skrn">
+              <div class="item-listing-text-skrn-vertical-align"><h6><a href="#">The Imitation Game</a></h6>
+                 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+    
+  </div>
+</main>
+
+
+{% endif %}
+
+{% endblock %}

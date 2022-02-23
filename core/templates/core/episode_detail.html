@@ -1,0 +1,107 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<div id="content-sidebar-pro">
+			
+    <div id="content-sidebar-image">
+        <img src="{{the_content.img_detail_poster.url}}" alt="Movie Poster">
+    </div>
+    
+    <div class="content-sidebar-section">
+        <h2 class="content-sidebar-sub-header"> {{the_content.title}} </h2>
+        <ul class="progression-studios-slider-rating">
+            <!-- <li>PG-13</li><li>HD</li> -->
+        </ul>
+    </div><!-- close .content-sidebar-section -->
+    
+    <div class="content-sidebar-section">
+        <h4 class="content-sidebar-sub-header">Upload Date</h4>
+        <div class="content-sidebar-short-description">{{the_content.upload_date}}</div>
+    </div><!-- close .content-sidebar-section -->
+    
+    <div class="content-sidebar-section">
+        <h4 class="content-sidebar-sub-header">Duration</h4>
+        <div class="content-sidebar-short-description">{{the_content.timedelta}}</div>
+    </div><!-- close .content-sidebar-section -->
+    
+  
+
+</div><!-- close #content-sidebar-pro -->
+
+
+<main id="col-main-with-sidebar">
+    <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
+        <div class="progression-studios-slider-more-options">
+            <i class="fas fa-ellipsis-h"></i>
+            <ul>
+                <li><a href="#">Add to Favorites</a></li>
+                <li><a href="#">Share...</a></li>
+            </ul>
+        </div>
+        <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a> 
+     <video id="VideoLightbox-1"  poster="{{the_content.img_thumbnail.url}}" width="960" height="540">
+         <source src="{{the_content.file_mp4.url}}" type="video/mp4">
+         <source src="{{the_content.file_webm.url}}" type="video/webm">
+     </video>  
+        <div id="movie-detail-header-media">
+            <div class="dashboard-container">
+                <h5></h5>						
+                <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
+                            <div class="movie-detail-media-image">
+                                <img src="http://via.placeholder.com/500x300">
+                                <span><i class="fas fa-play"></i></span>
+                                <h6>Trailer</h6>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
+                            <div class="movie-detail-media-image">
+                                <img src="http://via.placeholder.com/500x300">
+                                <span><i class="fas fa-play"></i></span>
+                                <h6>Interview</h6>
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div><!-- close .row -->
+            </div><!-- close .dashboard-container -->
+        </div><!-- close #movie-detail-header-media -->
+        
+        <div id="movie-detail-gradient-pro"></div>
+    </div><!-- close #movie-detail-header-pro -->
+    
+    
+    <div id="movie-detail-rating">
+        <div class="dashboard-container">
+            <div class="row">
+                <div class="col-sm">
+                    <h5></h5>
+                    <div class="rating-pro"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="dashboard-container">
+        
+        
+        <div class="movie-details-section">
+            <h2>Description</h2>
+            <p>{{the_content.description}}</p>
+        </div><!-- close .movie-details-section -->
+
+
+
+            
+       
+        
+    </div><!-- close .dashboard-container -->
+</main>
+
+
+
+{% endblock %}
