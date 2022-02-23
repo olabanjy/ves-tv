@@ -3,8 +3,8 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['184.73.116.175', 'ves-tv.com', 'www.ves-tv.com']
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["184.73.116.175", "ves-tv.com", "www.ves-tv.com"]
 
 
 INSTALLED_APPS += ["debug_toolbar"]
