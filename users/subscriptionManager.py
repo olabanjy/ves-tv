@@ -6,73 +6,61 @@ import xmltodict
 import untangle
 
 
-url = "http://152.32.141.26:6991/SubscribeManageService/services/SubscribeManage"
-spID = "2340110011662"
-password = 123456
+BASE_URL = "http://91.109.117.92:8001/"
+
+
+productIDDaily = "70"
+productIDWeekly = "71"
+productIDMonthly = "72"
+telco = "MTN"
+channel = "SMS"
 timeStamp = datetime.now()
-operCode = "NG"
-userType = 0
-subInfo = None
-productID = "23401220000028735"  # change this product ID later
-channelID = 1
 
 
-spPassword_hash_object = hashlib.md5((f"{spID}{password}{timeStamp}").encode())
-spPassword = spPassword_hash_object.hexdigest()
+def mtnSubscribe(msisdn):
+    try:
+        if msisdn.startswith("234"):
+            msisdn = msisdn.replace("234", "0", 1)
+
+        header = {"Authorization": "Bearer ClbUlFaBwT14g2xi2URb"}
+
+        data = {
+            "product_id": productIDDaily,
+            "phone": msisdn,
+            "telco": telco,
+            "channel": channel,
+        }
+
+        response = requests.post(
+            f"{BASE_URL}api/v1/product/subscription/initiate", json=data, headers=header
+        )
+
+        return response.json()
+    except Exception as e:
+        print(e)
+        return False
 
 
-def subscribeManager(msisdn):
-    userID = msisdn.replace("0", "234", 1)
-    print(userID)
-    args = {
-        "spPassword": spPassword,
-        "timeStamp": timeStamp,
-        "productID": productID,
-        "userID": userID,
-        "operCode": operCode,
-    }
+def mtnUnSubscribe(msisdn):
+    try:
+        if msisdn.startswith("234"):
+            msisdn = msisdn.replace("234", "0", 1)
 
-    body = """<?xml version=\"1.0\" encoding=\"utf-8\"?>
-            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-            xmlns:loc="http://www.csapi.org/schema/parlayx/subscribe/manage/v1_0/local">
-                <soapenv:Header>
-                    <tns:RequestSOAPHeader xmlns:tns="http://www.huawei.com.cn/schema/common/v2_1">
-                        <tns:spId>2340110011662</tns:spId>
-                        <tns:spPassword>{spPassword}</tns:spPassword>
-                        <tns:timeStamp>{timeStamp}</tns:timeStamp>
-                    </tns:RequestSOAPHeader>
-                </soapenv:Header>
-                <soapenv:Body>
-                    <loc:subscribeProductRequest>
-                        <loc:subscribeProductReq>
-                            <userID>
-                            <ID>{userID}</ID>
-                            <type>0</type>
-                            </userID>
-                            <subInfo>
-                                <productID>{productID}</productID>
-                                <operCode>{operCode}</operCode> 
-                                <isAutoExtend>0</isAutoExtend>
-                                <channelID>1</channelID>
-                            </subInfo>
-                        </loc:subscribeProductReq>
-                    </loc:subscribeProductRequest>
-                </soapenv:Body>
-            </soapenv:Envelope>""".format(
-        **args
-    )
-    headers = {
-        "content-type": "text/xml; charset=utf-8",
-        "Connection": "Keep-Alive",
-        "Accept-Encoding": "gzip",
-        "Accept": "/",
-    }
+        header = {"Authorization": "Bearer ClbUlFaBwT14g2xi2URb"}
 
-    response = requests.request("POST", url, data=body, headers=headers)
+        data = {
+            "product_id": productIDDaily,
+            "phone": msisdn,
+            "telco": telco,
+        }
 
-    dict_data = xmltodict.parse(response.content)
-    print(dict_data)
+        response = requests.post(
+            f"{BASE_URL}api/v1/product/subscription/unsubscribe",
+            json=data,
+            headers=header,
+        )
 
-    return dict_data["S:Envelope"]["S:Body"]["ns3:subscribeProductResponse"][
-        "ns3:subscribeProductRsp"
-    ]
+        return response.json()
+    except Exception as e:
+        print(e)
+        return False

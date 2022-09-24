@@ -98,3 +98,31 @@ class Subscribtion(models.Model):
 
     def __str__(self):
         return f"{self.user.user.username}"
+
+
+class UserProfile(models.Model):
+    phone = models.CharField(
+        max_length=40,
+        null=True,
+    )
+    first_name = models.CharField(blank=True, null=True, max_length=200)
+    last_name = models.CharField(blank=True, null=True, max_length=200)
+    dob = models.DateField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=200, blank=True, null=True)
+    state = models.CharField(max_length=200, blank=True, null=True)
+    nationality = models.CharField(max_length=200, blank=True, null=True)
+    test_phase = models.CharField(
+        max_length=200, choices=TEST_PHASE, default="live_prod"
+    )
+    sub_status = models.CharField(max_length=200, choices=SUB_STATUS, default="no_sub")
+    created_at = models.DateTimeField(default=timezone.now)
+
+
+class UserSubscribtion(models.Model):
+    user = models.ForeignKey("UserProfile", on_delete=models.CASCADE, null=True)
+    sub_active = models.BooleanField(default=False)
+    starts_date = models.DateTimeField(blank=True, null=True)
+    ends_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user}"

@@ -111,7 +111,7 @@
             {% for vid in contents %}
             <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <div class="item-listing-container-skrn">
-                    <a href="{% url 'core:content_detail' vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="Zamari TV"></a>
+                    <a href="{% url 'core:content_detail' vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="VEST TV"></a>
                     <div class="item-listing-text-skrn">
                         <div class="item-listing-text-skrn-vertical-align"><h6><a href="{% url 'core:content_detail' vid.slug %}">{{vid.title}}</a></h6>
                         
