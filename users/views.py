@@ -85,7 +85,6 @@ def after_signup(request):
     return redirect("users:awaiting_response")
 
 
-@login_required
 def awaiting_response(request):
     template = "users/awaiting_response.html"
     return render(request, template)
