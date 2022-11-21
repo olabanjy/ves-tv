@@ -9,9 +9,9 @@ import untangle
 BASE_URL = "http://91.109.117.92:8001/"
 
 
-productIDDaily = "70"
-productIDWeekly = "71"
-productIDMonthly = "72"
+productIDDaily = "174"
+productIDWeekly = "175"
+productIDMonthly = "176"
 telco = "MTN"
 channel = "SMS"
 timeStamp = datetime.now()

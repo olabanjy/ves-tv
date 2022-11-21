@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = False
 
-#### ALLOWED_HOSTS = ["*"]
+# ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS = ["52.20.142.99", "ves-tv.ng", "www.ves-tv.ng"]
 
 
@@ -28,7 +28,7 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 
-ADMINS = (("Magic Box Support", "hello@zamari.tv"),)
+ADMINS = (("VES TV Support", "hello@zamari.tv"),)
 
 
 # CELERY related settings
