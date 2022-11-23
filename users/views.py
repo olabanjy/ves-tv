@@ -131,51 +131,56 @@ def data_sync(request):
         new_sync = WebhookBackup.objects.create(req_body=f"{request.body}")
     except:
         pass
+    try:
+        if the_data["telco"] == "MTN":
+            not_type = the_data[
+                "type"
+            ]  # UNSUBSCRIPTION_NOTIFICATION, SYNC_NOTIFICATION
+            msisdn = the_data["details"]["phone"]
+            # "%Y-%m-%dT%H:%M:%S.%fZ",
 
-    if the_data["telco"] == "MTN":
-        not_type = the_data["type"]  # UNSUBSCRIPTION_NOTIFICATION, SYNC_NOTIFICATION
-        msisdn = the_data["details"]["phone"]
-        # "%Y-%m-%dT%H:%M:%S.%fZ",
+            prod_type = the_data["product"]["type"]
+            # sub_type = the_data["product"]["subscription_type"]
+            print("prod_type", prod_type)
 
-        prod_type = the_data["product"]["type"]
-        # sub_type = the_data["product"]["subscription_type"]
-        print("prod_type", prod_type)
+            if msisdn.startswith("0") and len(msisdn) == 11:
+                msisdn = msisdn.replace("0", "234", 1)
 
-        if msisdn.startswith("0") and len(msisdn) == 11:
-            msisdn = msisdn.replace("0", "234", 1)
+            # fetch user
+            theUser, created = UserProfile.objects.get_or_create(phone=msisdn)
+            userSub, created = UserSubscribtion.objects.get_or_create(user=theUser)
+            if not_type == "SYNC_NOTIFICATION":
 
-        # fetch user
-        theUser, created = UserProfile.objects.get_or_create(phone=msisdn)
-        userSub, created = UserSubscribtion.objects.get_or_create(user=theUser)
-        if not_type == "SYNC_NOTIFICATION":
+                start_date = the_data["details"]["date"]
+                start_datetime = datetime.strptime(start_date, "%Y-%m-%d %H:%M")
+                end_date = the_data["details"]["expiry"]
+                end_datetime = datetime.strptime(end_date, "%Y-%m-%d %H:%M")
 
-            start_date = the_data["details"]["date"]
-            start_datetime = datetime.strptime(start_date, "%Y-%m-%d %H:%M")
-            end_date = the_data["details"]["expiry"]
-            end_datetime = datetime.strptime(end_date, "%Y-%m-%d %H:%M")
+                userSub.sub_active = True
+                userSub.starts_date = start_datetime
+                userSub.ends_date = end_datetime
+                userSub.save()
 
-            userSub.sub_active = True
-            userSub.starts_date = start_datetime
-            userSub.ends_date = end_datetime
-            userSub.save()
+                theUser.sub_status = "active"
+                theUser.save()
+                return HttpResponse(200)
 
-            theUser.sub_status = "active"
-            theUser.save()
-            return HttpResponse(200)
+            elif not_type == "UNSUBSCRIPTION_NOTIFICATION":
+                print("this is a unsubscribtion request")
+                userSub.sub_active = False
+                userSub.save()
 
-        elif not_type == "UNSUBSCRIPTION_NOTIFICATION":
-            print("this is a unsubscribtion request")
-            userSub.sub_active = False
-            userSub.save()
+                theUser.sub_status = "inactive"
+                theUser.save()
 
-            theUser.sub_status = "inactive"
-            theUser.save()
-
-            print("done with unsubscribtion")
-            return HttpResponse(200)
+                print("done with unsubscribtion")
+                return HttpResponse(200)
+            else:
+                return HttpResponse(200)
         else:
             return HttpResponse(200)
-    else:
+    except Exception as e:
+        print(e)
         return HttpResponse(200)
 
 
