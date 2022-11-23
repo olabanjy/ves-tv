@@ -48,7 +48,7 @@ def content_detail(request, slug=None):
         slug=the_content.slug
     )
 
-    template = "core/movie_details.html"
+    template = "core/movie_detail.html"
 
     context = {"the_content": the_content, "other_contents": other_contents}
 
