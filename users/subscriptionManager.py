@@ -41,6 +41,9 @@ def mtnSubscribe(msisdn):
         return False
 
 
+# lambda msisdn: msisdn.replace("234","0",1) if msisdn.startswith("234") else msisdn
+
+
 def mtnUnSubscribe(msisdn):
     try:
         if msisdn.startswith("234"):
