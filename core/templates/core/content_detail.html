@@ -29,7 +29,7 @@
 
 </div><!-- close #content-sidebar-pro -->
 
-{% if the_content.category.slug == "movies" %}
+{% if the_content.category.slug == "movies" or the_content.category.slug == "short-videos" %}
 
 <main id="col-main-with-sidebar">
     <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
@@ -138,7 +138,7 @@
     </div><!-- close .dashboard-container -->
 </main>
 
-{% elif the_content.category.slug == "series" %}
+{% elif the_content.category.slug == "series" or the_content.category.slug == "playlist" %}
 
 <main id="col-main-with-sidebar">
 			
