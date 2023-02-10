@@ -126,3 +126,11 @@ class UserSubscribtion(models.Model):
 
     def __str__(self):
         return f"{self.user}"
+
+
+class CampaignNotificationBackup(models.Model):
+    req_body = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.created_at}"

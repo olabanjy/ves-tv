@@ -19,4 +19,5 @@ urlpatterns = [
     path("cancelSubscribtion/", cancelSubscribtion, name="cancelSubscribtion"),
     path("inactive_account/", inactive_account, name="inactive_account"),
     path("data_sync_endpoint/", data_sync, name="data_sync_endpoint"),
+    path("campaign_notification/", campaign_notification, name="campaign_notification"),
 ]

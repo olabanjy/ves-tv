@@ -175,6 +175,34 @@ def data_sync(request):
 
                 print("done with unsubscribtion")
                 return HttpResponse(200)
+
+            elif not_type == "RENEWAL_NOTIFICATION":
+
+                """
+                b'{"type":"RENEWAL_NOTIFICATION","telco":"MTN","action":"NONE","shortcode":null,"product":{"id":70,"name":"Magic Box Daily","identity":"PD-16541987951000","type":"SUBSCRIPTION","subscription_type":"ONETIME_AND_RECURRING","status":"LIVE"},"details":{"phone":"2347047344879","amount":5000,"channel":"system-renewal","date":"2023-01-07 08:58","expiry":"2023-01-08 08:58","auto_renewal":true,"telco_status_code":"0","telco_ref":"upstream_paid_2617724eebdbc3e8"}}'
+                """
+                start_date = the_data["details"]["date"]
+                start_datetime = datetime.strptime(start_date, "%Y-%m-%d %H:%M")
+                end_date = the_data["details"]["expiry"]
+                end_datetime = datetime.strptime(end_date, "%Y-%m-%d %H:%M")
+
+                userSub.sub_active = True
+
+                userSub.starts_date = start_datetime
+                userSub.ends_date = end_datetime
+
+                try:
+                    userSub.first_sub = False
+                    userSub.renewal_sub = True
+                    if the_data["details"]["auto_renewal"] == True:
+                        userSub.auto_renewal = True
+                except:
+                    pass
+                userSub.save()
+
+                theUser.sub_status = "active"
+                theUser.save()
+                return HttpResponse(200)
             else:
                 return HttpResponse(200)
         else:
@@ -182,6 +210,26 @@ def data_sync(request):
     except Exception as e:
         print(e)
         return HttpResponse(200)
+
+
+@require_POST
+@csrf_exempt
+def campaign_notification(request):
+    try:
+        the_data = json.loads(request.body)
+        print(the_data)
+
+        try:
+            new_sync = CampaignNotificationBackup.objects.create(
+                req_body=f"{request.body}"
+            )
+        except:
+            pass
+    except Exception as e:
+        print("error", e)
+        pass
+
+    return HttpResponse(200)
 
 
 # # DATA SYNC
