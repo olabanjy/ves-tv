@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "django_countries",
     "storages",
     "django_celery_beat",
+    "import_export",
 ]
 
 MIDDLEWARE = [

@@ -1,13 +1,7 @@
 import requests
-from datetime import timedelta, date, datetime
-import hashlib
-import json
-import xmltodict
-import untangle
-
+from datetime import  datetime
 
 BASE_URL = "http://91.109.117.92:8001/"
-
 
 productIDDaily = "174"
 productIDWeekly = "175"
@@ -36,12 +30,8 @@ def mtnSubscribe(msisdn):
         )
 
         return response.json()
-    except Exception as e:
-        print(e)
+    except Exception:
         return False
-
-
-# lambda msisdn: msisdn.replace("234","0",1) if msisdn.startswith("234") else msisdn
 
 
 def mtnUnSubscribe(msisdn):
@@ -64,6 +54,5 @@ def mtnUnSubscribe(msisdn):
         )
 
         return response.json()
-    except Exception as e:
-        print(e)
+    except Exception:
         return False

@@ -3,17 +3,7 @@ from .base import *
 
 DEBUG = False
 
-# ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS = ["52.20.142.99", "ves-tv.ng", "www.ves-tv.ng"]
-
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db2.sqlite3",
-#     }
-# }
-
 
 DATABASES = {
     "default": {
@@ -45,7 +35,6 @@ ADMINS = (("VES TV Support", "hello@zamari.tv"),)
 
 # CELERY related settings
 BROKER_URL = "amqp://localhost"
-# CELERY_RESULT_BACKEND = 'amqp://'
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

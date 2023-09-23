@@ -1,10 +1,7 @@
 import requests
-from datetime import timedelta, date, datetime
+from datetime import datetime
 import hashlib
-import json
 import xmltodict
-import untangle
-
 
 url = "http://152.32.141.26:6991/SubscribeManageService/services/SubscribeManage"
 spID = "2340110011662"
@@ -33,7 +30,7 @@ def subscribeManager(msisdn):
     }
 
     body = """<?xml version=\"1.0\" encoding=\"utf-8\"?>
-            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
             xmlns:loc="http://www.csapi.org/schema/parlayx/subscribe/manage/v1_0/local">
                 <soapenv:Header>
                     <tns:RequestSOAPHeader xmlns:tns="http://www.huawei.com.cn/schema/common/v2_1">
@@ -51,7 +48,7 @@ def subscribeManager(msisdn):
                             </userID>
                             <subInfo>
                                 <productID>{productID}</productID>
-                                <operCode>{operCode}</operCode> 
+                                <operCode>{operCode}</operCode>
                                 <isAutoExtend>0</isAutoExtend>
                                 <channelID>1</channelID>
                             </subInfo>
