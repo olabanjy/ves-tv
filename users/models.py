@@ -1,14 +1,16 @@
 from django.db import models
 from django.conf import settings
-from django.db.models.signals import post_save, post_init, pre_save
-from django.template.loader import render_to_string
-from django.dispatch import receiver
-from datetime import datetime
+from django.db.models.signals import post_save
+
 from django.utils import timezone
-from django.db.models import Sum
-from allauth.account.signals import user_signed_up, user_logged_in
+
+
 import random, string
-from datetime import timedelta, date, datetime
+
+
+from django.utils.translation import gettext_lazy as _
+
+from . import choices
 
 
 SUB_STATUS = (
@@ -29,15 +31,12 @@ TEST_PHASE = (
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     user_code = models.CharField(max_length=200)
-    phone = models.CharField(
-        max_length=40,
-        null=True,
-        blank=True,
-    )
     first_name = models.CharField(blank=True, null=True, max_length=200)
     last_name = models.CharField(blank=True, null=True, max_length=200)
-    dob = models.DateField(max_length=100, blank=True, null=True)
-    city = models.CharField(max_length=200, blank=True, null=True)
+    company_name  = models.CharField(blank=True, null=True, max_length=250)
+    company_banner  = models.ImageField(upload_to="vendor/banner/", blank=True)
+    onboarded = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
     state = models.CharField(max_length=200, blank=True, null=True)
     nationality = models.CharField(max_length=200, blank=True, null=True)
     test_phase = models.CharField(
@@ -45,6 +44,12 @@ class Profile(models.Model):
     )
     sub_status = models.CharField(max_length=200, choices=SUB_STATUS, default="no_sub")
     created_at = models.DateTimeField(default=timezone.now)
+
+    role = models.TextField(
+        choices=choices.ROLE_CHOICES,
+        default=choices.Roles.Vendor.value,
+        verbose_name=_("role"),
+    )
 
     def __str__(self):
         return self.user.username
@@ -75,14 +80,6 @@ post_save.connect(profile_receiver, sender=settings.AUTH_USER_MODEL)
 
 
 class WebhookBackup(models.Model):
-    # productID = models.CharField(blank=True, null=True, max_length=200)
-    # userID = models.CharField(blank=True, null=True, max_length=200)
-    # traceUniqueID = models.CharField(blank=True, null=True, max_length=200)
-    # updateType = models.CharField(blank=True, null=True, max_length=200)
-    # updateTime = models.CharField(blank=True, null=True, max_length=200)
-    # updateDesc = models.CharField(blank=True, null=True, max_length=200)
-    # effectiveTime = models.CharField(blank=True, null=True, max_length=200)
-    # expiryTime = models.CharField(blank=True, null=True, max_length=200)
     req_body = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 

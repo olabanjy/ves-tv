@@ -1,0 +1,64 @@
+{% load static %}
+{% load perms %}
+<div class="iq-sidebar">
+    <div class="iq-sidebar-logo d-flex justify-content-between">
+       <a href="#" class="header-logo">
+
+          <div class="logo-title">
+             <span class="text-primary text-uppercase">{{request.user.profile.user_code}}</span>
+          </div>
+       </a>
+       <div class="iq-menu-bt-sidebar">
+          <div class="iq-menu-bt align-self-center">
+             <div class="wrapper-menu">
+                <div class="main-circle"><i class="las la-bars"></i></div>
+             </div>
+          </div>
+       </div>
+    </div>
+
+
+    {% if request.user|has_role:"Vendor" %}
+
+
+    <div id="sidebar-scrollbar">
+       <nav class="iq-sidebar-menu">
+          <ul id="iq-sidebar-toggle" class="iq-menu">
+            <li><a href="/vendor-home/{{request.user.profile.user_code}}" target="_blank" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit my site</span></a></li>
+            <li class="active active-menu"><a href="{% url 'vendor:vendor-dashboard' %}" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
+
+             <li>
+                <a href="#my-contents" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>My Contents</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                <ul id="my-contents" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+
+                   <li><a href="#film" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false" ><i class="las la-user-plus"></i> <span>Movies/Short-films</span> <i class="ri-arrow-right-s-line iq-arrow-right"></i> </a>
+                    <ul id="film" class="iq-submenu collapse" data-parent="#my-contents">
+                        <li><a href="{% url 'vendor:vendor-add-film' %}"><i class="las la-user-plus"></i>Add new</a></li>
+                        <li><a href="{% url 'vendor:vendor-film-list' %}"><i class="las la-eye"></i>List</a></li>
+                    </ul>
+
+                    </li>
+                   <li><a href="#show"  class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-eye"></i><span>Shows</span> <i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+                    <ul id="show" class="iq-submenu collapse" data-parent="#my-contents">
+                        <li><a href="#"><i class="las la-user-plus"></i>Add new</a></li>
+                        <li><a href="#"><i class="las la-eye"></i>List</a></li>
+                    </ul>
+                    </li>
+                </ul>
+             </li>
+
+
+
+
+
+
+
+          </ul>
+       </nav>
+    </div>
+
+
+    {% elif request.user|has_role:"SuperAdmin" or  request.user|has_role:"SystemAdmin" %}
+
+    {% endif %}
+ </div>

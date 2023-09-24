@@ -1,0 +1,136 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+<div id="content-sidebar-pro">
+
+    <div id="content-sidebar-info">
+        <img src="{% if vendor_profile.company_banner %} {{vendor_profile.company_banner.url}} {% else %} http://via.placeholder.com/400x498 {% endif %}" alt="{{vendor_profile.company_name}}">
+        <div id="profile-sidebar-name">
+            <h5>{{vendor_profile.company_name}}</h5>
+
+        </div>
+        <div id="profile-sidebar-gradient"></div>
+    </div>
+
+    <div class="content-sidebar-section">
+        <h3 class="content-sidebar-sub-header">Watched</h3>
+        <ul id="profile-watched-stats">
+            <li><span>43</span> Movies</li>
+            <li><span>28</span> Series</li>
+            <li><span>07</span> Docs</li>
+        </ul>
+    </div><!-- close .content-sidebar-section -->
+    <div class="content-sidebar-section">
+        <h3 class="content-sidebar-sub-header">Popular Genres</h3>
+        <ul id="profile-favorite-genres">
+            <li>
+                <img src="{% static 'images/genres/comedy.png' %}" alt="Comedy">
+            </li>
+            <li>
+                <img src="{% static 'images/genres/action.png' %}" alt="Action">
+            </li>
+            <li>
+                <img src="{% static 'images/genres/romance.png' %}" alt="Romance">
+            </li>
+            <li>
+                <img src="{% static 'images/genres/fantasy.png' %}" alt="Fantasy">
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+<main id="col-main-with-sidebar">
+
+    <div class="dashboard-container">
+
+        {% if  all_cats %}
+
+        <ul class="dashboard-sub-menu">
+
+
+
+            <!-- <li class="current"><a href="#">Most Wacthed</a></li> -->
+
+
+            {% for val in all_cats %}
+            <li><a href="/vendor-home/{{vendor_code}}/?category={{val}}" onclick="">{{val}}</a></li>
+            {% endfor %}
+
+
+        </ul>
+
+        {% endif %}
+
+
+        <div class="row">
+            {% if vendor_qs %}
+            {% for vid in vendor_qs %}
+            <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+                <div class="item-listing-container-skrn">
+                    <a href="#"><img src="{{vid.img_poster.url}}" alt="{{vid.title}}"></a>
+                    <div class="item-listing-text-skrn">
+                        <div class="item-listing-text-skrn-vertical-align"><h6><a href="{% url 'core:content_detail' vid.slug %}">{{vid.title}}</a></h6>
+
+                        </div><!-- close .item-listing-text-skrn-vertical-align -->
+                    </div><!-- close .item-listing-text-skrn -->
+                </div><!-- close .item-listing-container-skrn -->
+            </div>
+            {% endfor %}
+
+            {% endif %}
+        </div><!-- close .row -->
+
+
+        {% if vendor_qs.paginator.num_pages > 1 %}
+        <ul class="page-numbers">
+            {% if vendor_qs.has_previous %}
+            <li><a class="previous page-numbers" href="?page={{ vendor_qs.previous_page_number }}"><i class="fas fa-chevron-left"></i></a></li>
+            {% endif %}
+            {% for i in vendor_qs.paginator.page_range %}
+                {% if vendor_qs.number == i %}
+                    <li><span class="page-numbers current">{{ i }}</span></li>
+                {% else %}
+
+                    <li><a class="page-numbers" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if vendor_qs.has_next %}
+            <li><a class="next page-numbers" href="?page={{ vendor_qs.next_page_number }}"><i class="fas fa-chevron-right"></i></a></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+
+
+
+
+
+
+    </div><!-- close .dashboard-container -->
+</main>
+
+
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+
+
+<script>
+    function getCurrentURL () {
+  return window.location.href
+}
+</script>
+
+
+{% endblock extra_scripts %}

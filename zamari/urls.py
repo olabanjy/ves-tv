@@ -2,16 +2,16 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include 
+from django.urls import path, include
 from core.views import error404, error500
 from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('developer-admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-
     path('u/', include('users.urls', namespace='users')),
+    path('admin/', include('vendor.urls', namespace='vendor')),
     path('', include('core.urls', namespace='core')),
 
 ]
