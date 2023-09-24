@@ -1,0 +1,201 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block content %}
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-lg-8">
+             <div class="row">
+                <div class="col-sm-6 col-lg-6 col-xl-6">
+                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                      <div class="iq-card-body">
+                         <div class="d-flex align-items-center justify-content-between">
+                            <div class="iq-cart-text text-capitalize">
+                               <p class="mb-0">
+                                  total views
+                               </p>
+                            </div>
+                            <div class="icon iq-icon-box-top rounded-circle bg-primary">
+                               <i class="las la-eye"></i>
+                            </div>
+                         </div>
+                         <div class="d-flex align-items-center justify-content-between mt-3">
+                            <h4 class=" mb-0">{{likeCount}}</h4>
+
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-6">
+                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                      <div class="iq-card-body">
+                         <div class="d-flex align-items-center justify-content-between">
+                            <div class="iq-cart-text text-capitalize">
+                               <p class="mb-0 font-size-14">
+                                  Liked your content
+                               </p>
+                            </div>
+                            <div class="icon iq-icon-box-top rounded-circle bg-warning">
+                               <i class="lar la-heart"></i>
+                            </div>
+                         </div>
+                         <div class="d-flex align-items-center justify-content-between mt-3">
+                            <h4 class=" mb-0">{{viewCount}}</h4>
+
+                         </div>
+                      </div>
+                   </div>
+                </div>
+
+             </div>
+             <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between align-items-center">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">Top Perfoming Content </h4>
+                   </div>
+                   <div id="top-rated-item-slick-arrow" class="slick-aerrow-block  iq-rtl-direction"></div>
+                </div>
+                <div class="iq-card-body">
+                    {% if top10contents %}
+                   <ul class="list-unstyled row top-rated-item mb-0 iq-rtl-direction">
+
+                    {% for val in top10contents %}
+
+
+                     <li class="col-sm-6 col-lg-4 col-xl-3 iq-rated-box">
+                        <div class="iq-card mb-0">
+                           <div class="iq-card-body p-0">
+                              <div class="iq-thumb">
+                                 <a href="javascript:void(0)">
+                                    <img src="{{val.img_poster.url}}" class="img-fluid w-100 img-border-radius" alt="{{val.title}}">
+
+                                 </a>
+                              </div>
+                              <div class="iq-feature-list">
+                                 <h6 class="font-weight-600 mb-0">{{val.title}}</h6>
+                                 <p class="mb-0 mt-2">{{val.category.name}}</p>
+                                 <div class="d-flex align-items-center my-2 iq-ltr-direction">
+                                    <p class="mb-0 mr-2"><i class="lar la-eye mr-1"></i>{{val.watch_times}}</p>
+                                    <!-- <p class="mb-0 "><i class="las la-download ml-2"></i> 30 k</p> -->
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+
+                      {% endfor %}
+
+                   </ul>
+                   {% else %}
+                   <h6 class="font-weight-600 mb-0">No data to show </h6>
+                   {% endif %}
+                </div>
+             </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                <div class="iq-card-header d-flex align-items-center justify-content-between">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">My Top Performing Genre</h4>
+                   </div>
+                </div>
+                <div class="iq-card-body  align-items-center">
+                    {% if topGenres %}
+                      <div class="row list-unstyled mb-0 pb-0">
+                        {% for genre in topGenres %}
+                         <div class="col-sm-6 col-md-4 col-lg-6 mb-3">
+                            <div class="iq-progress-bar progress-bar-vertical iq-bg-primary">
+                               <span class="bg-primary" data-percent="100" style="transition: height 2s ease 0s; width: 100%; height: 40%;"></span>
+                            </div>
+                            <div class="media align-items-center">
+                               <div class="iq-icon-box-view rounded mr-3 iq-bg-primary"><i class="las la-film font-size-32"></i></div>
+                               <div class="media-body text-white">
+                                  <h6 class="mb-0 font-size-14 line-height">{{genre.name}}</h6>
+                                  <small class="text-primary mb-0">{{genre.content_genre.count}}</small>
+                               </div>
+                            </div>
+                         </div>
+                         {% endfor %}
+
+
+
+
+                      </div>
+                      {% else %}
+                      <h6 class="font-weight-600 mb-0">No data to show </h6>
+                      {% endif %}
+
+                </div>
+             </div>
+
+          </div>
+       </div>
+
+       <!-- Row 2  -->
+       <div class="row">
+
+          <div class="col-sm-12">
+             <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">Recently Viewed Contents </h4>
+                   </div>
+
+                </div>
+                <div class="iq-card-body">
+                   <div class="table-responsive">
+                      <table class="data-tables table movie_table" style="width:100%">
+                         <thead>
+                            <tr>
+                               <th style="width:20%;">Title</th>
+                               <th style="width:10%;">Watch Count</th>
+                               <th style="width:20%;">Category</th>
+                               <th style="width:10%;">User</th>
+                               <th style="width:20%;">Date</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            {% if viewedContentThisMonth %}
+                            {% for cont in viewedContentThisMonth %}
+                            <tr>
+                               <td>
+                                  <div class="media align-items-center">
+                                     <div class="iq-movie">
+                                        <a href="javascript:void(0);"><img src="{{cont.content.img_poster.url}}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                     </div>
+                                     <div class="media-body text-white text-left ml-3">
+                                        <p class="mb-0">{{cont.content.title}}</p>
+                                        <small>{{cont.content.timedelta}}</small>
+                                     </div>
+                                  </div>
+                               </td>
+                               <td><i class="lar la-eye mr-2"></i> {{cont.count}}</td>
+                               <td>{{cont.content.genre.name}}</td>
+
+                               <td>{{cont.user.phone}}</td>
+                               <td>{{cont.created_at}}</td>
+
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <h6 class="font-weight-600 mb-0">No data to show </h6>
+                            {% endif %}
+
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+
+ {% endblock content %}
+
+
+
+ {% block extra_scripts %}
+
+{% endblock extra_scripts %}

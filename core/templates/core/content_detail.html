@@ -1,31 +1,32 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
 {% block content %}
 
 <div id="content-sidebar-pro">
-			
+
     <div id="content-sidebar-image">
         <img src="{{the_content.img_detail_poster.url}}" alt="Movie Poster">
     </div>
-    
+
     <div class="content-sidebar-section">
         <h2 class="content-sidebar-sub-header"> {{the_content.title}} </h2>
         <ul class="progression-studios-slider-rating">
             <!-- <li>PG-13</li><li>HD</li> -->
         </ul>
     </div><!-- close .content-sidebar-section -->
-    
+
     <div class="content-sidebar-section">
         <h4 class="content-sidebar-sub-header">Upload Date</h4>
         <div class="content-sidebar-short-description">{{the_content.upload_date}}</div>
     </div><!-- close .content-sidebar-section -->
-    
+
     <div class="content-sidebar-section">
         <h4 class="content-sidebar-sub-header">Duration</h4>
         <div class="content-sidebar-short-description">{{the_content.timedelta}}</div>
     </div><!-- close .content-sidebar-section -->
-    
-  
+
+
 
 </div><!-- close #content-sidebar-pro -->
 
@@ -36,18 +37,19 @@
         <div class="progression-studios-slider-more-options">
             <i class="fas fa-ellipsis-h"></i>
             <ul>
-                <li><a href="#">Add to Favorites</a></li>
+                <li><a id="the_like_btn"> <i style="color:grey;" class="fas fa-heart" id="heart-icon"></i> Like </a></li>
                 <li><a href="#">Share...</a></li>
+                <input id="the_liked_content" value="{{the_content.pk}}" type="hidden" >
             </ul>
         </div>
-        <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a> 
+        <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a>
      <video id="VideoLightbox-1"  poster="{{the_content.img_thumbnail.url}}" width="960" height="540">
          <source src="{{the_content.file_mp4.url}}" type="video/mp4">
          <source src="{{the_content.file_webm.url}}" type="video/webm">
-     </video>  
+     </video>
         <!-- <div id="movie-detail-header-media">
             <div class="dashboard-container">
-                <h5></h5>						
+                <h5></h5>
                 <div class="row">
                     <div class="col-6 col-md-6 col-lg-6">
                         <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
@@ -67,37 +69,40 @@
                             </div>
                         </a>
                     </div>
-                    
+
                 </div>
             </div>
         </div> -->
-        
+
         <div id="movie-detail-gradient-pro"></div>
     </div>
-    
-    
+
+
     <div id="movie-detail-rating">
         <div class="dashboard-container">
             <div class="row">
                 <div class="col-sm">
-                    <h5></h5>
-                    <div class="rating-pro"></div>
+
+                    <div class="rating-pro">
+
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="dashboard-container">
-        
-        
+
+
         <div class="movie-details-section">
             <h2>Description</h2>
             <p>{{the_content.description}}</p>
-        </div><!-- close .movie-details-section -->
+        </div>
 
 
 
-            
+
         <div class="movie-details-section">
           {% if other_contents %}
             <h2>You May Also Like </h2>
@@ -124,62 +129,63 @@
                         </div><!-- close .item-listing-text-skrn -->
                     </div><!-- close .item-listing-container-skrn -->
                 </div><!-- close .col -->
-            
+
                 {% endfor %}
-            
+
 
 
             </div><!-- close .row -->
 
             {% endif %}
-        
+
         </div><!-- close .movie-details-section -->
-        
+
     </div><!-- close .dashboard-container -->
 </main>
 
 {% elif the_content.category.slug == "series" or the_content.category.slug == "playlist" %}
 
 <main id="col-main-with-sidebar">
-			
+
   <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
-    
+
     <div class="progression-studios-slider-more-options">
       <i class="fas fa-ellipsis-h"></i>
       <ul>
-        <li><a href="#!">Add to Favorites</a></li>
+        <li><a id="the_like_btn" href="#"> <i style="color:grey;" class="fas fa-heart" id="heart-icon"></i> Like </a></li>
         <li><a href="#!">Share...</a></li>
+        <input id="the_liked_content" value="{{the_content.pk}}" type="hidden" >
       </ul>
     </div>
-    
+
     <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a>
-    
+
        <video id="VideoLightbox-1"  poster="{{the_content.img_detail_banner.url}}" width="960" height="540">
            <source src="{{the_content.trailer_mp4.url}}" type="video/mp4">
            <source src="{{the_content.trailer_webm.url}}" type="video/webm">
        </video>
-    
-  
-    
+
+
+
     <div id="movie-detail-gradient-pro"></div>
   </div>
-  
-  
+
+
   <div id="movie-detail-rating">
     <div class="dashboard-container">
       <div class="row">
         <div class="col-sm">
           <h5></h5>
-          
+
         </div>
-       
+
       </div><!-- close .row -->
     </div><!-- close .dashboard-container -->
   </div><!-- close #movie-detail-rating -->
-  
+
   <div class="dashboard-container">
-    
-    
+
+
     <div class="movie-details-section">
       <h2>Description</h2>
       <p> {{the_content.description}} </p>
@@ -196,11 +202,11 @@
             <div class="item-listing-text-skrn item-listing-movie-casting">
               <h6><a href="{% url 'core:episode_detail' the_content.slug vid.slug %}">{{vid.title}}</a></h6>
               <div class="movie-casting-sub-title">Episode {{vid.position}}</div>
-            </div><!-- close .item-listing-text-skrn -->
-          </div><!-- close .item-listing-container-skrn -->
-        </div><!-- close .col -->
+            </div>
+          </div>
+        </div>
         {% endfor %}
-    
+
       </div>
       {% else %}
       <div class="row">
@@ -209,7 +215,7 @@
       {% endif %}
     </div>
 
-      
+
     <div class="movie-details-section">
       {% if other_contents %}
       <h2> You May Also Like </h2>
@@ -221,22 +227,22 @@
             <a href="#"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="Listing"></a>
             <div class="item-listing-text-skrn">
               <div class="item-listing-text-skrn-vertical-align"><h6><a href="#">{{vid.title}}</a></h6>
-                
+
               </div>
             </div>
           </div>
         </div>
 
         {% endfor %}
-      
-      
-       
-      
-        
+
+
+
+
+
       </div>
     {% endif %}
     </div>
-    
+
   </div>
 </main>
 
@@ -244,3 +250,44 @@
 {% endif %}
 
 {% endblock %}
+
+{% block extra_scripts %}
+
+<script type="text/javascript">
+
+$(document).ready(() => {
+
+$('#the_like_btn').on('click', function () {
+
+  var content_id = $('#the_liked_content').val();
+
+  $.ajax({
+          type:"GET",
+          url: "{% url 'core:like_product' %}",
+          data:{'content_id':content_id},
+          dataType: 'json',
+          success: function (data){
+              if (data.status) {
+                  console.log("Content Liked")
+                  $('#heart-icon').css("color", "red");
+
+
+              } else{
+                  console.log("Content not found")
+
+              }
+          }
+
+  })
+
+
+
+
+})
+
+
+})
+
+</script>
+
+{% endblock extra_scripts %}

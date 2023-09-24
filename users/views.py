@@ -90,15 +90,6 @@ def awaiting_response(request):
     return render(request, template)
 
 
-@login_required
-def after_login(request):
-    msisdn = request.user.username
-    # check sub status
-    sub_qs = Subscribtion.objects.filter(user=request.user.profile, sub_active=True)
-    if sub_qs.exists():
-        return redirect("core:home")
-    else:
-        return redirect("users:inactive_account")
 
 
 def onboarding(request):

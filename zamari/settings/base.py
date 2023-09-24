@@ -19,6 +19,7 @@ SECRET_KEY = config("SECRET_KEY")
 INSTALLED_APPS = [
     "users",
     "core",
+    "vendor",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -132,7 +133,7 @@ ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "[VES TV]"
 
-ACCOUNT_USERNAME_VALIDATORS = "users.validators.custom_usename_validator"
+# ACCOUNT_USERNAME_VALIDATORS = "users.validators.custom_usename_validator"
 
 # ACCOUNT_ADAPTER = 'users.adapters.MyAccountAdapter'
 
@@ -145,6 +146,6 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/admin/after_login"
 
 ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login"

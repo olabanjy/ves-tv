@@ -1,0 +1,172 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-sm-12">
+             <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">Add Movie</h4>
+                      <ul>
+                        <li> Mp4 files must be less than 5mb </li>
+                        <li>Posters: 1902x800</li>
+                        <li>Banners: 1902x800</li>
+                        <li>Thumbnail: 1902x800</li>
+                      </ul>
+                   </div>
+                </div>
+                <div class="iq-card-body">
+                   <form action="#" method="post" enctype="multipart/form-data">
+                     {% csrf_token %}
+                      <div class="row">
+                         <div class="col-lg-7">
+                            <div class="row">
+                               <div class="col-12 form-group">
+                                  <input name="video_title" type="text" class="form-control" placeholder="Title" required>
+                               </div>
+                               <div class="col-sm-6 form_gallery form-group">
+                                  <label id="img_banner" for="form_img_banner">Upload Banner</label>
+                                  <input name="img_banner" data-name="#img_banner" id="form_img_banner" class="form_gallery-upload"
+                                     type="file" accept=".png, .jpg, .jpeg" required>
+                               </div>
+                               <div class="col-sm-6 form_gallery form-group">
+                                 <label id="img_poster" for="form_img_poster">Upload Poster</label>
+                                 <input name="img_poster" data-name="#img_poster" id="form_img_poster" class="form_gallery-upload"
+                                    type="file" accept=".png, .jpg, .jpeg" required>
+                              </div>
+                              <div class="col-sm-6 form_gallery form-group">
+                                 <label id="img_thumbnail" for="form_img_thumbnail">Upload Thumbnail</label>
+                                 <input name="img_thumbnail" data-name="#img_thumbnail" id="form_img_thumbnail" class="form_gallery-upload"
+                                    type="file" accept=".png, .jpg, .jpeg" required>
+                              </div>
+                              <div class="col-sm-6 form_gallery form-group">
+                                 <label id="img_detail_poster" for="form_img_detail_poster">Upload Detail Poster</label>
+                                 <input name="img_detail_poster" data-name="#img_detail_poster" id="form_img_detail_poster" class="form_gallery-upload"
+                                    type="file" accept=".png, .jpg, .jpeg" required>
+                              </div>
+                               <div class="col-md-6 form-group">
+                                  <select class="form-control" name="category" id="category" required>
+                                     <option disabled="">Choose Category</option>
+                                     {% for cat in cats %}
+                                     <option value="{{cat.name}}">{{cat.name}}</option>
+                                     {% endfor %}
+                                  </select>
+                               </div>
+                               <div class="col-sm-6 form-group">
+                                  <select name="genre" class="form-control" >
+                                     <option disabled="">Choose Genre</option>
+                                     {% for gen in genre_list %}
+                                     <option value="{{gen.name}}">{{gen.name}}</option>
+                                     {% endfor %}
+                                  </select>
+                               </div>
+                               <div class="col-12 form-group">
+                                  <textarea  id="text" name="description" rows="5" class="form-control"
+                                     placeholder="Description"></textarea>
+                               </div>
+                               <div class="col-sm-6 form-group">
+                                 <select name="video_language" class="form-control" id="exampleFormControlSelect3" required>
+                                    <option selected disabled="">Choose Language</option>
+                                    <option value="english">English</option>
+                                    <option value="hindi">Hindi</option>
+                                    <option value="igbo">Igbo</option>
+                                    <option value="yoruba">Yoruba</option>
+                                    <option value="tamil">Tamil</option>
+                                    <option value="gujarati">Gujarati</option>
+                                 </select>
+                              </div>
+
+                              <div class="col-sm-6 form-group">
+                                 <input name="duration" type="text" class="form-control" placeholder="Movie Duration" required>
+                              </div>
+
+
+                            </div>
+                         </div>
+                         <div class="col-lg-5">
+                           <div class="row">
+                              <div class="col-12 form_gallery form-group">
+                                 <label id="video_trailer" for="form_video_trailer">Upload Trailer mp4</label>
+                                 <input name="video_trailer" data-name="#video_trailer" id="form_video_trailer" class="form_gallery-upload"
+                                    type="file" accept="video/mp4,video/x-m4v,video/*" required>
+                              </div>
+                              <div class="col-12">
+                                 <div class="d-block position-relative">
+                                    <div class="form_video-upload" id="trailer">
+                                       <input id="form_video_mp4" name="video_mp4" type="file" accept="video/mp4,video/x-m4v,video/*" required>
+                                       <p>Upload video file</p>
+                                    </div>
+                                 </div>
+                                 <input type="text" name="hiddentimedelta" id="hiddentimedelta" hidden>
+                              </div>
+                           </div>
+                         </div>
+                      </div>
+                      <div class="row">
+                         <div class="col-12 form-group ">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-danger">cancel</button>
+                         </div>
+                      </div>
+                   </form>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+{% endblock content %}
+
+{% block extra_scripts %}
+
+<script>
+   $('#form_video_mp4').on('change', function() {
+      const fileSize = this.files[0].size / 1024 / 1024
+      if (fileSize > 15){
+         this.value = null
+         alert("Video file size must not be larger than 2mb")
+      }
+
+      var myVideos = []
+      window.URL = window.URL || window.webkitURL
+
+      var files = this.files;
+      myVideos.push(files[0]);
+      var video = document.createElement('video')
+      video.preload = 'metadata'
+
+      video.onloadedmetadata = function() {
+         window.URL.revokeObjectURL(video.src)
+         var duration = video.duration
+         $('#hiddentimedelta').val(duration)
+         myVideos[myVideos.length - 1].duration = duration
+      }
+      video.src = URL.createObjectURL(files[0])
+   });
+
+
+   $('#form_video_trailer').on('change', function() {
+      const fileSize = this.files[0].size / 1024 / 1024
+      if (fileSize > 5){
+         this.value = null
+         alert("Trailer size must not be larger than 5mb")
+      }
+   });
+
+
+   $('#form_img_banner, #form_img_poster, #form_img_thumbnail, #form_img_detail_poster').on('change', function() {
+      const fileSize = this.files[0].size / 1024 / 1024
+      if (fileSize > 1){
+         this.value = null
+         alert("Image file size must not be larger than 1mb")
+      }
+   });
+</script>
+
+{% endblock extra_scripts %}

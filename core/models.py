@@ -7,6 +7,10 @@ from users.models import Profile, UserProfile
 import uuid
 from PIL import Image
 
+from . import choices
+
+
+from django.utils.translation import gettext_lazy as _
 
 class ContentCategory(models.Model):
     slug = models.SlugField()
@@ -27,8 +31,8 @@ class ContentGenre(models.Model):
 class Content(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120)
-    category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
-    genre = models.ForeignKey(ContentGenre, on_delete=models.CASCADE)
+    category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE, related_name="content_category")
+    genre = models.ForeignKey(ContentGenre, on_delete=models.CASCADE, related_name="content_genre")
     description = models.TextField()
     language = models.CharField(max_length=120, blank=True, null=True)
     img_banner = models.ImageField(upload_to="content_images/banner/", blank=True)
@@ -50,8 +54,14 @@ class Content(models.Model):
     upload_date = models.DateField(blank=True)
     featured = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
+    status = models.TextField(
+        choices=choices.VERIFICATION_CHOICES,
+        default=choices.VerificationStatus.Approved.value,
+        verbose_name=_("status")
+    )
     created_at = models.DateTimeField(default=timezone.now)
     modified = models.DateTimeField(auto_now=True)
+    vendor = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -83,6 +93,7 @@ class Episode(models.Model):
     file_mp4 = models.FileField(upload_to="content_file/mp4/", blank=True)
     file_webm = models.FileField(upload_to="content_file/webm/", blank=True)
     upload_date = models.DateField(blank=True)
+    watch_times = models.IntegerField(default=1)
     timedelta = models.DurationField(null=True, blank=True)
     position = models.IntegerField()
     created = models.DateTimeField(default=timezone.now)
@@ -119,6 +130,18 @@ class WatchedContent(models.Model):
         null=True,
     )
     count = models.IntegerField(default=1)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.user} - {self.content.title} - {self.count}"
+
+
+
+class Likes(models.Model):
+  content = models.ForeignKey(Content,on_delete=models.CASCADE,related_name='liked_content', blank=True, null=True)
+  episode = models.ForeignKey(Episode,on_delete=models.CASCADE,related_name='liked_episode', blank=True, null=True)
+  msisdn = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+  count = models.IntegerField(default=1, blank=True, null=True)
+
+  def __str__(self):
+    return f"{self.msisdn}"
