@@ -50,6 +50,7 @@ def vendor_dashboard(request):
     viewedContentThisMonth = WatchedContent.objects.filter(created_at__month=today.month, content__vendor=request.user.profile).order_by("-created_at")[:10]
 
     viewCount = WatchedContent.objects.filter(content__vendor=request.user.profile).count()
+    print(viewCount)
     likeCount  = Likes.objects.filter(content__vendor=request.user.profile).count()
 
     genre_ids = []
