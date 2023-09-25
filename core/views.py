@@ -86,7 +86,7 @@ def like_product(request):
 
     active_user = fetch_active_user(request)
 
-    Likes.objects.get_or_create(msisdn=active_user.phone, content=the_content)
+    Likes.objects.get_or_create(msisdn=active_user, content=the_content)
     data.update({'status':True, 'msg': 'Content Liked!'})
 
   except KeyError:
