@@ -62,7 +62,8 @@ def content_detail(request, slug=None):
                 watched_content.save()
             else:
                 WatchedContent.objects.create(user=active_user, content=the_content)
-    except Exception:
+    except Exception as e:
+        print(e)
         pass
 
     template = "core/content_detail.html"
@@ -113,7 +114,8 @@ def show_detail(request, slug=None):
                 watched_content.save()
             else:
                 WatchedContent.objects.create(user=active_user, content=the_content)
-    except Exception:
+    except Exception as e:
+        print(e)
         pass
 
     template = "core/show_details.html"
