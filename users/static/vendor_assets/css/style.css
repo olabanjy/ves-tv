@@ -173,7 +173,7 @@ Sign In
 -----------------------------------------------------------------------*/
 #sign-in-page-box { background: #fff; border-radius: 10px; position: relative; width: 100%; min-height: 480px; height: 93vh; margin: 15px auto; box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); -webkit-box-shadow: 0px 4px 20px 0px rgba(44, 101, 144, 0.1); }
 .sign-in-detail { color: var(--iq-white); }
-.sign-in-page { height: 100vh; position: relative; background: url(../images/login/login.jpg)  no-repeat scroll 0 0; background-size: cover; }
+.sign-in-page { height: 100vh; position: relative; background: url(../images/login/login.jpeg)  no-repeat scroll 0 0; background-size: cover; }
 .sign-in-page .height-self-center { height: 100vh; border-radius: 15px; }
 .sign-in-page-data { border-radius: 15px; }
 .sign-in-detail { padding: 50px 80px; }
@@ -788,7 +788,7 @@ form.comment-text input { padding-right: 130px; }
 .twit-date a { color: var(--iq-body-text); }
 
 /*---------------------------------------------------------------------
-Profile Edit 
+Profile Edit
 -----------------------------------------------------------------------*/
 .profile-pic { max-width: 100%; display: block; border-radius: 50%; -webkit-border-radius: 50%; }
 .profile-img-edit { position: relative; display: inline-block; height: 150px; width: 150px; }
@@ -876,7 +876,7 @@ Pricing Page
 .modes{margin: 0; padding:0.938em;}
 .modes li{ cursor: pointer; color: var(--iq-secondary); display: block; border: 1px solid rgb(82, 79, 79); text-align: center; padding: 0.313em 1.5em;  }
 .modes li{ list-style: none; }
-.dir-btn.active {background: var(--dark);color: var(--white);} 
+.dir-btn.active {background: var(--dark);color: var(--white);}
 
 
 .panel{
