@@ -215,3 +215,34 @@ def getRequestInfo(request):
 
 def echoView(request):
     return HttpResponse("YES, VES TV IS LIVE !!")
+
+
+
+
+
+
+################
+
+
+def awaiting_response(request):
+    template = "core/awaiting_response.html"
+    return render(request, template)
+
+
+
+
+def onboarding(request):
+
+    template = "core/subscribe_page.html"
+
+    context = {}
+
+    return render(request, template, context)
+
+
+def inactive_account(request):
+
+    template = "core/inactive_account.html"
+
+    context = {}
+    return render(request, template, context)

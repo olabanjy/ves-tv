@@ -85,29 +85,6 @@ def after_signup(request):
     return redirect("users:awaiting_response")
 
 
-def awaiting_response(request):
-    template = "users/awaiting_response.html"
-    return render(request, template)
-
-
-
-
-def onboarding(request):
-
-    template = "users/subscribe_page.html"
-
-    context = {}
-
-    return render(request, template, context)
-
-
-def inactive_account(request):
-
-    template = "users/inactive_account.html"
-
-    context = {}
-    return render(request, template, context)
-
 
 # DATA SYNC
 @require_POST
@@ -223,97 +200,9 @@ def campaign_notification(request):
     return HttpResponse(200)
 
 
-# # DATA SYNC
-# @require_POST
-# @csrf_exempt
-# def data_sync(request):
-#     print("Receiving from AGT datasync")
-#     dict_data = xmltodict.parse(request.body)
-#     print(dict_data)
 
-#     the_req_body = f"{request.body}"
 
-#     try:
-#         new_sync = WebhookBackup.objects.create(req_body=the_req_body)
-#     except:
-#         pass
+#### Vendor Onboarding
 
-#     userID = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:userID"
-#     ]["ID"]
-#     userIDType = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:userID"
-#     ]["type"]
 
-#     productID = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:productID"
-#     ]
-#     updateType = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:updateType"
-#     ]
-#     updateTime = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:updateTime"
-#     ]
-#     updateDesc = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:updateDesc"
-#     ]
-#     effectiveTime = dict_data["soapenv:Envelope"]["soapenv:Body"][
-#         "ns2:syncOrderRelation"
-#     ]["ns2:effectiveTime"]
-#     expiryTime = dict_data["soapenv:Envelope"]["soapenv:Body"]["ns2:syncOrderRelation"][
-#         "ns2:expiryTime"
-#     ]
-#     print(userID)
-#     print(userIDType)
-#     print(productID)
-#     print(updateType)
-#     print(updateDesc)
 
-#     theUpdateTime = datetime.strptime(str(updateTime), "%Y%m%d%H%M%S")
-#     theEffectiveTime = datetime.strptime(str(effectiveTime), "%Y%m%d%H%M%S")
-#     theExpiryTime = datetime.strptime(str(expiryTime), "%Y%m%d%H%M%S")
-#     theUserPhoneNumber = str(userID).replace("234", "0", 1)
-
-#     print(theUpdateTime)
-#     print(theEffectiveTime)
-#     print(theExpiryTime)
-
-#     the_user = User.objects.get(username=theUserPhoneNumber)
-#     the_user_profile = Profile.objects.get(user=the_user)
-
-#     the_user_sub, created = Subscribtion.objects.get_or_create(user=the_user_profile)
-#     """
-#     Update Type
-#     1. Add
-#     2. Delete
-#     3. Update
-#     """
-#     if updateType == "1":
-#         the_user_sub.sub_active = True
-#         the_user_sub.starts_date = make_aware(theEffectiveTime)
-#         the_user_sub.ends_date = make_aware(theExpiryTime)
-
-#     elif updateType == "2":
-#         the_user_sub.sub_active = False
-
-#     elif updateType == "3":
-#         the_user_sub.sub_active = True
-#         the_user_sub.starts_date = make_aware(theEffectiveTime)
-#         the_user_sub.ends_date = make_aware(theExpiryTime)
-
-#     the_user_sub.save()
-
-#     return HttpResponse(200)
-
-# response_body = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-#                 xmlns:loc="http://www.csapi.org/schema/parlayx/data/sync/v1_0/local">
-#                     <soapenv:Header/>
-#                     <soapenv:Body>
-#                         <loc:syncOrderRelationResponse>
-#                             <loc:result>0</loc:result>
-#                             <loc:resultDescription>OK</loc:resultDescription>
-#                         </loc:syncOrderRelationResponse>
-#                     </soapenv:Body>
-#                 </soapenv:Envelope>"""
-
-# return response_body

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "storages",
     "django_celery_beat",
     "import_export",
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

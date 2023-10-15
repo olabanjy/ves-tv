@@ -1,121 +1,103 @@
 
 {% load i18n %}
 {% load static %}
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <head>
 
-		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-		<link rel="stylesheet" href="{% static 'style.css' %}">
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
-		
-		<link rel="stylesheet" href="{% static 'icons/fontawesome/css/fontawesome-all.min.css' %}"><!-- FontAwesome Icons -->
-		<link rel="stylesheet" href="{% static 'icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css' %}"><!-- iconsmind.com Icons -->
-		
-		<title> VES - Sign In </title>
-	</head>
-	<body>
-		
-		<header id="masthead-pro">
-			<div class="container">
-				
-				<h1><a href="/"><img src="{% static 'images/ves_logo.png' %}" alt="Zamari TV"></a></h1>
-			
-			
-				
-				<div class="clearfix"></div>
-			</div>
-			
-		
-		</header>
-		
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>VES Vendor  - Login </title>
 
-		<div id="content-pro">
+      <link rel="shortcut icon" href="{% static 'vendor_assets/images/favicon.ico' %}" />
 
-      <div id="pricing-plans-background-image">
-				<div class="container">
-						<div class="registration-steps-page-container">
-							
-	  					<form action="{% url 'account_login' %}" class="registration-steps-form login"  id="login" method="POST">
-                {% csrf_token %}
-							 
-							 <div class="registration-social-login-container">
+      <link rel="stylesheet" href="{% static 'vendor_assets/css/bootstrap.min.css' %}">
 
-    	  						 <div class="form-group">
-    								 <label for="id_login" class="col-form-label">Phone Number/Email</label>
-                     <input name="login" type="text" class="form-control" id="id_login" placeholder="Phone Number or Email">
-    	  						 </div>
-    	  						
-    	  						
-                    <div class="form-group">
-                        <label for="id_password" class="col-form-label">Password</label>
-                          <input name="password" type="password" class="form-control" id="id_password" placeholder="&middot;&middot;&middot;&middot;&middot;&middot;">
-                    </div>
-                    <div class="col forgot-your-password"><a href="{% url 'account_reset_password' %}">Forgot your password?</a></div>
+      <link rel="stylesheet" href="{% static 'vendor_assets/css/typography.css' %}">
 
-                    {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                    {% endif %}
+      <link rel="stylesheet" href="{% static 'vendor_assets/css/style.css' %}">
 
-							 </div>
-							 
-               <div class="registration-social-login-options">
-                <h6>Your Everyday Entertainment Box </h6>
-               <img src="{% static 'images/ves_logo.png' %}" alt="">
-              </div><!-- close .registration-social-login-options -->
-							 
-							 <div class="clearfix"></div>
-	  						 <div class="form-group last-form-group-continue">
-	  							 <button type="submit" class="btn btn-green-pro">Sign In</button>
-                   
-								 <div class="clearfix"></div>
-	  						 </div>
-	  					 </form>
-               <a class="not-a-member-pro" href="{{ signup_url }}">Not a member? <span>Join Today!</span></a>	
-							
-						</div><!-- close .registration-steps-page-container -->
-            
-					
-				</div><!-- close .container -->
-			</div><!-- close #pricing-plans-background-image -->
+      <link rel="stylesheet" href="{% static 'vendor_assets/css/responsive.css' %}">
+   </head>
+   <body>
 
-		</div><!-- close #content-pro -->
-		
-		<footer id="footer-pro">
-			<div class="container">
-				<div class="row">
-					<div class="col-md">
-						<div class="copyright-text-pro">&copy; <script>document.write(new Date().getFullYear())</script> Zamari TV. All Rights Reserved</div>
-					</div><!-- close .col -->
-					<div class="col-md">
-						<ul class="social-icons-pro">
-							<li class="facebook-color"><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-							<li class="twitter-color"><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-							<li class="youtube-color"><a href="#" target="_blank"><i class="fab fa-youtube"></i></a></li>
+      <div id="loading">
+         <div id="loading-center">
+         </div>
+      </div>
 
-						</ul>
-					</div><!-- close .col -->
-				</div><!-- close .row -->
-			</div><!-- close .container -->
-		</footer>
-		
+        <section class="sign-in-page">
+          <div class="container">
+            <div class="row justify-content-center align-items-center height-self-center">
+               <div class="col-lg-5 col-md-12 align-self-center form-padding">
+                  <div class="sign-user_card ">
+                     <div class="sign-in-page-data">
+                        <div class="sign-in-from w-100 m-auto">
+                           <h3 class="mb-3 text-center">Sign in</h3>
 
-		
-		
-		
+							<form action="{% url 'account_login' %}" class="mt-4"  id="login" method="POST">
+								{% csrf_token %}
+                              <div class="form-group">
+								 <input name="login" type="email" class="form-control mb-0" id="id_login" placeholder="Enter email" autocomplete="off" required>
+                              </div>
+                              <div class="form-group">
+								 <input name="password" type="password" class="form-control mb-0" id="id_password" placeholder="&middot;&middot;&middot;&middot;&middot;&middot;" required>
+                              </div>
+							  {% if redirect_field_value %}
+							  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+							  {% endif %}
+                                 <div class="sign-info">
+                                    <button type="submit" class="btn btn-primary">Sign in</button>
+                                    <div class="custom-control custom-checkbox d-inline-block">
+                                       <input type="checkbox" class="custom-control-input" id="customCheck">
+                                       <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                    </div>
+                                 </div>
+                           </form>
+                        </div>
+                     </div>
+                     <div class="mt-3">
+                        <div class="d-flex justify-content-center links">
+                           Don't have a vendor account? <a href="{{ signup_url }}" class="text-primary ml-2">Sign Up</a>
+                        </div>
+                        <div class="d-flex justify-content-center links">
+                           <a href="{% url 'account_reset_password' %}" class="f-link">Forgot your password?</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
 
-		<!-- Required Framework JavaScript -->
-		<script src="{% static 'js/libs/jquery-3.3.1.min.js' %}"></script><!-- jQuery -->
-		<script src="{% static 'js/libs/popper.min.js' %}" defer></script><!-- Bootstrap Popper/Extras JS -->
-		<script src="{% static 'js/libs/bootstrap.min.js' %}" defer></script><!-- Bootstrap Main JS -->
-		<!-- All JavaScript in Footer -->
-		
-		<!-- Additional Plugins and JavaScript -->
-		<script src="{% static 'js/navigation.js' %}" defer></script><!-- Header Navigation JS -->
-		<script src="{% static 'js/jquery.flexslider-min.js' %}" defer></script><!-- Custom Document Ready JS -->		
-		<script src="{% static 'js/script.js' %}" defer></script><!-- Custom Document Ready JS -->
-		
-	</body>
+         </div>
+      </section>
+
+
+
+      <script src="{% static 'vendor_assets/js/jquery.min.js' %}"></script>
+      <script src="{% static 'vendor_assets/js/popper.min.js' %}"></script>
+      <script src="{% static 'vendor_assets/js/bootstrap.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/jquery.appear.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/countdown.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/waypoints.min.js' %}"></script>
+      <script src="{% static 'vendor_assets/js/jquery.counterup.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/wow.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/slick.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/owl.carousel.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/jquery.magnific-popup.min.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/smooth-scrollbar.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/chart-custom.js' %}"></script>
+
+      <script src="{% static 'vendor_assets/js/custom.js' %}"></script>
+
+   </body>
 </html>

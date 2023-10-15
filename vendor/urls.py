@@ -13,4 +13,11 @@ urlpatterns = [
  path("vendor/film/add-new", login_required(CreateFilm.as_view()) , name="vendor-add-film"),
  path("vendor/show/list", show_list, name="vendor-show-list"),
  path("vendor/show/add-new", login_required(CreateShow.as_view()), name="vendor-add-show"),
+
+
+  path("profile-settings/", profile_settings, name="profile_settings" ),
+  path("complete_onboarding/", complete_onboarding, name="complete_onboarding" ),
+  path("submit_contract/", submit_contract, name="submit_contract" ),
+
+
 ]
