@@ -39,12 +39,13 @@ class Profile(models.Model):
     verified = models.BooleanField(default=False)
     state = models.CharField(max_length=200, blank=True, null=True)
     nationality = models.CharField(max_length=200, blank=True, null=True)
+    address =  models.CharField(blank=True, null=True, max_length=500)
+    contact_phone = models.CharField(max_length=200, blank=True, null=True)
     test_phase = models.CharField(
         max_length=200, choices=TEST_PHASE, default="live_prod"
     )
     sub_status = models.CharField(max_length=200, choices=SUB_STATUS, default="no_sub")
     created_at = models.DateTimeField(default=timezone.now)
-
     role = models.TextField(
         choices=choices.ROLE_CHOICES,
         default=choices.Roles.Vendor.value,

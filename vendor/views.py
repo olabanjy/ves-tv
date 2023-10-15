@@ -20,10 +20,9 @@ from core import choices as core_choices
 
 from django.utils.dateparse import parse_duration
 
+from .models import Contracts
 
-
-
-
+from .utils import create_and_save_contract
 
 
 
@@ -39,6 +38,9 @@ def after_login(request):
 
 @login_required
 def vendor_dashboard(request):
+
+    if not request.user.profile.onboarded:
+        return redirect('vendor:profile_settings')
     template = 'vendor/dashboard.html'
 
     today = datetime.now()
@@ -187,5 +189,94 @@ class CreateShow(View):
     def get(self, request, *args, **kwargs):
         context = {}
         return render(self.request, self.template, context)
+
+
+@login_required
+def profile_settings(request):
+    template = 'vendor/profile-settings.html'
+
+    vendor_profile = request.user.profile
+    vendor_contract, created = Contracts.objects.get_or_create(vendor=vendor_profile)
+    context = {
+        "user_profile":vendor_profile,
+        "contract":vendor_contract
+    }
+
+    return render(request, template, context)
+
+
+@login_required
+def complete_onboarding(request):
+    try:
+        if request.method == "POST":
+            data = request.POST
+
+            first_name = data.get("first_name", None)
+            last_name = data.get("last_name", None)
+            company_name = data.get("company_name", None)
+            vendor_country = data.get("vendor_country", None)
+            state = data.get("state", None)
+            address = data.get("address", None)
+            company_banner = data.get("company_banner", None)
+            contact_phone = data.get("contact_phone", None)
+
+            vendor_profile = request.user.profile
+            vendor_profile.first_name = first_name
+            vendor_profile.last_name = last_name
+            vendor_profile.company_name = company_name
+            vendor_profile.state = state
+            vendor_profile.contact_phone = contact_phone
+            vendor_profile.nationality = vendor_country
+
+
+            if company_banner:
+                vendor_profile.company_banner = company_banner
+
+            if address:
+                vendor_profile.address = address
+
+            vendor_profile.save()
+
+            # create contract
+
+            if  not vendor_profile.onboarded :
+                vendor_contract, created = Contracts.objects.get_or_create(vendor=vendor_profile)
+                contract_data = {
+                        'first_name':vendor_profile.first_name,
+                        'last_name':vendor_profile.last_name,
+                        'today':datetime.astimezone(datetime.today()) ,
+                        'address_1':vendor_profile.state,
+                        'address_2':vendor_profile.address,
+                        'city':vendor_profile.state,
+                        'state':vendor_profile.nationality,
+
+                }
+                contract_filename = f"VES_TV_AGREEMENT_{vendor_profile.user_code}.pdf"
+                create_and_save_contract('contracts/vendor_contract.html',contract_filename, vendor_contract.pk, contract_data)
+            vendor_profile.onboarded = True
+            vendor_profile.save()
+
+    except Exception as e:
+        print(e)
+
+    return redirect('vendor:profile_settings')
+
+
+
+@login_required
+def submit_contract(request):
+    try:
+        if request.method == "POST":
+            data = request.FILES
+            contract_file = data["contract_sumbit"]
+            vendor_profile = request.user.profile
+            vendor_contract  = Contracts.objects.get(vendor=vendor_profile)
+            vendor_contract.contract_file = contract_file
+
+            # vendor_contract.signed = True
+            vendor_contract.save()
+    except Exception as e:
+        print(e)
+    return redirect('vendor:profile_settings')
 
 

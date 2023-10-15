@@ -1,0 +1,166 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% load countries %}
+{% load i18n %}
+{% block content %}
+
+
+
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-lg-12">
+             <div class="iq-card">
+                <div class="iq-card-body p-0">
+                   <div class="iq-edit-list">
+                      <ul class="iq-edit-profile d-flex nav nav-pills">
+                         <li class="col-md-3 p-0">
+                            <a class="nav-link active" data-toggle="pill" href="#personal-information">
+                               Vendor Information
+                            </a>
+                         </li>
+                         <li class="col-md-3 p-0">
+                            <a class="nav-link" data-toggle="pill" href="#emailandsms">
+                              Contracts & Agreements
+                            </a>
+                         </li>
+                         <li class="col-md-3 p-0">
+                            <a class="nav-link" href="{% url 'account_change_password' %}">
+                               Change Password
+                            </a>
+                         </li>
+
+
+                      </ul>
+                   </div>
+                </div>
+             </div>
+          </div>
+          <div class="col-lg-12">
+             <div class="iq-edit-list-data">
+                <div class="tab-content">
+                   <div class="tab-pane fade active show" id="personal-information" role="tabpanel">
+                      <div class="iq-card">
+                         <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                               <h4 class="card-title">Personal Information</h4>
+                            </div>
+                         </div>
+                         <div class="iq-card-body">
+                            <form action="{% url 'vendor:complete_onboarding' %}" method="POST" enctype="multipart/form-data" >
+                              {% csrf_token %}
+                               <div class="form-group row align-items-center">
+                                  <div class="col-md-12">
+                                     <div class="profile-img-edit">
+                                       {% if user_profile.company_banner %}
+                                        <img class="profile-pic" src="{{user_profile.company_banner.url}}" alt="vendor-banner">
+                                        {% else %}
+                                        <img class="profile-pic" src="{% static 'images/user/11.png' %}" alt="vendor-baner">
+                                        {% endif %}
+                                        <div class="p-image">
+                                           <i class="ri-pencil-line upload-button"></i>
+                                           <input name="company_banner" class="file-upload" type="file" id="company_banner" accept="image/*"/>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               <div class=" row align-items-center">
+                                  <div class="form-group col-sm-6">
+                                     <label for="fname">First Name:</label>
+                                     <input name="first_name" type="text" class="form-control" id="first_name" value="{{user_profile.first_name}}"  placeholder="Input your first name" required>
+                                  </div>
+                                  <div class="form-group col-sm-6">
+                                     <label for="lname">Last Name:</label>
+                                     <input name="last_name" type="text" class="form-control" id="last_name" value="{{user_profile.last_name}}" required>
+                                  </div>
+                                  <div class="form-group col-sm-6">
+                                     <label for="uname">Company Name:</label>
+                                     <input name="company_name" type="text" class="form-control" id="company_name" value="{{user_profile.company_name}}" required>
+                                  </div>
+                                  <div class="form-group col-sm-6">
+                                    <label for="uname">Contact Phone:</label>
+                                    <input name="contact_phone" type="text" class="form-control" id="contact_phone" value="{{user_profile.contact_phone}}" required>
+                                 </div>
+
+
+
+                                  <div class="form-group col-sm-6">
+                                     <label>Country:</label>
+                                     {% get_countries as countries %}
+                                     <select name="vendor_country" class="form-control" id="vendor_country" required>
+                                       {% for country in countries %}
+                                       <option value="{{ country.code }}">{{ country.name }}</option>
+                                       {% endfor %}
+                                     </select>
+
+                                  </div>
+                                  <div class="form-group col-sm-6">
+                                     <label>State:</label>
+                                     <input name="state" type="text" class="form-control" id="state" value="{{user_profile.state}}" required>
+                                  </div>
+                                  <div class="form-group col-sm-12">
+                                     <label>Address:</label>
+                                     <textarea class="form-control" name="address" rows="5" style="line-height: 22px;" placeholder="Full address" required>
+                                     </textarea>
+                                  </div>
+                               </div>
+                               <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                               <button type="reset" class="btn iq-bg-danger">Cancel</button>
+                            </form>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="tab-pane fade" id="chang-pwd" role="tabpanel">
+                      <div class="iq-card">
+                         <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                               <h4 class="card-title">Change Password</h4>
+                            </div>
+                         </div>
+                         <div class="iq-card-body">
+
+                         </div>
+                      </div>
+                   </div>
+                   <div class="tab-pane fade" id="emailandsms" role="tabpanel">
+                      <div class="iq-card">
+                         <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                               <h4 class="card-title">Your contracts </h4>
+                            </div>
+                         </div>
+                         <div class="iq-card-body">
+                           {% if contract.contract_file %}
+                              {% if contract.signed %}
+                              <p> Contract signed and received</p>
+                              {% else %}
+                              <div>
+                                 Please click <a href="{{contract.contract_file.url}}" target="_blank">here</a> to download your contract, sign and resubmit down below
+                              </div>
+                              <form action="{% url 'vendor:submit_contract' %}" method="post">
+                                 {% csrf_token %}
+                                 <div class="form-group col-sm-6">
+                                   <label>Contract:</label>
+                                   <input name="contract_sumbit"  type="file" id="contract_sumbit" accept=".pdf"/>
+                                </div>
+                                 <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                              </form>
+                              {% endif %}
+                           {% else %}
+                           <p>Kindly complete onboarding to download your contract</p>
+                           {% endif %}
+                         </div>
+                      </div>
+                   </div>
+
+
+
+
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+{% endblock content%}
