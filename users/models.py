@@ -34,6 +34,7 @@ class Profile(models.Model):
     first_name = models.CharField(blank=True, null=True, max_length=200)
     last_name = models.CharField(blank=True, null=True, max_length=200)
     company_name  = models.CharField(blank=True, null=True, max_length=250)
+    company_alias  = models.CharField(blank=True, null=True, max_length=250)
     company_banner  = models.ImageField(upload_to="vendor/banner/", blank=True)
     onboarded = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)

@@ -22,3 +22,16 @@ def contract_receiver(sender, instance, created, *args, **kwargs):
     contract, created = Contracts.objects.get_or_create(vendor=instance)
 
 post_save.connect(contract_receiver, sender=Profile)
+
+
+class BankAccount(models.Model):
+    vendor = models.OneToOneField(
+        Profile, on_delete=models.CASCADE,
+    )
+    account_number = models.CharField(max_length=11, blank=True, null=True)
+    account_name = models.CharField(max_length=100, blank=True, null=True)
+    account_bank = models.CharField(max_length=100, blank=True, null=True)
+    account_bank_code = models.CharField(max_length=15, blank=True, null=True)
+
+    def __str__(self):
+        return self.vendor.user.email
