@@ -20,7 +20,7 @@ from core import choices as core_choices
 
 from django.utils.dateparse import parse_duration
 
-from .models import Contracts
+from .models import Contracts, BankAccount
 
 from .utils import create_and_save_contract
 
@@ -197,9 +197,11 @@ def profile_settings(request):
 
     vendor_profile = request.user.profile
     vendor_contract, created = Contracts.objects.get_or_create(vendor=vendor_profile)
+    vendor_bank, created = BankAccount.objects.get_or_create(vendor=vendor_profile)
     context = {
         "user_profile":vendor_profile,
-        "contract":vendor_contract
+        "contract":vendor_contract,
+        "vendor_bank":vendor_bank
     }
 
     return render(request, template, context)
@@ -220,6 +222,13 @@ def complete_onboarding(request):
             company_banner = data.get("company_banner", None)
             contact_phone = data.get("contact_phone", None)
 
+            ###
+            account_number = data.get("account_number", None)
+            account_name = data.get("account_name", None)
+            account_bank = data.get("account_bank", None)
+
+
+
             vendor_profile = request.user.profile
             vendor_profile.first_name = first_name
             vendor_profile.last_name = last_name
@@ -237,6 +246,12 @@ def complete_onboarding(request):
 
             vendor_profile.save()
 
+            # create account
+            vendor_bank, created = BankAccount.objects.get_or_create(vendor=vendor_profile)
+            vendor_bank.account_number = account_number
+            vendor_bank.account_name = account_name
+            vendor_bank.account_bank = account_bank
+            vendor_bank.save()
             # create contract
 
             if  not vendor_profile.onboarded :
@@ -249,6 +264,9 @@ def complete_onboarding(request):
                         'address_2':vendor_profile.address,
                         'city':vendor_profile.state,
                         'state':vendor_profile.nationality,
+                        "account_number":vendor_bank.account_number,
+                        "account_name":vendor_bank.account_name,
+                        "account_bank":vendor_bank.account_bank,
 
                 }
                 contract_filename = f"VES_TV_AGREEMENT_{vendor_profile.user_code}.pdf"
