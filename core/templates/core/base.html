@@ -94,7 +94,7 @@
                 {% for genre in  genre_list %}
                   <li>
                      <a href="{% url 'core:genre' genre.slug %}">
-                     <img class="img-fluid" alt="" src="img/s1.png"> {{genre.name}}
+                     <img class="img-fluid" alt="" src="{% if genre.icon %} {{genre.icon.url}} {% else %} {% static 'img/s1.png' %} {% endif %}"> {{genre.name}}
                      </a>
                   </li>
                   {% endfor %}

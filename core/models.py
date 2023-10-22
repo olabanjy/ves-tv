@@ -17,6 +17,7 @@ from django.utils.translation import gettext_lazy as _
 class ContentCategory(models.Model):
     slug = models.SlugField()
     name = models.CharField(max_length=120)
+    icon = models.ImageField(upload_to="category/icon/", blank=True)
 
     def __str__(self):
         return self.name
@@ -25,6 +26,7 @@ class ContentCategory(models.Model):
 class ContentGenre(models.Model):
     slug = models.SlugField()
     name = models.CharField(max_length=120)
+    icon = models.ImageField(upload_to="genre/icon/", blank=True)
 
     def __str__(self):
         return self.name
