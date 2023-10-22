@@ -1,5 +1,7 @@
 {% load i18n %}
 {% load static %}
+
+
 <!doctype html>
 <html lang="en">
    <head>
@@ -37,8 +39,8 @@
 								{% csrf_token %}
 
                               <div class="form-group">
-                                 <label for="id_email">E-mail</label>
-                                 <input name="email" type="email" class="form-control mb-0 btn-border" id="id_email" placeholder="Enter email" autocomplete="off" required>
+                                 <label for="signup_email">E-mail</label>
+                                 <input name="email" type="email" class="form-control mb-0 btn-border" id="signup_email" placeholder="Enter email" autocomplete="off" required>
                               </div>
 
 							  {% if form.email.errors %}
@@ -53,22 +55,35 @@
 
                               <div class="form-group">
                                  <label for="id_password1">Password</label>
-                                 <input name="password" type="password" class="form-control mb-0 btn-border" id="id_password1" placeholder="Password" autocomplete="off" required>
+                                 <input name="password1" type="password" class="form-control mb-0 btn-border" id="id_password1" placeholder="Password" autocomplete="off" required>
                               </div>
 
 							  {% if form.password1.errors %}
 							  {% for error in form.password1.errors %}
 							  <div class="form-text">
-								  <p style="color: red !important; font-size:90%;"> Password must be at least with 1 uppercase and 1 number</p>
+								  <p style="color: red !important; font-size:90%;"> {{ error|escape }}</p>
 
 							  </div>
 							  {% endfor %}
 							  {% endif %}
 
-							  <input type="hidden" name="{{ redirect_field_name }}" value="/admin/profile_settings" />
+							  <input type="hidden" name="{{ redirect_field_name }}" value="/admin/profile-settings" />
+                       <button  class="btn btn-primary my-2">Sign Up</button>
+                     </form>
 
-                           </form>
-                           <button type="submit" class="btn btn-primary my-2">Sign Up</button>
+
+                           <div>
+                              {% if form.errors %}
+
+                                {% for error in form.non_field_errors %}
+                                <div class="nk-kycfm-note">
+                                  <em class="icon ni ni-info-fill" data-toggle="tooltip" data-placement="right" title="{{ error|escape }}"></em>
+                                  <p style="color: red !important;">{{ error|escape }}</p>
+                              </div>
+                                {% endfor %}
+                              {% endif %}
+                          </div>
+
                         </div>
                      </div>
                      <div class="mt-3">
