@@ -53,7 +53,7 @@ class Homepage(View):
         return render(request, template, context)
 
 
-# @allowed_users
+@allowed_users
 def channels(request):
     template = "core/channels.html"
 
@@ -68,7 +68,7 @@ def channels(request):
     return render(request, template, context)
 
 
-# @allowed_users
+@allowed_users
 def channel_detail(request, channel_id):
     template = "core/channel_detail.html"
 
@@ -133,7 +133,7 @@ def content_detail(request, slug=None):
 
     other_contents = Content.objects.filter(
         verified=True, status=choices.VerificationStatus.Approved.value
-    ).exclude(slug=the_content.slug)
+    ).exclude(slug=the_content.slug)[:12]
     try:
         the_content.watch_times += 1
         the_content.save()
