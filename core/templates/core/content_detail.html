@@ -1,293 +1,137 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load humanize %}
+
 
 {% block content %}
-
-<div id="content-sidebar-pro">
-
-    <div id="content-sidebar-image">
-        <img src="{{the_content.img_detail_poster.url}}" alt="Movie Poster">
-    </div>
-
-    <div class="content-sidebar-section">
-        <h2 class="content-sidebar-sub-header"> {{the_content.title}} </h2>
-        <ul class="progression-studios-slider-rating">
-            <!-- <li>PG-13</li><li>HD</li> -->
-        </ul>
-    </div><!-- close .content-sidebar-section -->
-
-    <div class="content-sidebar-section">
-        <h4 class="content-sidebar-sub-header">Upload Date</h4>
-        <div class="content-sidebar-short-description">{{the_content.upload_date}}</div>
-    </div><!-- close .content-sidebar-section -->
-
-    <div class="content-sidebar-section">
-        <h4 class="content-sidebar-sub-header">Duration</h4>
-        <div class="content-sidebar-short-description">{{the_content.timedelta}}</div>
-    </div><!-- close .content-sidebar-section -->
-
-
-
-</div><!-- close #content-sidebar-pro -->
-
-{% if the_content.category.slug == "movies" or the_content.category.slug == "short-videos" %}
-
-<main id="col-main-with-sidebar">
-    <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
-        <div class="progression-studios-slider-more-options">
-            <i class="fas fa-ellipsis-h"></i>
-            <ul>
-                <li><a id="the_like_btn"> <i style="color:grey;" class="fas fa-heart" id="heart-icon"></i> Like </a></li>
-                <li><a href="#">Share...</a></li>
-                <input id="the_liked_content" value="{{the_content.pk}}" type="hidden" >
-            </ul>
-        </div>
-        <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a>
-     <video id="VideoLightbox-1"  poster="{{the_content.img_thumbnail.url}}" width="960" height="540">
-         <source src="{{the_content.file_mp4.url}}" type="video/mp4">
-         <source src="{{the_content.file_webm.url}}" type="video/webm">
-     </video>
-        <!-- <div id="movie-detail-header-media">
-            <div class="dashboard-container">
-                <h5></h5>
+<div class="container-fluid pb-0">
+    <div class="video-block section-padding">
+       <div class="row">
+          <div class="col-md-8">
+             <div class="single-video-left">
+                <div class="#">
+                  <video id="VideoLightbox-1"  poster="{{the_content.img_poster.url}}" width="100%" height="315">
+                     <source src="{{the_content.file_mp4.url}}" type="video/mp4">
+                     <source src="{{the_content.file_webm.url}}" type="video/webm">
+                 </video>
+                   <!-- <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/8LWZSGNjuF0?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
+                </div>
+                <div class="single-video-title box mb-3">
+                   <h2><a href="#"> {{the_content.title}} </a></h2>
+                   <p class="mb-0"><i class="fas fa-eye"></i> {{the_content.watch_times}} views</p>
+                </div>
+                {% if the_content.channel %}
+                <div class="single-video-author box mb-3">
+                   <div class="float-right"><a class="btn btn-danger">Watch Channel </a> </div>
+                   <img class="img-fluid" src="{% if the_content.channel.thumbnail %} {{the_content.channel.thumbnail.url}} {% else %} img/s4.png {% endif %}" alt="">
+                   <p><a href="#"><strong>{{the_content.channel.display_name}}</strong></a> <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></p>
+                   <small>{{the_content.channel.created_at|naturalday}}</small>
+                </div>
+                {% endif %}
+                <div class="single-video-info-content box mb-3">
+                   <h6>Genre:</h6>
+                   <p>{{the_content.genre.name}}</p>
+                   <h6>Category :</h6>
+                   <p>{{the_content.category.name}}</p>
+                   <h6>Description :</h6>
+                   <p> {{the_content.description}} </p>
+                   {% if the_content.tags.all %}
+                   <h6>Tags :</h6>
+                   <p class="tags mb-0">
+                     {% for tag in the_content.tags.all %}
+                      <span><a href="#">{{tag.name}}</a></span>
+                      {% endfor %}
+                   </p>
+                   {% endif %}
+                </div>
+             </div>
+          </div>
+          <div class="col-md-4">
+             <div class="single-video-right">
                 <div class="row">
-                    <div class="col-6 col-md-6 col-lg-6">
-                        <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
-                            <div class="movie-detail-media-image">
-                                <img src="http://via.placeholder.com/500x300">
-                                <span><i class="fas fa-play"></i></span>
-                                <h6>Trailer</h6>
+                   <div class="col-md-12">
+                      <div class="adblock">
+                         <div class="img">
+                            VES Adslot<br>
+                            336 x 280
+                         </div>
+                      </div>
+                      <div class="main-title">
+
+                         <h6>Up Next</h6>
+                      </div>
+                   </div>
+                   <div class="col-md-12">
+
+                     {% if the_content.category.slug == "series" or the_content.category.slug == "playlist" %}
+                     {% if the_content.content_episodes.all %}
+                     {% for vid in the_content.content_episodes.all %}
+                      <div class="video-card video-card-list">
+                         <div class="video-card-image">
+                            <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                            <a href="#"><img class="img-fluid" src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}{% static 'img/v1.png' %}{% endif %}" alt=""></a>
+                            <div class="time">{{vid.timedelta}}</div>
+                         </div>
+                         <div class="video-card-body">
+
+                            <div class="video-title">
+                               <a href="{% url 'core:episode_detail' the_content.slug vid.slug %}">{{vid.title}}  - Ep {{vid.position}}</a>
                             </div>
-                        </a>
-                    </div>
-                    <div class="col-6 col-md-6 col-lg-6">
-                        <a class="movie-detail-media-link afterglow" href="#VideoLightbox-1">
-                            <div class="movie-detail-media-image">
-                                <img src="http://via.placeholder.com/500x300">
-                                <span><i class="fas fa-play"></i></span>
-                                <h6>Interview</h6>
+                            <div class="video-page text-success">
+                              {{the_content.genre.name}}   <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
                             </div>
-                        </a>
-                    </div>
+                            <div class="video-view">
+                               {{vid.watch_times}} views &nbsp;<i class="fas fa-calendar-alt"></i> {{vid.created_at|naturalday}}
+                            </div>
+                         </div>
+                      </div>
+                      {% endfor %}
+                      {% endif %}
+                      {% else %}
 
+                      {% if other_contents %}
+                      {% for vid in other_contents %}
+                      <div class="video-card video-card-list">
+                        <div class="video-card-image">
+                           <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                           <a href="#"><img class="img-fluid" src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}{% static 'img/v1.png' %}{% endif %}" alt=""></a>
+                           <div class="time">{{vid.timedelta}}</div>
+                        </div>
+                        <div class="video-card-body">
+                           <div class="video-title">
+                              <a href="#">{{vid.title}}</a>
+                           </div>
+                           <div class="video-page text-success">
+                              {{vid.genre.name}}  <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                           </div>
+                           <div class="video-view">
+                              {{vid.watch_times}} views &nbsp;<i class="fas fa-calendar-alt"></i> {{vid.created_at|naturalday}}
+                           </div>
+                        </div>
+                     </div>
+                     {% endfor %}
+                     {% endif %}
+
+
+                      {% endif %}
+
+
+
+
+                      <div class="adblock mt-0">
+                         <div class="img">
+                            VES Adslot<br>
+                            336 x 280
+                         </div>
+                      </div>
+
+
+
+                   </div>
                 </div>
-            </div>
-        </div> -->
-
-        <div id="movie-detail-gradient-pro"></div>
-    </div>
-
-
-    <div id="movie-detail-rating">
-        <div class="dashboard-container">
-            <div class="row">
-                <div class="col-sm">
-
-                    <div class="rating-pro">
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dashboard-container">
-
-
-        <div class="movie-details-section">
-            <h2>Description</h2>
-            <p>{{the_content.description}}</p>
-        </div>
-
-
-
-
-        <div class="movie-details-section">
-          {% if other_contents %}
-            <h2>You May Also Like </h2>
-            <div class="row">
-              {% for vid in other_contents %}
-                <div class="col-12 col-md-6 col-lg-6 col-xl-4">
-                    <div class="item-listing-container-skrn">
-                        <a href="{% url 'core:content_detail' vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="VES-TV"></a>
-                        <div class="item-listing-text-skrn">
-                            <div class="item-listing-text-skrn-vertical-align"><h6><a href="{% url 'core:content_detail' vid.slug %}">{{vid.title}}</a></h6>
-                              <div
-                                class="circle-rating-pro"
-                                data-value="0.72"
-                                data-animation-start-value="0.72"
-                                data-size="32"
-                                data-thickness="3"
-                                data-fill="{
-                                  &quot;color&quot;: &quot;#42b740&quot;
-                                }"
-                                data-empty-fill="#def6de"
-                                data-reverse="true"
-                              ></div>
-                            </div><!-- close .item-listing-text-skrn-vertical-align -->
-                        </div><!-- close .item-listing-text-skrn -->
-                    </div><!-- close .item-listing-container-skrn -->
-                </div><!-- close .col -->
-
-                {% endfor %}
-
-
-
-            </div><!-- close .row -->
-
-            {% endif %}
-
-        </div><!-- close .movie-details-section -->
-
-    </div><!-- close .dashboard-container -->
-</main>
-
-{% elif the_content.category.slug == "series" or the_content.category.slug == "playlist" %}
-
-<main id="col-main-with-sidebar">
-
-  <div id="movie-detail-header-pro" style="background-image:url('{{the_content.img_detail_banner.url}}')">
-
-    <div class="progression-studios-slider-more-options">
-      <i class="fas fa-ellipsis-h"></i>
-      <ul>
-        <li><a id="the_like_btn" href="#"> <i style="color:grey;" class="fas fa-heart" id="heart-icon"></i> Like </a></li>
-        <li><a href="#!">Share...</a></li>
-        <input id="the_liked_content" value="{{the_content.pk}}" type="hidden" >
-      </ul>
-    </div>
-
-    <a class="movie-detail-header-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a>
-
-       <video id="VideoLightbox-1"  poster="{{the_content.img_detail_banner.url}}" width="960" height="540">
-           <source src="{{the_content.trailer_mp4.url}}" type="video/mp4">
-           <source src="{{the_content.trailer_webm.url}}" type="video/webm">
-       </video>
-
-
-
-    <div id="movie-detail-gradient-pro"></div>
-  </div>
-
-
-  <div id="movie-detail-rating">
-    <div class="dashboard-container">
-      <div class="row">
-        <div class="col-sm">
-          <h5></h5>
-
-        </div>
-
-      </div><!-- close .row -->
-    </div><!-- close .dashboard-container -->
-  </div><!-- close #movie-detail-rating -->
-
-  <div class="dashboard-container">
-
-
-    <div class="movie-details-section">
-      <h2>Description</h2>
-      <p> {{the_content.description}} </p>
-    </div>
-
-    <div class="movie-details-section">
-      <h2>Episodes</h2>
-      {% if the_content.content_episodes.all %}
-      <div class="row">
-        {% for vid in the_content.content_episodes.all %}
-        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
-          <div class="item-listing-container-skrn">
-            <a href="{% url 'core:episode_detail' the_content.slug vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/507x672{% endif %}" alt="Cast"></a>
-            <div class="item-listing-text-skrn item-listing-movie-casting">
-              <h6><a href="{% url 'core:episode_detail' the_content.slug vid.slug %}">{{vid.title}}</a></h6>
-              <div class="movie-casting-sub-title">Episode {{vid.position}}</div>
-            </div>
+             </div>
           </div>
-        </div>
-        {% endfor %}
-
-      </div>
-      {% else %}
-      <div class="row">
-        <h6> No Episodes </h6>
-      </div>
-      {% endif %}
+       </div>
     </div>
-
-
-    <div class="movie-details-section">
-      {% if other_contents %}
-      <h2> You May Also Like </h2>
-
-      <div class="row">
-        {% for vid in other_contents %}
-        <div class="col-12 col-md-6 col-lg-6 col-xl-4">
-          <div class="item-listing-container-skrn">
-            <a href="#"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="Listing"></a>
-            <div class="item-listing-text-skrn">
-              <div class="item-listing-text-skrn-vertical-align"><h6><a href="#">{{vid.title}}</a></h6>
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {% endfor %}
-
-
-
-
-
-      </div>
-    {% endif %}
-    </div>
-
-  </div>
-</main>
-
-
-{% endif %}
-
-{% endblock %}
-
-{% block extra_scripts %}
-
-<script type="text/javascript">
-
-$(document).ready(() => {
-
-$('#the_like_btn').on('click', function () {
-
-  var content_id = $('#the_liked_content').val();
-
-  $.ajax({
-          type:"GET",
-          url: "{% url 'core:like_product' %}",
-          data:{'content_id':content_id},
-          dataType: 'json',
-          success: function (data){
-              if (data.status) {
-                  console.log("Content Liked")
-                  $('#heart-icon').css("color", "red");
-
-
-              } else{
-                  console.log("Content not found")
-
-              }
-          }
-
-  })
-
-
-
-
-})
-
-
-})
-
-</script>
-
-{% endblock extra_scripts %}
+ </div>
+{% endblock content %}

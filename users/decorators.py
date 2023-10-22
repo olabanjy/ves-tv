@@ -17,12 +17,12 @@ def allowed_users(function):
                 if theSub.sub_active == True:
                     return function(request, *args, **kwargs)
                 else:
-                    return redirect("users:onboarding")
+                    return redirect("core:onboarding")
             else:
-                return redirect("users:onboarding")
+                return redirect("core:onboarding")
         else:
             # redirect to subscribe page
-            return redirect("users:onboarding")
+            return redirect("core:onboarding")
 
     wrapper_func.__doc__ = function.__doc__
     wrapper_func.__name__ = function.__name__
@@ -36,8 +36,7 @@ def allowed_admin(allowed_roles=[]):
                 return view_func(request, *args, **kwargs)
             else:
                 return redirect("core:permission-denied")
+
         return wrapper_func
+
     return decorator
-
-
-

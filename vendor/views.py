@@ -7,6 +7,7 @@ from django.views.generic import View
 from django.utils.text import slugify
 
 from django.shortcuts import render, reverse, get_object_or_404, redirect
+
 # Create your views here.
 
 from users import choices as user_choices
@@ -20,10 +21,9 @@ from core import choices as core_choices
 
 from django.utils.dateparse import parse_duration
 
-from .models import Contracts, BankAccount
+from .models import Contracts, BankAccount, Channel
 
 from .utils import create_and_save_contract
-
 
 
 @login_required
@@ -32,16 +32,18 @@ def after_login(request):
 
     if admin_profile.role == user_choices.Roles.Vendor.value:
         return redirect("vendor:vendor-dashboard")
-    elif admin_profile.role == user_choices.Roles.SuperAdmin.value or admin_profile.role == user_choices.Roles.SystemAdmin.value:
+    elif (
+        admin_profile.role == user_choices.Roles.SuperAdmin.value
+        or admin_profile.role == user_choices.Roles.SystemAdmin.value
+    ):
         return redirect("core:home")
 
 
 @login_required
 def vendor_dashboard(request):
-
     if not request.user.profile.onboarded:
-        return redirect('vendor:profile_settings')
-    template = 'vendor/dashboard.html'
+        return redirect("vendor:profile_settings")
+    template = "vendor/dashboard.html"
 
     today = datetime.now()
 
@@ -49,27 +51,30 @@ def vendor_dashboard(request):
 
     top10contents = my_contents_qs.order_by("-watch_times")[:15]
 
-    viewedContentThisMonth = WatchedContent.objects.filter(created_at__month=today.month, content__vendor=request.user.profile).order_by("-created_at")[:10]
+    viewedContentThisMonth = WatchedContent.objects.filter(
+        created_at__month=today.month, content__vendor=request.user.profile
+    ).order_by("-created_at")[:10]
 
-    viewCount = WatchedContent.objects.filter(content__vendor=request.user.profile).count()
+    viewCount = WatchedContent.objects.filter(
+        content__vendor=request.user.profile
+    ).count()
     print(viewCount)
-    likeCount  = Likes.objects.filter(content__vendor=request.user.profile).count()
+    likeCount = Likes.objects.filter(content__vendor=request.user.profile).count()
 
     genre_ids = []
 
-    for cont  in my_contents_qs.order_by("-watch_times")[:50]:
+    for cont in my_contents_qs.order_by("-watch_times")[:50]:
         if cont.genre.id not in genre_ids:
             genre_ids.append(cont.genre.id)
 
     topGenres = ContentGenre.objects.filter(id__in=genre_ids)
 
-
     context = {
-        "top10contents":top10contents,
-        "viewedContentThisMonth":viewedContentThisMonth,
-        "viewCount":viewCount,
-        "likeCount":likeCount,
-        "topGenres":topGenres
+        "top10contents": top10contents,
+        "viewedContentThisMonth": viewedContentThisMonth,
+        "viewCount": viewCount,
+        "likeCount": likeCount,
+        "topGenres": topGenres,
     }
 
     return render(request, template, context)
@@ -77,7 +82,7 @@ def vendor_dashboard(request):
 
 @login_required
 def super_admin_dashboard(request):
-    template = 'vendor/super-admin-dashboard.html'
+    template = "vendor/super-admin-dashboard.html"
 
     context = {}
 
@@ -89,29 +94,25 @@ def film_list(request):
     template = "vendor/film/list.html"
 
     film_cat = ContentCategory.objects.filter(slug__in=["movies", "short-videos"])
-    my_films = Content.objects.filter(vendor=request.user.profile, category__in=film_cat )
+    my_films = Content.objects.filter(
+        vendor=request.user.profile, category__in=film_cat
+    )
 
-    context ={
-        "my_films":my_films
-    }
+    context = {"my_films": my_films}
 
     return render(request, template, context)
+
 
 class CreateFilm(View):
     template = "vendor/film/add.html"
 
-
     def get(self, request, *args, **kwargs):
-
         genre_list = ContentGenre.objects.all()
         cat = ContentCategory.objects.filter(slug__in=["movies", "short-videos"])
-        context = {
-            "genre_list": genre_list,
-            "cats": cat
-        }
+        context = {"genre_list": genre_list, "cats": cat}
         return render(self.request, self.template, context)
 
-    def post(self, request,  *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         video_title = request.POST.get("video_title")
         img_banner = request.FILES["img_banner"]
         img_poster_path = request.FILES["img_poster"]
@@ -126,7 +127,6 @@ class CreateFilm(View):
         video_mp4 = request.FILES["video_mp4"]
         hiddentimedelta = request.POST.get("hiddentimedelta")
 
-
         today = datetime.now()
 
         if not hiddentimedelta:
@@ -138,25 +138,22 @@ class CreateFilm(View):
         the_category = ContentCategory.objects.filter(name=category).first()
 
         new_content = Content.objects.create(
-            slug = content_slug,
-            title = video_title,
-            category = the_category,
-            genre = the_genre,
-            description = description,
-            language = video_language,
-            img_banner = img_banner,
-            img_poster = img_poster_path,
-
-            img_detail_poster = img_detail_poster,
-
-            img_thumbnail = img_thumbnail,
-            trailer_mp4 = video_trailer,
-
-            file_mp4 = video_mp4,
-            upload_date = today.date(),
-            timedelta = parse_duration(hiddentimedelta),
-            status = core_choices.VerificationStatus.Uploading.value,
-            vendor = self.request.user.profile
+            slug=content_slug,
+            title=video_title,
+            category=the_category,
+            genre=the_genre,
+            description=description,
+            language=video_language,
+            img_banner=img_banner,
+            img_poster=img_poster_path,
+            img_detail_poster=img_detail_poster,
+            img_thumbnail=img_thumbnail,
+            trailer_mp4=video_trailer,
+            file_mp4=video_mp4,
+            upload_date=today.date(),
+            timedelta=parse_duration(hiddentimedelta),
+            status=core_choices.VerificationStatus.Uploading.value,
+            vendor=self.request.user.profile,
         )
 
         try:
@@ -168,23 +165,20 @@ class CreateFilm(View):
         except Exception:
             pass
 
-        return redirect('vendor:vendor-film-list')
-
-
+        return redirect("vendor:vendor-film-list")
 
 
 @login_required
 def show_list(request):
     template = "vendor/show/list.html"
 
-    context ={}
+    context = {}
 
     return render(request, template, context)
 
 
 class CreateShow(View):
     template = "vendor/show/add.html"
-
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -193,15 +187,15 @@ class CreateShow(View):
 
 @login_required
 def profile_settings(request):
-    template = 'vendor/profile-settings.html'
+    template = "vendor/profile-settings.html"
 
     vendor_profile = request.user.profile
     vendor_contract, created = Contracts.objects.get_or_create(vendor=vendor_profile)
     vendor_bank, created = BankAccount.objects.get_or_create(vendor=vendor_profile)
     context = {
-        "user_profile":vendor_profile,
-        "contract":vendor_contract,
-        "vendor_bank":vendor_bank
+        "user_profile": vendor_profile,
+        "contract": vendor_contract,
+        "vendor_bank": vendor_bank,
     }
 
     return render(request, template, context)
@@ -220,14 +214,13 @@ def complete_onboarding(request):
             state = data.get("state", None)
             address = data.get("address", None)
             company_banner = data.get("company_banner", None)
+            company_thumbnail = data.get("company_thumbnail", None)
             contact_phone = data.get("contact_phone", None)
 
             ###
             account_number = data.get("account_number", None)
             account_name = data.get("account_name", None)
             account_bank = data.get("account_bank", None)
-
-
 
             vendor_profile = request.user.profile
             vendor_profile.first_name = first_name
@@ -237,9 +230,11 @@ def complete_onboarding(request):
             vendor_profile.contact_phone = contact_phone
             vendor_profile.nationality = vendor_country
 
-
             if company_banner:
                 vendor_profile.company_banner = company_banner
+
+            if company_thumbnail:
+                vendor_profile.company_thumbnail = company_thumbnail
 
             if address:
                 vendor_profile.address = address
@@ -247,38 +242,70 @@ def complete_onboarding(request):
             vendor_profile.save()
 
             # create account
-            vendor_bank, created = BankAccount.objects.get_or_create(vendor=vendor_profile)
+            vendor_bank, created = BankAccount.objects.get_or_create(
+                vendor=vendor_profile
+            )
             vendor_bank.account_number = account_number
             vendor_bank.account_name = account_name
             vendor_bank.account_bank = account_bank
             vendor_bank.save()
             # create contract
 
-            if  not vendor_profile.onboarded :
-                vendor_contract, created = Contracts.objects.get_or_create(vendor=vendor_profile)
+            if not vendor_profile.onboarded:
+                vendor_contract, created = Contracts.objects.get_or_create(
+                    vendor=vendor_profile
+                )
                 contract_data = {
-                        'first_name':vendor_profile.first_name,
-                        'last_name':vendor_profile.last_name,
-                        'today':datetime.astimezone(datetime.today()) ,
-                        'address_1':vendor_profile.state,
-                        'address_2':vendor_profile.address,
-                        'city':vendor_profile.state,
-                        'state':vendor_profile.nationality,
-                        "account_number":vendor_bank.account_number,
-                        "account_name":vendor_bank.account_name,
-                        "account_bank":vendor_bank.account_bank,
-
+                    "first_name": vendor_profile.first_name,
+                    "last_name": vendor_profile.last_name,
+                    "today": datetime.astimezone(datetime.today()),
+                    "address_1": vendor_profile.state,
+                    "address_2": vendor_profile.address,
+                    "city": vendor_profile.state,
+                    "state": vendor_profile.nationality,
+                    "account_number": vendor_bank.account_number,
+                    "account_name": vendor_bank.account_name,
+                    "account_bank": vendor_bank.account_bank,
                 }
                 contract_filename = f"VES_TV_AGREEMENT_{vendor_profile.user_code}.pdf"
-                create_and_save_contract('contracts/vendor_contract.html',contract_filename, vendor_contract.pk, contract_data)
+                create_and_save_contract(
+                    "contracts/vendor_contract.html",
+                    contract_filename,
+                    vendor_contract.pk,
+                    contract_data,
+                )
             vendor_profile.onboarded = True
             vendor_profile.save()
+
+            # send contract to vendor
+
+            # create first default channel
+            try:
+                default_channel = Channel.objects.get(
+                    vendor=vendor_profile, default_channel=True
+                )
+            except Channel.DoesNotExist:
+                default_channel = Channel.objects.create(
+                    vendor=vendor_profile, default_channel=True
+                )
+            except Channel.MultipleObjectsReturned:
+                default_channel = Channel.objects.filter(
+                    vendor=vendor_profile, default_channel=True
+                ).first()
+
+            default_channel.display_name = vendor_profile.company_name
+            if vendor_profile.company_banner:
+                default_channel.banner = vendor_profile.company_banner
+            if vendor_profile.company_thumbnail:
+                default_channel.thumbnail = vendor_profile.company_thumbnail
+
+            default_channel.verified = True
+            default_channel.save()
 
     except Exception as e:
         print(e)
 
-    return redirect('vendor:profile_settings')
-
+    return redirect("vendor:profile_settings")
 
 
 @login_required
@@ -288,13 +315,11 @@ def submit_contract(request):
             data = request.FILES
             contract_file = data["contract_sumbit"]
             vendor_profile = request.user.profile
-            vendor_contract  = Contracts.objects.get(vendor=vendor_profile)
+            vendor_contract = Contracts.objects.get(vendor=vendor_profile)
             vendor_contract.contract_file = contract_file
 
             # vendor_contract.signed = True
             vendor_contract.save()
     except Exception as e:
         print(e)
-    return redirect('vendor:profile_settings')
-
-
+    return redirect("vendor:profile_settings")

@@ -10,6 +10,10 @@ import json
 from django.http import JsonResponse
 from users.decorators import allowed_users
 from users.utils import fetch_active_user
+from users.models import Profile
+from users.choices import Roles as user_roles
+from vendor.models import Channel
+
 
 # Create your views here.
 
@@ -24,41 +28,124 @@ def error500(request):
 
 class Homepage(View):
     def get(self, request):
-        # check sub status
-        featured = Content.objects.filter(featured=True, verified=True, status = choices.VerificationStatus.Approved.value).first()
-        featured2 = Content.objects.filter(featured=True, verified=True, status = choices.VerificationStatus.Approved.value).last()
+        popular = (
+            Content.objects.filter(
+                verified=True, status=choices.VerificationStatus.Approved.value
+            )
+            .all()
+            .order_by("watch_times")
+        )
 
-        popular = Content.objects.filter(verified=True, status = choices.VerificationStatus.Approved.value).all().order_by("watch_times")
-
-        paginator = Paginator(popular, 15)
+        paginator = Paginator(popular, 12)
         page = self.request.GET.get("page")
         contents = paginator.get_page(page)
 
+        channels = Channel.objects.filter(verified=True)
+        favorite_channel = channels.filter(admin_favorite=True)[:4]
         template = "core/index.html"
 
-        context = {"featured": featured, "featured2": featured2, "contents": contents}
+        context = {
+            "contents": contents,
+            "channels": channels,
+            "favorite_channel": favorite_channel,
+        }
 
         return render(request, template, context)
 
 
+# @allowed_users
+def channels(request):
+    template = "core/channels.html"
+
+    channels = Channel.objects.filter(verified=True)
+
+    paginator = Paginator(channels, 12)
+    page = request.GET.get("page")
+    contents = paginator.get_page(page)
+
+    context = {"channels": contents}
+
+    return render(request, template, context)
+
+
+# @allowed_users
+def channel_detail(request, channel_id):
+    template = "core/channel_detail.html"
+
+    the_channel = Channel.objects.filter(id=int(channel_id), verified=True).first()
+    content_cat = ContentGenre.objects.all()
+
+    channel_content = Content.objects.filter(
+        channel=the_channel,
+        verified=True,
+        status=choices.VerificationStatus.Approved.value,
+    )
+
+    paginator = Paginator(channel_content, 12)
+    page = request.GET.get("page")
+    chan_contents = paginator.get_page(page)
+
+    category_tab = request.GET.get("category", None)
+    if category_tab:
+        category = ContentCategory.objects.filter(name=category_tab).first()
+        print(category)
+        channel_content = channel_content.filter(category=category)
+
+    context = {
+        "the_channel": the_channel,
+        "content_cat": content_cat,
+        "channel_content": chan_contents,
+    }
+
+    return render(request, template, context)
+
+
+@allowed_users
+def vendor_home(request, vendor_code):
+    template = "core/vendor_home.html"
+
+    vendor_profile = Profile.objects.get(user_code=vendor_code)
+
+    all_cats = ContentCategory.objects.all()
+
+    vendor_qs = Content.objects.filter(vendor=vendor_profile)
+
+    paginator = Paginator(vendor_qs, 12)
+    page = request.GET.get("page")
+    vendor_contents = paginator.get_page(page)
+
+    vendor_channels = Channel.objects.filter(vendor=vendor_profile)
+
+    context = {
+        "vendor_qs": vendor_contents,
+        "all_cats": all_cats,
+        "vendor_code": vendor_code,
+        "vendor_profile": vendor_profile,
+        "vendor_channels": vendor_channels,
+    }
+
+    return render(request, template, context)
+
+
 @allowed_users
 def content_detail(request, slug=None):
-
     the_content = get_object_or_404(Content, slug=slug)
 
-    other_contents = Content.objects.filter(verified=True, status = choices.VerificationStatus.Approved.value).exclude(
-        slug=the_content.slug
-    )
+    other_contents = Content.objects.filter(
+        verified=True, status=choices.VerificationStatus.Approved.value
+    ).exclude(slug=the_content.slug)
     try:
-        the_content.watch_times +=1
+        the_content.watch_times += 1
         the_content.save()
 
         active_user = fetch_active_user(request)
         if active_user:
-            watched_content_qs = WatchedContent.objects.filter(user=active_user, content=the_content)
+            watched_content_qs = WatchedContent.objects.filter(
+                user=active_user, content=the_content
+            )
             if watched_content_qs.exists():
                 watched_content = watched_content_qs.first()
-                watched_content.count +=1
+                watched_content.count += 1
                 watched_content.save()
             else:
                 WatchedContent.objects.create(user=active_user, content=the_content)
@@ -73,31 +160,36 @@ def content_detail(request, slug=None):
     return render(request, template, context)
 
 
-
 @allowed_users
 def like_product(request):
-  data = {}
-  content_id = request.GET.get('content_id', None)
+    data = {}
+    content_id = request.GET.get("content_id", None)
 
-  try:
+    try:
+        the_content = Content.objects.get(pk=int(content_id))
 
-    the_content = Content.objects.get(pk=int(content_id))
+        active_user = fetch_active_user(request)
 
+        Likes.objects.get_or_create(msisdn=active_user, content=the_content)
+        data.update({"status": True, "msg": "Content Liked!"})
 
-    active_user = fetch_active_user(request)
+    except KeyError:
+        data.update({"status": False, "msg": "Error occured!"})
 
-    Likes.objects.get_or_create(msisdn=active_user, content=the_content)
-    data.update({'status':True, 'msg': 'Content Liked!'})
+    except (
+        ValueError,
+        NameError,
+        TypeError,
+        ImportError,
+        IndexError,
+        AttributeError,
+    ) as error:
+        err_msg = str(error)
+        data.update({"status": False, "msg": "Error occured!"})
+        print(err_msg)
 
-  except KeyError:
-    data.update({'status':False,'msg': 'Error occured!'})
+    return JsonResponse(data)
 
-  except (ValueError, NameError, TypeError, ImportError, IndexError, AttributeError ) as error:
-    err_msg = str(error)
-    data.update({'status':False,'msg': 'Error occured!'})
-    print(err_msg)
-
-  return JsonResponse(data)
 
 @allowed_users
 def show_detail(request, slug=None):
@@ -107,10 +199,12 @@ def show_detail(request, slug=None):
         the_content.save()
         active_user = fetch_active_user(request)
         if active_user:
-            watched_content_qs = WatchedContent.objects.filter(user=active_user, content=the_content)
+            watched_content_qs = WatchedContent.objects.filter(
+                user=active_user, content=the_content
+            )
             if watched_content_qs.exists():
                 watched_content = watched_content_qs.first()
-                watched_content.count +=1
+                watched_content.count += 1
                 watched_content.save()
             else:
                 WatchedContent.objects.create(user=active_user, content=the_content)
@@ -125,6 +219,7 @@ def show_detail(request, slug=None):
     return render(request, template, context)
 
 
+@allowed_users
 def episode_detail(request, content_slug=None, episode_slug=None):
     # the_content = Content.object.get(slug=slug)
     the_content = get_object_or_404(Content, slug=content_slug)
@@ -140,10 +235,12 @@ def episode_detail(request, content_slug=None, episode_slug=None):
 
         active_user = fetch_active_user(request)
         if active_user:
-            watched_content_qs = WatchedContent.objects.filter(user=active_user, content=the_content)
+            watched_content_qs = WatchedContent.objects.filter(
+                user=active_user, content=the_content
+            )
             if watched_content_qs.exists():
                 watched_content = watched_content_qs.first()
-                watched_content.count +=1
+                watched_content.count += 1
                 watched_content.save()
             else:
                 WatchedContent.objects.create(user=active_user, content=the_content)
@@ -162,7 +259,6 @@ def episode_detail(request, content_slug=None, episode_slug=None):
 
 
 def category(request, category_slug=None):
-
     the_category = ContentCategory.objects.filter(slug=category_slug).first()
 
     the_contents = Content.objects.filter(category=the_category, verified=True).all()
@@ -173,36 +269,23 @@ def category(request, category_slug=None):
 
     template = "core/category_content.html"
 
-    context = {"the_contents": contents}
+    context = {"contents": contents, "category": the_category.name}
 
     return render(request, template, context)
 
-@allowed_users
-def vendor_home(request, vendor_code):
-    template = "core/vendor_home.html"
 
-    vendor_profile = Profile.objects.get(user_code=vendor_code)
+def genre(request, genre_slug=None):
+    the_genre = ContentGenre.objects.filter(slug=genre_slug).first()
 
-    all_cats = ContentCategory.objects.all()
+    the_contents = Content.objects.filter(genre=the_genre, verified=True).all()
 
-    vendor_qs = Content.objects.filter(vendor=vendor_profile)
-
-    paginator = Paginator(vendor_qs, 15)
+    paginator = Paginator(the_contents, 8)
     page = request.GET.get("page")
-    vendor_contents = paginator.get_page(page)
+    contents = paginator.get_page(page)
 
-    category_tab = request.GET.get("category", None)
-    if category_tab:
-        category = ContentCategory.objects.filter(name=category_tab).first()
-        print(category)
-        vendor_qs = vendor_qs.filter(category=category)
+    template = "core/genre_content.html"
 
-    context = {
-        "vendor_qs":vendor_contents,
-        "all_cats":all_cats,
-        "vendor_code":vendor_code,
-        "vendor_profile":vendor_profile
-    }
+    context = {"contents": contents, "genre": the_genre.name}
 
     return render(request, template, context)
 
@@ -217,10 +300,6 @@ def echoView(request):
     return HttpResponse("YES, VES TV IS LIVE !!")
 
 
-
-
-
-
 ################
 
 
@@ -229,19 +308,18 @@ def awaiting_response(request):
     return render(request, template)
 
 
-
-
 def onboarding(request):
-
     template = "core/subscribe_page.html"
 
-    context = {}
+    active_user = fetch_active_user(request)
+    print(active_user)
+
+    context = {"active_user": active_user}
 
     return render(request, template, context)
 
 
 def inactive_account(request):
-
     template = "core/inactive_account.html"
 
     context = {}

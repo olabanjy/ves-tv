@@ -47,12 +47,12 @@ def subscribe(request):
 
         if sub != False:
             print("Subscribtion Successfull")
-            return redirect("users:awaiting_response")
+            return redirect("core:awaiting_response")
         else:
             print("Subscribtion UnSuccessfull")
-            return redirect("users:onboarding")
+            return redirect("core:onboarding")
     else:
-        return redirect("users:onboarding")
+        return redirect("core:onboarding")
         # return redirect("users:awaiting_response")
 
 
@@ -82,8 +82,7 @@ def after_signup(request):
     # check subscription status
     ###########
 
-    return redirect("users:awaiting_response")
-
+    return redirect("core:awaiting_response")
 
 
 # DATA SYNC
@@ -118,7 +117,6 @@ def data_sync(request):
             theUser, created = UserProfile.objects.get_or_create(phone=msisdn)
             userSub, created = UserSubscribtion.objects.get_or_create(user=theUser)
             if not_type == "SYNC_NOTIFICATION":
-
                 start_date = the_data["details"]["date"]
                 start_datetime = datetime.strptime(start_date, "%Y-%m-%d %H:%M")
                 end_date = the_data["details"]["expiry"]
@@ -145,7 +143,6 @@ def data_sync(request):
                 return HttpResponse(200)
 
             elif not_type == "RENEWAL_NOTIFICATION":
-
                 """
                 b'{"type":"RENEWAL_NOTIFICATION","telco":"MTN","action":"NONE","shortcode":null,"product":{"id":70,"name":"Magic Box Daily","identity":"PD-16541987951000","type":"SUBSCRIPTION","subscription_type":"ONETIME_AND_RECURRING","status":"LIVE"},"details":{"phone":"2347047344879","amount":5000,"channel":"system-renewal","date":"2023-01-07 08:58","expiry":"2023-01-08 08:58","auto_renewal":true,"telco_status_code":"0","telco_ref":"upstream_paid_2617724eebdbc3e8"}}'
                 """
@@ -200,9 +197,4 @@ def campaign_notification(request):
     return HttpResponse(200)
 
 
-
-
 #### Vendor Onboarding
-
-
-

@@ -33,14 +33,20 @@ class Profile(models.Model):
     user_code = models.CharField(max_length=200)
     first_name = models.CharField(blank=True, null=True, max_length=200)
     last_name = models.CharField(blank=True, null=True, max_length=200)
-    company_name  = models.CharField(blank=True, null=True, max_length=250)
-    company_alias  = models.CharField(blank=True, null=True, max_length=250)
-    company_banner  = models.ImageField(upload_to="vendor/banner/", blank=True)
+    company_name = models.CharField(blank=True, null=True, max_length=250)
+    company_alias = models.CharField(blank=True, null=True, max_length=250)
+    company_banner = models.ImageField(
+        upload_to="vendor/banner/", blank=True, null=True
+    )
+    company_thumbnail = models.ImageField(
+        upload_to="vendor/thumbnail/", blank=True, null=True
+    )
+
     onboarded = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     state = models.CharField(max_length=200, blank=True, null=True)
     nationality = models.CharField(max_length=200, blank=True, null=True)
-    address =  models.CharField(blank=True, null=True, max_length=500)
+    address = models.CharField(blank=True, null=True, max_length=500)
     contact_phone = models.CharField(max_length=200, blank=True, null=True)
     test_phase = models.CharField(
         max_length=200, choices=TEST_PHASE, default="live_prod"

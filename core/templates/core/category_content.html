@@ -1,97 +1,104 @@
 {% extends 'core/base.html' %}
 {% load static %}
-	{% block content %}
-		<main id="col-main">
-			
-			
-            <ul class="dashboard-genres-pro">
-                <li>
-                    <img src="{% static 'images/genres/drama.png' %}" alt="Drama">
-                    <h6>Drama</h6>
-                </li>
-                <li >
-                    <img src="{% static 'images/genres/comedy.png' %}" alt="Comedy">
-                    <h6>Comedy</h6>
-                </li>
-                <li>
-                    <img src="{% static 'images/genres/action.png' %}" alt="Action">
-                    <h6>Action</h6>
-                </li>
-                <li>
-                    <img src="{% static 'images/genres/romance.png' %}" alt="Romance">
-                    <h6>Romance</h6>
-                </li>
-                
-               
-                <li>
-                    <img src="{% static 'images/genres/thriller.png' %}" alt="Thriller">
-                    <h6>Thriller</h6>
-                </li>
-              
-                <li>
-                    <img src="{% static 'images/genres/animation.png' %}" alt="Animation">
-                    <h6>Animation</h6>
-                </li>
-                <li>
-                    <img src="{% static 'images/genres/documentary.png' %}" alt="Documentary">
-                    <h6>Documentary</h6>
-                </li>
-            </ul>
-			
-			<div class="clearfix"></div>
-			
-			<div class="dashboard-container">
-				
-				<h4 class="heading-extra-margin-bottom">Popular</h4>
-                {% if the_contents %}
-				<div class="row">
-                    {% for vid in the_contents %}
+{% load humanize %}
 
-                    
-					<div class="col-12 col-md-6 col-lg-4 col-xl-3">
-						<div class="item-listing-container-skrn">
-							<a href="{% url 'core:content_detail' vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="Listing"></a>
-							<div class="item-listing-text-skrn">
-								<div class="item-listing-text-skrn-vertical-align"><h6><a href="{% url 'core:content_detail' vid.slug %}">{{vid.title}}</a></h6>
-							     
-								</div>
-							</div>
-						</div>
-					</div>
-					
-                    {% endfor %}
-					
-					
 
-					
-				
-					
+{% block content %}
 
-				</div><!-- close .row -->
+<div class="container-fluid pb-0">
+    <div class="top-mobile-search">
+        <div class="row">
+           <div class="col-md-12">
+              <form class="mobile-search">
+                 <div class="input-group">
+                   <input type="text" placeholder="Search for..." class="form-control">
+                     <div class="input-group-append">
+                       <button type="button" class="btn btn-dark"><i class="fas fa-search"></i></button>
+                     </div>
+                 </div>
+              </form>
+           </div>
+        </div>
+     </div>
 
-                {% endif %}
-				
-				{% if the_contents.paginator.num_pages > 1 %}
-                <ul class="page-numbers">
-                    {% if the_contents.has_previous %}
-                    <li><a class="previous page-numbers" href="?page={{ the_contents.previous_page_number }}"><i class="fas fa-chevron-left"></i></a></li>
-                    {% endif %}
-                    {% for i in the_contents.paginator.page_range %}
-                        {% if the_contents.number == i %}
-                            <li><span class="page-numbers current">{{ i }}</span></li>
-                        {% else %}
-                        
-                            <li><a class="page-numbers" href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                
-                    {% if the_contents.has_next %}
-                    <li><a class="next page-numbers" href="?page={{ the_contents.next_page_number }}"><i class="fas fa-chevron-right"></i></a></li>
-                    {% endif %}
-                </ul>
-                {% endif %}
-						
-			</div><!-- close .dashboard-container -->
-		</main>
-		
-{% endblock content %}
+     <hr>
+     <div class="video-block section-padding">
+        <div class="row">
+           <div class="col-md-12">
+              <div class="main-title">
+                 <div class="btn-group float-right right-action">
+                    <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                       <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Views</a>
+                       <a class="dropdown-item" href="#"><i class="fas fa-fw fa-times-circle"></i> &nbsp; Likes</a>
+                    </div>
+                 </div>
+                 <h6>{{category}} contents </h6>
+              </div>
+           </div>
+           {% if contents %}
+           {% for vid in contents %}
+           <div class="col-xl-3 col-sm-6 mb-3">
+              <div class="video-card">
+                 <div class="video-card-image">
+                    <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                    <a href="#"><img class="img-fluid" src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}img/v1.png{% endif %}" alt=""></a>
+                    <div class="time">{{vid.timedelta}}</div>
+                 </div>
+                 <div class="video-card-body">
+                    <div class="video-title">
+                       <a href="#">{{vid.title}}</a>
+                    </div>
+                    <div class="video-page text-success">
+                       {{vid.genre}}  <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                    </div>
+                    <div class="video-view">
+                       {{vid.watch_times}} views &nbsp;<i class="fas fa-calendar-alt"></i> {{vid.created_at|naturalday}}
+                    </div>
+                 </div>
+              </div>
+           </div>
+           {% endfor %}
+           {% endif %}
+
+
+
+
+
+
+        </div>
+        <nav aria-label="Page navigation example">
+         {% if contents.paginator.num_pages > 1 %}
+         <ul class="pagination justify-content-center pagination-sm mb-0">
+             {% if contents.has_previous %}
+            <li class="page-item disabled">
+               <a class="page-link" href="?page={{ contents.previous_page_number }}" tabindex="-1">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for i in contents.paginator.page_range %}
+                 {% if contents.number == i %}
+
+                     <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                 {% else %}
+                     <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                 {% endif %}
+             {% endfor %}
+
+             {% if contents.has_next %}
+            <li class="page-item">
+               <a class="page-link" href="?page={{ contents.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+         </ul>
+         {% endif %}
+
+      </nav>
+     </div>
+
+
+</div>
+
+{% endblock content%}

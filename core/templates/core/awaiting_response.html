@@ -1,101 +1,89 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-		<link rel="stylesheet" href="{% static 'profile_style.css' %}">
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
-
-		<link rel="stylesheet" href="{% static 'icons/fontawesome/css/fontawesome-all.min.css' %}"><!-- FontAwesome Icons -->
-		<link rel="stylesheet" href="{% static 'icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css' %}"><!-- iconsmind.com Icons -->
-
-		<title>VES TV - Onboarding</title>
-	</head>
-	<body>
-
-
-
-
-		<div id="content-pro">
-
-            <div class="container">
-                 <div class="centered-headings-pro pricing-plans-headings">
-                     <h6>Select your telecoms service provider </h6>
-                     <h1>Subscribe to instantly watch TV shows &amp; Movies</h1>
-                 </div>
-         </div>
-
-
-
-         <div id="pricing-plans-background-image">
-             <div class="container">
-                     <div class="registration-steps-page-container">
-
-                          <div class="registration-billing-form">
-                              <div class="row">
-                                  <div  class="col-md">
-                                      <div style="text-align: center !important;" id="mtn_card" class="jumbotron jumbotron-fluid jumbotron-pro">
-                                        <div class="container">
-                                            <h6 class="light-weight-heading">Please check your phone for a prompt to complete subscribtion. Click button below to proceed after </h6> <br>
-                                            <a style="float: none !important;" href="/" class="btn btn-green-pro"> Continue to watch </a>
-                                        </div>
-
-                                      </div>
-
-                                  </div>
-
-
-                              </div>
-
-
-
-
-                          </div>
-
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="Askbootstrap">
+      <meta name="author" content="Askbootstrap">
+      <title>VES - Subscribe </title>
+      <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+      <!-- Bootstrap core CSS-->
+      <link href="{%  static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+      <!-- Custom fonts for this template-->
+      <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+      <!-- Custom styles for this template-->
+      <link href="{% static 'css/osahan.cs' %}s" rel="stylesheet">
+      <!-- Owl Carousel -->
+      <link rel="stylesheet" href="{% static 'vendor/owl-carousel/owl.carousel.css' %}">
+      <link rel="stylesheet" href="{% static 'vendor/owl-carousel/owl.theme.css' %}">
+   </head>
+   <body class="login-main-body">
+      <section class="login-main-wrapper">
+         <div class="container-fluid pl-0 pr-0">
+            <div class="row no-gutters">
+               <div class="col-md-5 p-5 bg-white full-height">
+                  <div class="login-main-left">
+                     <div class="text-center mb-5 login-main-left-header pt-4">
+                        <!-- <img src="img/favicon.png" class="img-fluid" alt="LOGO"> -->
+                        <img src="{% static 'img/ves_logo_copy.png' %}" class="img-fluid" alt="LOGO">
+                        <h5 class="mt-3 mb-3">Subscribe to VES </h5>
+                       {% if active_user %}
+                       <h6>Welcome back {{active_user}}</h6>
+                       {% endif %}
+                        <p>Kindly complete prompt on your mobile device, Click button below to proceed after  </p>
                      </div>
 
-             </div>
+
+                        <div class="mt-4">
+                           <a href="/" class="btn btn-outline-primary btn-block btn-lg">Continue to watch </a>
+                        </div>
+
+
+                  </div>
+
+               </div>
+               <div class="col-md-7">
+                  <div class="login-main-right bg-white p-5 mt-5 mb-5">
+                     <div class="owl-carousel owl-carousel-login">
+                        <div class="item">
+                           <div class="carousel-login-card text-center">
+                              <img src="{% static 'img/login.png' %}" class="img-fluid" alt="LOGO">
+                              <h5 class="mt-5 mb-3">Subscribe</h5>
+                              <p class="mb-4">Click subscribe button or <br> send VESD to  20070 </p>
+                           </div>
+                        </div>
+
+                        <div class="item">
+                           <div class="carousel-login-card text-center">
+                              <img src="{% static 'img/login.png' %}" class="img-fluid" alt="LOGO">
+                              <h5 class="mt-5 mb-3">Complete Prompt</h5>
+                              <p class="mb-4">Complete the prompt sent to your device<br> from your telco service provider</p>
+                           </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="carousel-login-card text-center">
+                               <img src="{% static 'img/login.png' %}" class="img-fluid" alt="LOGO">
+                               <h5 class="mt-5 mb-3">Watch channels </h5>
+                               <p class="mb-4">Watch and follow your favorite channel and content creator</p>
+                            </div>
+                         </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </div>
-
-     </div>
-
-     <footer id="footer-pro">
-        <div class="container">
-            <div class="row">
-                <div class="col-md">
-                    <div class="copyright-text-pro">&copy; <script>document.write(new Date().getFullYear())</script> Zamari TV. All Rights Reserved</div>
-                </div><!-- close .col -->
-                <div class="col-md">
-                    <ul class="social-icons-pro">
-                        <li class="facebook-color"><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                        <li class="twitter-color"><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
-                        <li class="youtube-color"><a href="#" target="_blank"><i class="fab fa-youtube"></i></a></li>
-
-                    </ul>
-                </div><!-- close .col -->
-            </div><!-- close .row -->
-        </div><!-- close .container -->
-    </footer>
-
-		<a href="#0" id="pro-scroll-top"><i class="fas fa-chevron-up"></i></a>
-
-
-
-
-        <script src="{% static 'js/libs/jquery-3.3.1.min.js' %}"></script><!-- jQuery -->
-		<script src="{% static 'js/libs/popper.min.js' %}" defer></script><!-- Bootstrap Popper/Extras JS -->
-		<script src="{% static 'js/libs/bootstrap.min.js' %}" defer></script><!-- Bootstrap Main JS -->
-		<!-- All JavaScript in Footer -->
-
-		<!-- Additional Plugins and JavaScript -->
-		<script src="{% static 'js/navigation.js' %}" defer></script><!-- Header Navigation JS -->
-		<script src="{% static 'js/jquery.flexslider-min.js' %}" defer></script><!-- Custom Document Ready JS -->
-		<script src="{% static 'js/script.js' %}" defer></script><!-- Custom Document Ready JS -->
-
-
-
-	</body>
+      </section>
+      <!-- Bootstrap core JavaScript-->
+      <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+      <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+      <!-- Core plugin JavaScript-->
+      <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+      <!-- Owl Carousel -->
+      <script src="{% static 'vendor/owl-carousel/owl.carousel.js' %}"></script>
+      <!-- Custom scripts for all pages-->
+      <script src="{% static 'js/custom.js' %}"></script>
+   </body>
 </html>
