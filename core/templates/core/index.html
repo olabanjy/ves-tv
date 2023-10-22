@@ -89,8 +89,8 @@
           <div class="col-xl-3 col-sm-6 mb-3">
              <div class="video-card">
                 <div class="video-card-image">
-                   <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
-                   <a href="#"><img class="img-fluid" src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}img/v1.png{% endif %}" alt=""></a>
+                   <a class="play-icon" href="{% url 'core:content_detail' vid.slug %}"><i class="fas fa-play-circle"></i></a>
+                   <a href="{% url 'core:content_detail' vid.slug %}"><img class="img-fluid" src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}img/v1.png{% endif %}" alt=""></a>
                    <div class="time">{{vid.timedelta}}</div>
                 </div>
                 <div class="video-card-body">
