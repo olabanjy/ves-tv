@@ -5,3 +5,4 @@ from .models import *
 
 admin.site.register(Channel)
 admin.site.register(Contracts)
+admin.site.register(BankAccount)

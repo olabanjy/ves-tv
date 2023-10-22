@@ -30,6 +30,14 @@ class ContentGenre(models.Model):
         return self.name
 
 
+class ContentTag(models.Model):
+    slug = models.SlugField()
+    name = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.name
+
+
 class Content(models.Model):
     slug = models.SlugField()
     title = models.CharField(max_length=120)
@@ -39,6 +47,7 @@ class Content(models.Model):
     genre = models.ForeignKey(
         ContentGenre, on_delete=models.CASCADE, related_name="content_genre"
     )
+    tags = models.ManyToManyField(ContentTag)
     description = models.TextField()
     language = models.CharField(max_length=120, blank=True, null=True)
     img_banner = models.ImageField(upload_to="content_images/banner/", blank=True)

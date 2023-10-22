@@ -68,6 +68,65 @@ def channels(request):
     return render(request, template, context)
 
 
+# @allowed_users
+def channel_detail(request, channel_id):
+    template = "core/channel_detail.html"
+
+    the_channel = Channel.objects.filter(id=int(channel_id), verified=True).first()
+    content_cat = ContentGenre.objects.all()
+
+    channel_content = Content.objects.filter(
+        channel=the_channel,
+        verified=True,
+        status=choices.VerificationStatus.Approved.value,
+    )
+
+    paginator = Paginator(channel_content, 12)
+    page = request.GET.get("page")
+    chan_contents = paginator.get_page(page)
+
+    category_tab = request.GET.get("category", None)
+    if category_tab:
+        category = ContentCategory.objects.filter(name=category_tab).first()
+        print(category)
+        channel_content = channel_content.filter(category=category)
+
+    context = {
+        "the_channel": the_channel,
+        "content_cat": content_cat,
+        "channel_content": chan_contents,
+    }
+
+    return render(request, template, context)
+
+
+@allowed_users
+def vendor_home(request, vendor_code):
+    template = "core/vendor_home.html"
+
+    vendor_profile = Profile.objects.get(user_code=vendor_code)
+
+    all_cats = ContentCategory.objects.all()
+
+    vendor_qs = Content.objects.filter(vendor=vendor_profile)
+
+    paginator = Paginator(vendor_qs, 12)
+    page = request.GET.get("page")
+    vendor_contents = paginator.get_page(page)
+
+    vendor_channels = Channel.objects.filter(vendor=vendor_profile)
+
+    context = {
+        "vendor_qs": vendor_contents,
+        "all_cats": all_cats,
+        "vendor_code": vendor_code,
+        "vendor_profile": vendor_profile,
+        "vendor_channels": vendor_channels,
+    }
+
+    return render(request, template, context)
+
+
 @allowed_users
 def content_detail(request, slug=None):
     the_content = get_object_or_404(Content, slug=slug)
@@ -160,6 +219,7 @@ def show_detail(request, slug=None):
     return render(request, template, context)
 
 
+@allowed_users
 def episode_detail(request, content_slug=None, episode_slug=None):
     # the_content = Content.object.get(slug=slug)
     the_content = get_object_or_404(Content, slug=content_slug)
@@ -209,37 +269,23 @@ def category(request, category_slug=None):
 
     template = "core/category_content.html"
 
-    context = {"the_contents": contents}
+    context = {"contents": contents, "category": the_category.name}
 
     return render(request, template, context)
 
 
-@allowed_users
-def vendor_home(request, vendor_code):
-    template = "core/vendor_home.html"
+def genre(request, genre_slug=None):
+    the_genre = ContentGenre.objects.filter(slug=genre_slug).first()
 
-    vendor_profile = Profile.objects.get(user_code=vendor_code)
+    the_contents = Content.objects.filter(genre=the_genre, verified=True).all()
 
-    all_cats = ContentCategory.objects.all()
-
-    vendor_qs = Content.objects.filter(vendor=vendor_profile)
-
-    paginator = Paginator(vendor_qs, 15)
+    paginator = Paginator(the_contents, 8)
     page = request.GET.get("page")
-    vendor_contents = paginator.get_page(page)
+    contents = paginator.get_page(page)
 
-    category_tab = request.GET.get("category", None)
-    if category_tab:
-        category = ContentCategory.objects.filter(name=category_tab).first()
-        print(category)
-        vendor_qs = vendor_qs.filter(category=category)
+    template = "core/genre_content.html"
 
-    context = {
-        "vendor_qs": vendor_contents,
-        "all_cats": all_cats,
-        "vendor_code": vendor_code,
-        "vendor_profile": vendor_profile,
-    }
+    context = {"contents": contents, "genre": the_genre.name}
 
     return render(request, template, context)
 
@@ -265,7 +311,10 @@ def awaiting_response(request):
 def onboarding(request):
     template = "core/subscribe_page.html"
 
-    context = {}
+    active_user = fetch_active_user(request)
+    print(active_user)
+
+    context = {"active_user": active_user}
 
     return render(request, template, context)
 

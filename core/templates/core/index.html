@@ -42,7 +42,7 @@
                 {% for channel in channels %}
                 <div class="item">
                    <div class="category-item">
-                      <a href="#">
+                      <a href="{% url 'core:channel_details' channel.id %}">
                         {% if channel.thumbnail %}
                          <img class="img-fluid" src="{{channel.thumbnail.url}}" alt="{{channel.display_name}}">
                          {% else %}
@@ -54,19 +54,12 @@
                    </div>
                 </div>
                 {% endfor %}
+                <p>Fetching channels ...</p>
                 {% endif %}
 
 
 
-                <div class="item">
-                   <div class="category-item">
-                      <a href="#">
-                         <img class="img-fluid" src="{% static 'img/s4.png' %}" alt="">
-                         <h6>Lifestyle Advice</h6>
-                         <p>74 views</p>
-                      </a>
-                   </div>
-                </div>
+
 
 
 
@@ -102,7 +95,7 @@
                 </div>
                 <div class="video-card-body">
                    <div class="video-title">
-                      <a href="#">{{vid.title}}</a>
+                      <a href="{% url 'core:content_detail' vid.slug %}">{{vid.title}}</a>
                    </div>
                    <div class="video-page text-success">
                       {{vid.genre}}  <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
@@ -179,11 +172,6 @@
           </div>
           {% endfor %}
           {% endif %}
-
-
-
-
-
 
        </div>
     </div>

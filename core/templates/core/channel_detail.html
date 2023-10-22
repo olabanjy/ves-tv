@@ -1,0 +1,138 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+    <div class="single-channel-page" >
+        <div class="single-channel-image">
+            <img class="img-fluid" alt="" src="{% if the_channel.banner %} {{the_channel.banner.url}} {% else %} {% static 'img/channel-banner.png' %} {% endif %}">
+            <div class="channel-profile">
+               <img class="channel-profile-img" alt="" src="{% if the_channel.thumbnail %} {{the_channel.thumbnail.url}} {% else %}{% static 'img/s2.png' %} {% endif %}">
+               <div class="social hidden-xs">
+                  Social &nbsp;
+                  <a class="fb" href="#">Facebook</a>
+                  <a class="tw" href="#">Twitter</a>
+                  <a class="gp" href="#">Google</a>
+               </div>
+            </div>
+         </div>
+
+         <div class="single-channel-nav">
+            <nav class="navbar navbar-expand-lg navbar-light">
+               <a class="channel-brand" href="#">{{the_channel.display_name}} <span title="" data-placement="top" data-toggle="tooltip" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></span></a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                  <ul class="navbar-nav mr-auto">
+
+                     <li class="nav-item active">
+                        <a class="nav-link" href="#">Movies</a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link" href="#">TV Series</a>
+                     </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="#">Like Channel</a>
+                     </li>
+
+                     <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                     </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                     <input class="form-control form-control-sm mr-sm-1" type="search" name="searchContent" placeholder="Search" aria-label="Search"><button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button> &nbsp;&nbsp;&nbsp;
+                  </form>
+               </div>
+            </nav>
+         </div>
+
+         <div class="container-fluid">
+            <div class="video-block section-padding">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="main-title">
+                        <div class="btn-group float-right right-action">
+                           <a href="#" class="right-action-link text-gray" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Sort by <i class="fa fa-caret-down" aria-hidden="true"></i>
+                           </a>
+                           <div class="dropdown-menu dropdown-menu-right">
+
+                              <a class="dropdown-item" href="#"><i class="fas fa-fw fa-signal"></i> &nbsp; Most Viewed</a>
+
+                           </div>
+                        </div>
+                        <h6>Videos</h6>
+                     </div>
+                  </div>
+                  {% if channel_content %}
+                  {% for vid in  channel_content %}
+                  <div class="col-xl-3 col-sm-6 mb-3">
+                     <div class="video-card">
+                        <div class="video-card-image">
+                           <a class="play-icon" href="#"><i class="fas fa-play-circle"></i></a>
+                           <a href="#"><img class="img-fluid" src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}img/v1.png{% endif %}" alt=""></a>
+                           <div class="time">{{vid.timedelta}}</div>
+                        </div>
+                        <div class="video-card-body">
+                           <div class="video-title">
+                              <a href="#">{{vid.title}}</a>
+                           </div>
+                           <div class="video-page text-success">
+                              {{vid.genre.name}}  <a title="" data-placement="top" data-toggle="tooltip" href="#" data-original-title="Verified"><i class="fas fa-check-circle text-success"></i></a>
+                           </div>
+                           <div class="video-view">
+                              {{vid.watch_times}} views &nbsp;<i class="fas fa-calendar-alt"></i> {{vid.created_at|naturalday}}
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                  <p> No content to see yet </p>
+                  {% endif %}
+               </div>
+
+               <nav aria-label="Page navigation example">
+                {% if contents.paginator.num_pages > 1 %}
+                <ul class="pagination justify-content-center pagination-sm mb-0">
+                    {% if contents.has_previous %}
+                   <li class="page-item disabled">
+                      <a class="page-link" href="?page={{ contents.previous_page_number }}" tabindex="-1">Previous</a>
+                   </li>
+                   {% endif %}
+
+                   {% for i in contents.paginator.page_range %}
+                        {% if contents.number == i %}
+
+                            <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if contents.has_next %}
+                   <li class="page-item">
+                      <a class="page-link" href="?page={{ contents.next_page_number }}">Next</a>
+                   </li>
+                   {% endif %}
+                </ul>
+                {% endif %}
+
+             </nav>
+
+
+
+
+
+            </div>
+         </div>
+
+
+
+
+    </div>
+
+{% endblock content %}

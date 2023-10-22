@@ -35,6 +35,7 @@ class Channel(models.Model):
     thumbnail = models.ImageField(upload_to="channel/thumbnail", blank=True, null=True)
     total_views = models.IntegerField(default=0)
     admin_favorite = models.BooleanField(default=False)
+    default_channel = models.BooleanField(default=False)
     verified = models.BooleanField(default=False)
     about = models.TextField(blank=True, null=True)
 

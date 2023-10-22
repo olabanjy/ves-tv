@@ -1,6 +1,8 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% load humanize %}
+
+
 {% block content %}
 <div class="container-fluid pb-0">
     <div class="video-block section-padding">
@@ -20,32 +22,33 @@
                 <h6>Channels</h6>
              </div>
           </div>
+
+
+
+
           {% if channels %}
-          {% for channel in channels %}
+          {% for chan in channels %}
           <div class="col-xl-3 col-sm-6 mb-3">
-             <div class="channels-card">
-                <div class="channels-card-image">
-                   <a href="#">
-                    {% if channel.thumbnail %}
-                    <img class="img-fluid" src="{{channel.thumbnail.url}}" alt="{{channel.display_name}}">
-                    {% else %}
-                    <img class="img-fluid" src="{% static 'img/s1.png' %}" alt="{{channel.display_name}}">
-                    {% endif %}
-                   </a>
-                   <div class="channels-card-image-btn"><button type="button" class="btn btn-outline-danger btn-sm">Go to Channel </button></div>
-                </div>
-                <div class="channels-card-body">
-                   <div class="channels-title">
-                      <a href="#">{{channel.display_name}}</a>
-                   </div>
-                   <div class="channels-view">
-                      {{channel.total_views}} views
-                   </div>
-                </div>
-             </div>
-          </div>
-          {% endfor %}
-          {% endif }
+            <div class="channels-card">
+               <div class="channels-card-image">
+                  <a href="{% url 'core:channel_details' chan.id %}"><img class="img-fluid" src="{% if chan.thumbnail %} {{chan.thumbnail.url}} {% else %} img/s1.png {% endif %}" alt=""></a>
+                  <div class="channels-card-image-btn"><a  class="btn btn-outline-danger btn-sm">Watch Now </a></div>
+               </div>
+               <div class="channels-card-body">
+                  <div class="channels-title">
+                     <a href="{% url 'core:channel_details' chan.id %}">{{chan.display_name}}</a>
+                  </div>
+                  <div class="channels-view">
+                     {{chan.total_views}} views
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+         {% else %}
+         <p> There are currently no channels to display </p>
+          {% endif %}
+
 
 
 
@@ -80,11 +83,6 @@
        </nav>
     </div>
     <hr>
-
-
-
-
-
 
  </div>
 {% endblock content %}

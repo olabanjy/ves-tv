@@ -281,11 +281,17 @@ def complete_onboarding(request):
 
             # create first default channel
             try:
-                default_channel = Channel.objects.get(vendor=vendor_profile)
+                default_channel = Channel.objects.get(
+                    vendor=vendor_profile, default_channel=True
+                )
             except Channel.DoesNotExist:
-                default_channel = Channel.objects.create(vendor=vendor_profile)
+                default_channel = Channel.objects.create(
+                    vendor=vendor_profile, default_channel=True
+                )
             except Channel.MultipleObjectsReturned:
-                default_channel = Channel.objects.filter(vendor=vendor_profile).first()
+                default_channel = Channel.objects.filter(
+                    vendor=vendor_profile, default_channel=True
+                ).first()
 
             default_channel.display_name = vendor_profile.company_name
             if vendor_profile.company_banner:
