@@ -1,0 +1,171 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" href="{% static 'core_style.css' %}">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
+
+		<link rel="stylesheet" href="{% static 'icons/fontawesome/css/fontawesome-all.min.css' %}"><!-- FontAwesome Icons -->
+		<link rel="stylesheet" href="{% static 'icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css' %}"><!-- iconsmind.com Icons -->
+
+
+		<title>VES - Home</title>
+
+
+		{% block extra_styles %}
+
+		{% endblock extra_styles %}
+
+	</head>
+	<body>
+		<div id="sidebar-bg">
+
+      <header id="videohead-pro" class="sticky-header">
+			<div id="video-logo-background"><a href="/"><img src="{% static 'images/ves_logo.png' %}" alt="Logo"></a></div>
+
+			<div id="video-search-header">
+				<div id="search-icon-more"></div>
+				<input type="text" placeholder="Search for Movies or TV Series" aria-label="Search">
+
+
+			</div><!-- close .video-search-header -->
+
+			<div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
+
+
+			<div id="header-user-profile">
+				<div id="header-user-profile-click" class="noselect">
+					<div id="header-username">{{msisdn}} </div><i class="fas fa-angle-down"></i>
+				</div>
+				<div id="header-user-profile-menu">
+					<ul>
+						<li><a href="#"><span class="icon-User"></span>My Profile</a></li>
+
+						<!-- <li><a href="#"><span class="icon-Gears"></span>Account Details</a></li> -->
+
+					</ul>
+				</div><!-- close #header-user-profile-menu -->
+			</div><!-- close #header-user-profile -->
+
+
+
+
+
+			<div class="clearfix"></div>
+
+			<nav id="mobile-navigation-pro">
+
+				<ul id="mobile-menu-pro">
+	            <li class="{% if '/category/series/' in   request.path %} current-menu-item {% endif %}">
+	              <a href="{% url 'core:category' category_slug='series' %}">
+						<span class="icon-Old-TV"></span>
+	                TV Series
+	              </a>
+	            <li>
+	            <li class="{% if '/category/movies/' in   request.path %} current-menu-item {% endif %}">
+	              <a href="{% url 'core:category' category_slug='movies' %}">
+						<span class="icon-Reel"></span>
+	                Movies
+	              </a>
+	            </li>
+	            <li class="{% if '/category/playlist/' in   request.path %} current-menu-item {% endif %}">
+	              <a href="{% url 'core:category' category_slug='playlist' %}">
+						<span class="icon-Movie"></span>
+	                Playlists
+	              </a>
+	            </li>
+	            <li class="{% if '/category/short-videos/' in   request.path %} current-menu-item {% endif %}">
+	              <a href="{% url 'core:category' category_slug='short-videos' %}">
+						<span class="icon-Movie-Ticket"></span>
+	                Short Stories
+	              </a>
+	            </li>
+	            <li class="{% if '/category/coming-soon/' in   request.path %} current-menu-item {% endif %}">
+	              <a href="{% url 'core:category' category_slug='coming-soon' %}">
+						<span class="icon-Clock"></span>
+	                Coming Soon
+	              </a>
+	            </li>
+
+				</ul>
+				<div class="clearfix"></div>
+
+				<div id="search-mobile-nav-pro">
+					<input type="text" placeholder="Search for Movies or TV Series" aria-label="Search">
+				</div>
+
+			</nav>
+
+      </header>
+
+
+
+		<nav id="sidebar-nav">
+            <ul id="vertical-sidebar-nav" class="sf-menu">
+              <li class="normal-item-pro {% if '/category/series/' in   request.path %} current-menu-item {% endif %}">
+                <a href="{% url 'core:category' category_slug='series' %}">
+						<span class="icon-Old-TV"></span>
+                  TV Series
+                </a>
+              </li>
+              <li class="normal-item-pro {% if '/category/movies/' in   request.path %} current-menu-item {% endif %}">
+                <a href="{% url 'core:category' category_slug='movies' %}">
+						<span class="icon-Reel"></span>
+                  Movies
+                </a>
+              </li>
+              <li class="normal-item-pro {% if '/category/playlist/' in   request.path %} current-menu-item {% endif %}">
+                <a href="{% url 'core:category' category_slug='playlist' %}">
+						<span class="icon-Movie"></span>
+                  Playlists
+                </a>
+              </li>
+              <li class="normal-item-pro {% if '/category/short-videos/' in   request.path %} current-menu-item {% endif %}">
+                <a href="{% url 'core:category' category_slug='short-videos' %}">
+						<span class="icon-Movie-Ticket"></span>
+                  Short  Stories
+                </a>
+              </li>
+              <li class="normal-item-pro {% if '/category/coming-soon/' in   request.path %} current-menu-item {% endif %}">
+                <a href="{% url 'core:category' category_slug='coming-soon' %}">
+						<span class="icon-Clock"></span>
+                  Coming Soon
+                </a>
+              </li>
+
+            </ul>
+				<div class="clearfix"></div>
+		</nav>
+
+
+        {% block content %}
+
+
+        {% endblock %}
+
+		</div><!-- close #sidebar-bg-->
+
+		<!-- Required Framework JavaScript -->
+		<script src="{% static 'js/libs/jquery-3.3.1.min.js' %}"></script><!-- jQuery -->
+		<script src="{% static 'js/libs/popper.min.js' %}" defer></script><!-- Bootstrap Popper/Extras JS -->
+		<script src="{% static 'js/libs/bootstrap.min.js' %}" defer></script><!-- Bootstrap Main JS -->
+		<!-- All JavaScript in Footer -->
+
+		<!-- Additional Plugins and JavaScript -->
+		<script src="{% static 'js/navigation.js' %}" defer></script><!-- Header Navigation JS Plugin -->
+		<script src="{% static 'js/jquery.flexslider-min.js' %}" defer></script><!-- FlexSlider JS Plugin -->
+		<script src="{% static 'js/jquery-asRange.min.js' %}" defer></script><!-- Range Slider JS Plugin -->
+		<script src="{% static 'js/circle-progress.min.js' %}" defer></script><!-- Circle Progress JS Plugin -->
+		<script src="{% static 'js/afterglow.min.js' %}" defer></script><!-- Video Player JS Plugin -->
+		<script src="{% static 'js/script.js' %}" defer></script><!-- Custom Document Ready JS -->
+		<script src="{% static 'js/script-dashboard.js' %}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
+		{% block extra_scripts %}
+
+		{% endblock extra_scripts %}
+
+	</body>
+</html>

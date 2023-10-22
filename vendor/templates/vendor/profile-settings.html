@@ -54,14 +54,14 @@
                                <div class="form-group row align-items-center">
                                   <div class="col-md-12">
                                      <div class="profile-img-edit">
-                                       {% if user_profile.company_banner %}
-                                        <img class="profile-pic" src="{{user_profile.company_banner.url}}" alt="vendor-banner">
+                                       {% if user_profile.company_thumbnail %}
+                                        <img class="profile-pic" src="{{user_profile.company_thumbnail.url}}" alt="vendor-thumbnail">
                                         {% else %}
-                                        <img class="profile-pic" src="{% static 'images/user/11.png' %}" alt="vendor-baner">
+                                        <img class="profile-pic" src="{% static 'images/user/11.png' %}" alt="vendor-thumbnail">
                                         {% endif %}
                                         <div class="p-image">
                                            <i class="ri-pencil-line upload-button"></i>
-                                           <input name="company_banner" class="file-upload" type="file" id="company_banner" accept="image/*"/>
+                                           <input name="company_thumbnail" class="file-upload" type="file" id="company_thumbnail" accept="image/*"/>
                                         </div>
                                      </div>
                                   </div>
@@ -105,6 +105,11 @@
                                      <textarea class="form-control" name="address" rows="5" style="line-height: 22px;" placeholder="Full address" required>
                                      </textarea>
                                   </div>
+
+                                  <div class="form-group col-sm-12">
+                                    <label>Company Banner:</label>
+                                    <input name="company_banner" type="file" class="form-control" id="state"   id="company_banner" accept="image/*" required/>
+                                 </div>
 
 
                                  </div>

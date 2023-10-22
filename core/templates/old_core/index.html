@@ -1,0 +1,171 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<main id="col-main">
+			
+			
+			
+    <div class="flexslider progression-studios-dashboard-slider">
+      <ul class="slides">
+            {% if featured %}
+            <li class="progression_studios_animate_in" id="{{featured.pk}}">
+                <div class="progression-studios-slider-dashboard-image-background" style="background-image:url({{featured.img_banner.url}});">
+                    <div class="progression-studios-slider-display-table">
+                        <div class="progression-studios-slider-vertical-align">
+                        
+                            <div class="container">
+                                
+                                <a class="progression-studios-slider-play-btn afterglow" href="#VideoLightbox"><i class="fas fa-play"></i></a>
+                                
+                             <video id="VideoLightbox" poster="{{featured.img_thumbnail}}" width="960" height="540">
+                                 <source src="{{featured.trailer_mp4.url}}" type="video/mp4">
+                                 <source src="{{featured.trailer_webm.url}}" type="video/webm">
+                             </video>
+                                <div class="progression-studios-slider-dashboard-caption-width">
+                                    <div class="progression-studios-slider-caption-align">
+                                        <h6 class="light-fonts-pro">{{featured.category}}</h6>
+                                        <ul class="progression-studios-slider-rating">
+                                           
+                                        </ul>
+                                        <h2 class="light-fonts-pro"><a href="#">{{featured.title}}</a></h2>
+                                        <ul class="progression-studios-slider-meta">
+                                            <li>{{featured.upload_date}}</li>
+                                            <li>{{featured.timedelta}}</li>
+                                            <li>{{featured.genre}}</li>
+                                        </ul>
+                                        <p class="progression-studios-slider-description light-fonts-pro">{{featured.description|truncatechars:100}}</p>
+                                        
+                                        <a class="btn btn-green-pro btn-slider-pro afterglow" href="{% url 'core:content_detail' featured.slug %}"><i class="fas fa-play"></i> Watch Now </a>
+                                        <div class="progression-studios-slider-more-options">
+                                            <i class="fas fa-ellipsis-h"></i>
+                                            <ul>
+                                                <li><a href="#!">Add to Favorites</a></li>
+                                              
+                                                <li><a href="#!">Share...</a></li>
+                                               
+                                            </ul>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        
+                                       
+                                      
+                                    </div><!-- close .progression-studios-slider-caption-align -->
+                                </div><!-- close .progression-studios-slider-caption-width -->
+                            
+                            </div><!-- close .container -->
+                        
+                        </div><!-- close .progression-studios-slider-vertical-align -->
+                    </div><!-- close .progression-studios-slider-display-table -->
+                
+                    <div class="progression-studios-slider-mobile-background-cover-dark"></div>
+                </div><!-- close .progression-studios-slider-image-background -->
+            </li>
+            {% endif %}
+            
+        </ul>
+    </div><!-- close .progression-studios-slider - See /js/script.js file for options -->
+
+    <ul class="dashboard-genres-pro">
+        <li>
+            <img src="{% static 'images/genres/drama.png' %}" alt="Drama">
+            <h6>Drama</h6>
+        </li>
+        <li >
+            <img src="{% static 'images/genres/comedy.png' %}" alt="Comedy">
+            <h6>Comedy</h6>
+        </li>
+        <li>
+            <img src="{% static 'images/genres/action.png' %}" alt="Action">
+            <h6>Action</h6>
+        </li>
+        <li>
+            <img src="{% static 'images/genres/romance.png' %}" alt="Romance">
+            <h6>Romance</h6>
+        </li>
+        
+       
+        <li>
+            <img src="{% static 'images/genres/thriller.png' %}" alt="Thriller">
+            <h6>Thriller</h6>
+        </li>
+      
+        <li>
+            <img src="{% static 'images/genres/animation.png' %}" alt="Animation">
+            <h6>Animation</h6>
+        </li>
+        <li>
+            <img src="{% static 'images/genres/documentary.png' %}" alt="Documentary">
+            <h6>Documentary</h6>
+        </li>
+    </ul>
+    
+    <div class="clearfix"></div>
+    
+    <div class="dashboard-container">
+        
+        <h4 class="heading-extra-margin-bottom">Popular</h4>
+        <div class="row">
+            {% if contents %}
+            {% for vid in contents %}
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="item-listing-container-skrn">
+                    <a href="{% url 'core:content_detail' vid.slug %}"><img src="{% if vid.img_poster %}{{vid.img_poster.url}}{% else %}http://via.placeholder.com/500x707{% endif %}" alt="VEST TV"></a>
+                    <div class="item-listing-text-skrn">
+                        <div class="item-listing-text-skrn-vertical-align"><h6><a href="{% url 'core:content_detail' vid.slug %}">{{vid.title}}</a></h6>
+                        
+                        </div>
+                   </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            
+            
+          
+            
+            
+            
+            
+            
+            
+            
+          
+         
+            
+           
+            
+            
+           
+            
+            
+            
+        </div><!-- close .row -->
+        
+        {% if contents.paginator.num_pages > 1 %}
+        <ul class="page-numbers">
+            {% if contents.has_previous %}
+            <li><a class="previous page-numbers" href="?page={{ contents.previous_page_number }}"><i class="fas fa-chevron-left"></i></a></li>
+            {% endif %}
+            {% for i in contents.paginator.page_range %}
+                {% if contents.number == i %}
+                    <li><span class="page-numbers current">{{ i }}</span></li>
+                {% else %}
+                   
+                    <li><a class="page-numbers" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+           
+            {% if contents.has_next %}
+            <li><a class="next page-numbers" href="?page={{ contents.next_page_number }}"><i class="fas fa-chevron-right"></i></a></li>
+            {% endif %}
+        </ul>
+        {% endif %}
+        
+                
+    </div><!-- close .dashboard-container -->
+</main>
+
+{% endblock content %}

@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "storages",
     "django_celery_beat",
     "import_export",
-    'mathfilters',
+    "mathfilters",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +63,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processor.fetch_msisdn",
+                "core.context_processor.fetch_genres",
             ],
         },
     },
