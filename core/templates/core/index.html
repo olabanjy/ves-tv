@@ -37,8 +37,9 @@
              </div>
           </div>
           <div class="col-md-12">
+            {% if channels %}
              <div class="owl-carousel owl-carousel-category">
-                {% if channels %}
+
                 {% for channel in channels %}
                 <div class="item">
                    <div class="category-item">
@@ -54,8 +55,7 @@
                    </div>
                 </div>
                 {% endfor %}
-                <p>Fetching channels ...</p>
-                {% endif %}
+
 
 
 
@@ -64,6 +64,9 @@
 
 
              </div>
+             {% else %}
+             <p>Fetching channels ...</p>
+                {% endif %}
           </div>
        </div>
     </div>

@@ -49,7 +49,7 @@ class Content(models.Model):
     genre = models.ForeignKey(
         ContentGenre, on_delete=models.CASCADE, related_name="content_genre"
     )
-    tags = models.ManyToManyField(ContentTag)
+    tags = models.ManyToManyField(ContentTag, blank=True)
     description = models.TextField()
     language = models.CharField(max_length=120, blank=True, null=True)
     img_banner = models.ImageField(upload_to="content_images/banner/", blank=True)
