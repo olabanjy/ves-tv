@@ -327,4 +327,4 @@ def submit_contract(request):
             vendor_contract.save()
     except Exception as e:
         print(e)
-    return redirect("vendor:profile_settings")
+    return redirect("vendor:vendor-dashboard")
