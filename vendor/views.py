@@ -213,14 +213,17 @@ def complete_onboarding(request):
             vendor_country = data.get("vendor_country", None)
             state = data.get("state", None)
             address = data.get("address", None)
-            company_banner = data.get("company_banner", None)
-            company_thumbnail = data.get("company_thumbnail", None)
+            company_banner = request.FILES["company_banner"]
+            company_thumbnail = request.FILES["company_thumbnail"]
             contact_phone = data.get("contact_phone", None)
+
+            print(company_banner)
+            print(company_thumbnail)
 
             ###
             account_number = data.get("account_number", None)
             account_name = data.get("account_name", None)
-            account_bank = data.get("account_bank", None)
+            account_bank = data.get("bank_name", None)
 
             vendor_profile = request.user.profile
             vendor_profile.first_name = first_name
@@ -302,9 +305,11 @@ def complete_onboarding(request):
             default_channel.verified = True
             default_channel.save()
 
+            # return redirect("vendor:profile_settings" + "/emailandsms")
+            return redirect(reverse("vendor:profile_settings") + "#emailandsms")
+
     except Exception as e:
         print(e)
-
     return redirect("vendor:profile_settings")
 
 
