@@ -43,6 +43,11 @@ def after_login(request):
 def vendor_dashboard(request):
     if not request.user.profile.onboarded:
         return redirect("vendor:profile_settings")
+
+    if request.user.profile.onboarded:
+        if not request.user.profile.verified:
+            return redirect("vendor:pending-verification")
+
     template = "vendor/dashboard.html"
 
     today = datetime.now()
@@ -322,9 +327,19 @@ def submit_contract(request):
             vendor_profile = request.user.profile
             vendor_contract = Contracts.objects.get(vendor=vendor_profile)
             vendor_contract.contract_file = contract_file
+            vendor_contract.resubmitted = True
 
             # vendor_contract.signed = True
             vendor_contract.save()
     except Exception as e:
         print(e)
     return redirect("vendor:vendor-dashboard")
+
+
+@login_required
+def pending_verification(request):
+    # this checks if contract has been signed and user verified
+    template = "vendor/pending_verification.html"
+    vendor = request.user.profile
+    context = {"vendor": vendor}
+    return render(request, template, context)

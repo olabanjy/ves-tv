@@ -41,9 +41,30 @@
                               <div class="form-group">
 								 <input name="login" type="email" class="form-control mb-0" id="id_login" placeholder="Enter email" autocomplete="off" required>
                               </div>
-                              <div class="form-group">
+
+                              {% if form.login.errors %}
+								{% for error in form.login.errors %}
+								<div class="form-text">
+
+									<p style="color: red !important; font-size:90%;">{{ error|escape }}</p>
+								</div>
+								{% endfor %}
+							{% endif %}
+
+                        <div class="form-group">
 								 <input name="password" type="password" class="form-control mb-0" id="id_password" placeholder="&middot;&middot;&middot;&middot;&middot;&middot;" required>
-                              </div>
+                        </div>
+
+                              {% if form.password.errors %}
+							  {% for error in form.password.errors %}
+							  <div class="form-text">
+								  <p style="color: red !important; font-size:90%;"> {{ error|escape }}</p>
+
+							  </div>
+							  {% endfor %}
+							  {% endif %}
+
+
 							  {% if redirect_field_value %}
 							  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
 							  {% endif %}
@@ -54,6 +75,19 @@
                                        <label class="custom-control-label" for="customCheck">Remember Me</label>
                                     </div>
                                  </div>
+
+
+                                 <div>
+                                    {% if form.errors %}
+
+                                      {% for error in form.non_field_errors %}
+                                      <div class="nk-kycfm-note">
+                                        <em class="icon ni ni-info-fill" data-toggle="tooltip" data-placement="right" title="{{ error|escape }}"></em>
+                                        <p style="color: red !important;">{{ error|escape }}</p>
+                                    </div>
+                                      {% endfor %}
+                                    {% endif %}
+                                </div>
                            </form>
                         </div>
                      </div>

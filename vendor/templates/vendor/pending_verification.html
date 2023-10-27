@@ -1,0 +1,24 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block content %}
+<section class="verification-page">
+    <div class="container h-100">
+       <div class="row justify-content-center align-items-center h-100">
+          <div class="col-md-6 col-sm-12 col-12 ">
+             <div class="sign-user_card ">
+               <div class="sign-in-page-data">
+                 <div class="sign-in-from w-100 m-auto text-center">
+                   <img src="{% static 'images/login/mail.png' %}" width="80"  alt="">
+                    <h3 class="mt-3 mb-0">Verification Pending!</h3>
+                    <p class="text-white">Our support staffs are currently reviewing your contract and verify your account. If you don't receive a verification notification in 24hrs. Kindly contact support on <a href="mailto:shola.albert@gmail.com">hello@ves-tv.ng</a></p>
+                   <div class="d-inline-block w-100">
+                       <a href="{% url 'vendor:vendor-dashboard' %}" class="btn btn-primary mt-3">I have been verified</a>
+                   </div>
+                 </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </section>
+{% endblock content %}
