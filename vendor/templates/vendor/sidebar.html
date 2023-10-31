@@ -60,17 +60,9 @@
                </ul>
             </li>
 
-
-
-
-
-
-
           </ul>
        </nav>
     </div>
-
-
     {% elif request.user|has_role:"SuperAdmin" or  request.user|has_role:"SystemAdmin" %}
 
     {% endif %}
