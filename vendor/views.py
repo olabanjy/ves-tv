@@ -215,15 +215,13 @@ def complete_onboarding(request):
             first_name = data.get("first_name", None)
             last_name = data.get("last_name", None)
             company_name = data.get("company_name", None)
+            company_alias = data.get("company_alias", None)
             vendor_country = data.get("vendor_country", None)
             state = data.get("state", None)
             address = data.get("address", None)
             company_banner = request.FILES["company_banner"]
             company_thumbnail = request.FILES["company_thumbnail"]
             contact_phone = data.get("contact_phone", None)
-
-            print(company_banner)
-            print(company_thumbnail)
 
             ###
             account_number = data.get("account_number", None)
@@ -234,6 +232,7 @@ def complete_onboarding(request):
             vendor_profile.first_name = first_name
             vendor_profile.last_name = last_name
             vendor_profile.company_name = company_name
+            vendor_profile.company_alias = company_alias
             vendor_profile.state = state
             vendor_profile.contact_phone = contact_phone
             vendor_profile.nationality = vendor_country
@@ -266,14 +265,17 @@ def complete_onboarding(request):
                 contract_data = {
                     "first_name": vendor_profile.first_name,
                     "last_name": vendor_profile.last_name,
+                    "company_name": vendor_profile.company_name,
+                    "company_alias": vendor_profile.company_alias,
                     "today": datetime.astimezone(datetime.today()),
-                    "address_1": vendor_profile.state,
+                    "address_1": f"{vendor_profile.state} state",
                     "address_2": vendor_profile.address,
                     "city": vendor_profile.state,
                     "state": vendor_profile.nationality,
                     "account_number": vendor_bank.account_number,
                     "account_name": vendor_bank.account_name,
                     "account_bank": vendor_bank.account_bank,
+                    "vendor_email": vendor_profile.user.email,
                 }
                 contract_filename = f"VES_TV_AGREEMENT_{vendor_profile.user_code}.pdf"
                 create_and_save_contract(
@@ -307,7 +309,7 @@ def complete_onboarding(request):
             if vendor_profile.company_thumbnail:
                 default_channel.thumbnail = vendor_profile.company_thumbnail
 
-            default_channel.verified = True
+            # default_channel.verified = True
             default_channel.save()
 
             # return redirect("vendor:profile_settings" + "/emailandsms")
