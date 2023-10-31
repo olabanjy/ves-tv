@@ -59,29 +59,29 @@
                                         {% else %}
                                         <img class="profile-pic" src="{% static 'images/user/11.png' %}" alt="vendor-thumbnail">
                                         {% endif %}
-                                        <div class="p-image">
-                                           <i class="ri-pencil-line upload-button"></i>
-                                           <input name="company_thumbnail" class="file-upload" type="file" id="company_thumbnail" accept="image/*" required />
-                                        </div>
                                      </div>
                                   </div>
                                </div>
                                <div class="row align-items-center">
                                   <div class="form-group col-sm-6">
-                                     <label for="fname">First Name:</label>
-                                     <input name="first_name" type="text" class="form-control" id="first_name" value="{{user_profile.first_name}}"  placeholder="Input your first name" required>
+                                     <label for="first_name">First Name:</label>
+                                     <input name="first_name" type="text" class="form-control" id="first_name" value="{% if user_profile.first_name %} {{user_profile.first_name}} {% endif %}"  placeholder="Input your first name" required>
                                   </div>
                                   <div class="form-group col-sm-6">
-                                     <label for="lname">Last Name:</label>
-                                     <input name="last_name" type="text" class="form-control" id="last_name" value="{{user_profile.last_name}}" required>
+                                     <label for="last_name">Last Name:</label>
+                                     <input name="last_name" type="text" class="form-control" id="last_name" value="{% if user_profile.last_name %}{{user_profile.last_name}} {% endif %}" placeholder="Input your last name" required>
                                   </div>
                                   <div class="form-group col-sm-6">
-                                     <label for="uname">Company Name:</label>
-                                     <input name="company_name" type="text" class="form-control" id="company_name" value="{{user_profile.company_name}}" required>
+                                     <label for="company_name">Company Name:</label>
+                                     <input name="company_name" type="text" class="form-control" id="company_name" value="{% if user_profile.company_name %} {{user_profile.company_name}} {% endif %}" placeholder="What name should we call your company/account" required>
                                   </div>
                                   <div class="form-group col-sm-6">
-                                    <label for="uname">Contact Phone:</label>
-                                    <input name="contact_phone" type="text" class="form-control" id="contact_phone" value="{{user_profile.contact_phone}}" required>
+                                    <label for="company_alias">Company Alias:</label>
+                                    <input name="company_alias" type="text" class="form-control" id="company_alias" value="{% if user_profile.company_alias %} {{user_profile.company_alias}} {% endif %}"  placeholder="Input an short acronym for your company name" required>
+                                 </div>
+                                  <div class="form-group col-sm-6">
+                                    <label for="contact_phone">Contact Phone:</label>
+                                    <input name="contact_phone" type="text" class="form-control" id="contact_phone" value="{% if user_profile.contact_phone %} {{user_profile.contact_phone}} {% endif %}" placeholder="Director's phone number" required>
                                  </div>
 
 
@@ -97,17 +97,22 @@
 
                                   </div>
                                   <div class="form-group col-sm-6">
-                                     <label>State:</label>
-                                     <input name="state" type="text" class="form-control" id="state" value="{{user_profile.state}}" required>
+                                     <label for="state">State:</label>
+                                     <input name="state" type="text" class="form-control" id="state" value="{% if user_profile.state %} {{user_profile.state}} {% endif %}" placeholder="official state of residence" required>
                                   </div>
                                   <div class="form-group col-sm-12">
                                      <label>Address:</label>
-                                     <textarea class="form-control" name="address" rows="5" style="line-height: 22px;" placeholder="Full address" required>
+                                     <textarea class="form-control" name="address" rows="5" style="line-height: 22px;" placeholder="official address" required>
                                      </textarea>
                                   </div>
 
-                                  <div class="form-group col-sm-12">
-                                    <label>Company Banner:</label>
+                                  <div class="form-group col-sm-6">
+                                    <label for="company_thumbnail">Company Thumbnail:</label>
+                                    <input name="company_thumbnail" class="form-control" type="file" id="company_thumbnail" accept="image/*" required />
+                                 </div>
+
+                                 <div class="form-group col-sm-6">
+                                    <label for="company_banner">Company Banner:</label>
                                     <input name="company_banner" type="file" class="form-control" id="state"   id="company_banner" accept="image/*" required/>
                                  </div>
 
@@ -117,22 +122,18 @@
 
 
                                <div class="row align-items-center">
-
-
-
-
                                  <div class="form-group col-sm-6">
                                     <label for="lname">Bank Name:</label>
-                                    <input name="bank_name" type="text" class="form-control" id="bank_name" value="{{vendor_bank.account_bank}}" required>
+                                    <input name="bank_name" type="text" class="form-control" id="bank_name" value="{% if vendor_bank.account_bank  %} {{vendor_bank.account_bank}} {% endif %}" placeholder="Bank name" required>
                                  </div>
                                  <div class="form-group col-sm-6">
                                     <label for="uname">Account Number:</label>
-                                    <input name="account_number" type="text" class="form-control" id="account_number" value="{{vendor_bank.account_number}}" required>
+                                    <input name="account_number" type="text" class="form-control" id="account_number" value="{% if vendor_bank.account_number %} {{vendor_bank.account_number}} {% endif %}" placeholder="Bank account number" required>
                                  </div>
 
                                  <div class="form-group col-sm-12">
                                     <label for="uname">Account Name:</label>
-                                    <input name="account_name" type="text" class="form-control" id="account_name" value="{{vendor_bank.account_name}}" required>
+                                    <input name="account_name" type="text" class="form-control" id="account_name" value="{% if vendor_bank.account_name %} {{vendor_bank.account_name}} {% endif %}" placeholder="Bank Account Name" required>
                                  </div>
 
                                </div>
