@@ -13,10 +13,10 @@
                    <div class="iq-header-title">
                       <h4 class="card-title">Add Movie</h4>
                       <ul>
-                        <li> Mp4 files must be less than 5mb </li>
+                        <li> Mp4 files must be less than 25mb </li>
                         <li>Posters: 1902x800</li>
                         <li>Banners: 1902x800</li>
-                        <li>Thumbnail: 1902x800</li>
+                        <li>Thumbnail: 800x800</li>
                       </ul>
                    </div>
                 </div>
@@ -57,6 +57,16 @@
                                      {% endfor %}
                                   </select>
                                </div>
+
+                               <div class="col-md-6 form-group">
+                                 <select class="form-control" name="channel" id="channel" required>
+                                    <option disabled="">Choose Channel</option>
+                                    {% for chan in vendor_channels %}
+                                    <option value="{{chan.id}}">{{chan.display_name}}</option>
+                                    {% endfor %}
+                                 </select>
+                              </div>
+
                                <div class="col-sm-6 form-group">
                                   <select name="genre" class="form-control" >
                                      <option disabled="">Choose Genre</option>

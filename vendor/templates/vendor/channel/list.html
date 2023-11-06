@@ -1,0 +1,123 @@
+{% extends 'vendor/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+      <!-- Page Content  -->
+      <div id="content-page" class="content-page">
+        <div class="container-fluid">
+           <div class="row">
+              <div class="col-sm-12">
+                 <div class="iq-card">
+                    <div class="iq-card-header d-flex justify-content-between">
+                       <div class="iq-header-title">
+                          <h4 class="card-title">Channel Lists</h4>
+                       </div>
+                       <div class="iq-card-header-toolbar d-flex align-items-center">
+                          <a href="{% url 'vendor:vendor-add-channel' %}" class="btn btn-primary">Create new channel</a>
+                       </div>
+                    </div>
+                    <div class="iq-card-body">
+                       <div class="table-view">
+                          <table class="data-tables table movie_table " style="width:100%">
+                             <thead>
+                                <tr>
+                                   <!-- <th style="width:10%;">No</th> -->
+                                   <th style="width:20%;">Display Name</th>
+                                   <th style="width:20%;">Thumbnail</th>
+                                   <th style="width:20%;">Banner</th>
+
+                                   <th style="width:10%;">Total views</th>
+                                   <th style="width:10%;">Nos of contents</th>
+                                   <th style="width:20%;">Action</th>
+                                </tr>
+                             </thead>
+                             <tbody>
+                                {% if my_channels %}
+                                {% for chan in my_channels %}
+                                <tr>
+
+                                   <td>{{chan.display_name}}</td>
+                                   <td><img src="{{chan.thumbnail.url}}" class="img-fluid avatar-50" alt="thumbnail"></td>
+                                   <td><img src="{{chan.banner.url}}" class="img-fluid avatar-50" alt="banner"></td>
+
+                                   <td>{{chan.total_views}}</td>
+                                   <td>{{chan.content.count}}</td>
+                                   <td>
+                                      <div class="flex align-items-center list-user-action">
+
+
+                                            <button type="button" class="iq-bg-success" data-toggle="modal" data-target="#edit-channel-{{chan.id}}">
+                                                <i class="ri-pencil-line"></i>
+                                             </button>
+
+                                         <a class="iq-bg-primary" data-toggle="tooltip" data-placement="top" title=""
+                                            data-original-title="Delete" href="#"><i
+                                               class="ri-delete-bin-line"></i></a>
+                                      </div>
+                                   </td>
+                                </tr>
+
+                                <div class="modal fade" id="edit-channel-{{chan.id}}" tabindex="-1" role="dialog" aria-labelledby="edit-channel-{{chan.id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                       <div class="modal-content">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalCenterTitle">Update {{chan.display_name}} </h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                             </button>
+                                          </div>
+                                          <form action="{% url 'vendor:update-channel' chan.id %}" method="POST" enctype="multipart/form-data" >
+                                            {% csrf_token %}
+
+                                          <div class="modal-body">
+
+                                                <div class="form-group">
+                                                   <label for="display_name">Display Name:</label>
+                                                   <input name="display_name" type="text" class="form-control" value="{{chan.display_name}}" id="display_name">
+                                                </div>
+                                                <div class="form-group">
+                                                   <label for="about">Description:</label>
+                                                   <input name="about" type="text" class="form-control" value="{{chan.about}}" id="about">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="thumbnail">Thumbnail:</label>
+                                                    <input name="channel_thumbnail" type="file" class="form-control" id="thumbnail" accept="image/*">
+                                                 </div>
+                                                 <div class="form-group">
+                                                    <label for="banner">Banner:</label>
+                                                    <input name="channel_banner" type="file" class="form-control" id="banner" accept="image/*">
+                                                 </div>
+
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                             <button type="submit" class="btn btn-primary">Save changes</button>
+                                          </div>
+                                        </form>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                {% endfor %}
+                                {% endif %}
+
+
+
+
+
+                             </tbody>
+                          </table>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+
+
+{% endblock content %}

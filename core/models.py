@@ -82,7 +82,7 @@ class Content(models.Model):
         Profile, on_delete=models.DO_NOTHING, blank=True, null=True
     )
     channel = models.ForeignKey(
-        Channel, on_delete=models.CASCADE, blank=True, null=True
+        Channel, on_delete=models.CASCADE, blank=True, null=True, related_name="content"
     )
 
     def __str__(self):

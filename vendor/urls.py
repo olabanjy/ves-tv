@@ -9,7 +9,14 @@ urlpatterns = [
     path("dashboard/", vendor_dashboard, name="vendor-dashboard"),
     path("pending-verification/", pending_verification, name="pending-verification"),
     path("super-admin-dashboard/", super_admin_dashboard, name="super-admin-dashboard"),
-    path("vendor/film/list", film_list, name="vendor-film-list"),
+    path("vendor/film/list/", film_list, name="vendor-film-list"),
+    path("vendor/channel/list/", channel_list, name="channel-list"),
+    path("vendor/channel/update/<channel_id>", update_channel, name="update-channel"),
+    path(
+        "vendor/channel/add-new",
+        login_required(CreateChannel.as_view()),
+        name="vendor-add-channel",
+    ),
     path(
         "vendor/film/add-new",
         login_required(CreateFilm.as_view()),

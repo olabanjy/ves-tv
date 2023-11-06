@@ -95,6 +95,71 @@ def super_admin_dashboard(request):
 
 
 @login_required
+def channel_list(request):
+    template = "vendor/channel/list.html"
+
+    my_channels = Channel.objects.filter(vendor=request.user.profile)
+
+    context = {"my_channels": my_channels}
+
+    return render(request, template, context)
+
+
+@login_required
+def update_channel(request, channel_id):
+    # try:
+    if request.method == "POST":
+        data = request.POST
+
+        display_name = data.get("display_name", None)
+
+        about = data.get("about", None)
+
+        the_channel = Channel.objects.get(id=channel_id)
+
+        if display_name:
+            the_channel.display_name = display_name
+
+        if about:
+            the_channel.about = about
+
+        if "channel_banner" in request.FILES:
+            channel_banner = request.FILES["channel_banner"]
+            the_channel.banner = channel_banner
+
+        if "channel_thumbnail" in request.FILES:
+            channel_thumbnail = request.FILES["channel_thumbnail"]
+            the_channel.thumbnail = channel_thumbnail
+
+        the_channel.save()
+    return redirect("vendor:channel-list")
+
+
+class CreateChannel(View):
+    template = "vendor/channel/add.html"
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(self.request, self.template, context)
+
+    def post(self, request, *args, **kwargs):
+        display_name = request.POST.get("display_name")
+        about = request.POST.get("about")
+        banner = request.FILES["banner"]
+        thumbnail = request.FILES["thumbnail"]
+
+        new_channel = Channel.objects.create(
+            vendor=self.request.user.profile,
+            display_name=display_name,
+            about=about,
+            banner=banner,
+            thumbnail=thumbnail,
+        )
+
+        return redirect("vendor:channel-list")
+
+
+@login_required
 def film_list(request):
     template = "vendor/film/list.html"
 
@@ -114,7 +179,14 @@ class CreateFilm(View):
     def get(self, request, *args, **kwargs):
         genre_list = ContentGenre.objects.all()
         cat = ContentCategory.objects.filter(slug__in=["movies", "short-videos"])
-        context = {"genre_list": genre_list, "cats": cat}
+        vendor_channels = Channel.objects.filter(
+            vendor=self.request.user.profile, verified=True
+        ).all()
+        context = {
+            "genre_list": genre_list,
+            "cats": cat,
+            "vendor_channels": vendor_channels,
+        }
         return render(self.request, self.template, context)
 
     def post(self, request, *args, **kwargs):
@@ -124,6 +196,7 @@ class CreateFilm(View):
         img_thumbnail = request.FILES["img_thumbnail"]
         img_detail_poster = request.FILES["img_detail_poster"]
         category = request.POST.get("category")
+        channel = request.POST.get("channel")
         genre = request.POST.get("genre")
         description = request.POST.get("description")
         video_language = request.POST.get("video_language")
@@ -142,6 +215,8 @@ class CreateFilm(View):
         the_genre = ContentGenre.objects.filter(name=genre).first()
         the_category = ContentCategory.objects.filter(name=category).first()
 
+        the_channel = Channel.objects.get(id=channel)
+
         new_content = Content.objects.create(
             slug=content_slug,
             title=video_title,
@@ -159,6 +234,7 @@ class CreateFilm(View):
             timedelta=parse_duration(hiddentimedelta),
             status=core_choices.VerificationStatus.Uploading.value,
             vendor=self.request.user.profile,
+            channel=the_channel,
         )
 
         try:
