@@ -313,7 +313,7 @@ def complete_onboarding(request):
             default_channel.save()
 
             # return redirect("vendor:profile_settings" + "/emailandsms")
-            return redirect(reverse("vendor:profile_settings") + "#emailandsms")
+            return redirect(reverse("vendor:profile_settings") + "#agreements")
 
     except Exception as e:
         print(e)
@@ -335,7 +335,7 @@ def submit_contract(request):
             vendor_contract.save()
     except Exception as e:
         print(e)
-    return redirect("vendor:vendor-dashboard")
+    return redirect(reverse("vendor:profile_settings") + "#agreements")
 
 
 @login_required

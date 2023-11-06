@@ -20,7 +20,7 @@
                             </a>
                          </li>
                          <li class="col-md-3 p-0">
-                            <a class="nav-link" data-toggle="pill" href="#emailandsms">
+                            <a class="nav-link" data-toggle="pill" href="#agreements">
                               Contracts & Agreements
                             </a>
                          </li>
@@ -155,7 +155,7 @@
                          </div>
                       </div>
                    </div>
-                   <div class="tab-pane fade" id="emailandsms" role="tabpanel">
+                   <div class="tab-pane fade" id="agreements" role="tabpanel">
                       <div class="iq-card">
                          <div class="iq-card-header d-flex justify-content-between">
                             <div class="iq-header-title">
@@ -164,13 +164,13 @@
                          </div>
                          <div class="iq-card-body">
                            {% if contract.contract_file %}
-                              {% if contract.signed %}
-                              <p> Contract signed and received</p>
+                              {% if contract.resubmitted %}
+                              <p> Contract signed and received. <br> Kindly wait for approval! </p>
                               {% else %}
                               <div>
                                  Please click <a href="{{contract.contract_file.url}}" target="_blank">here</a> to download your contract, sign and resubmit down below
                               </div>
-                              <form action="{% url 'vendor:submit_contract' %}" method="post">
+                              <form action="{% url 'vendor:submit_contract' %}" method="post"  enctype="multipart/form-data">
                                  {% csrf_token %}
                                  <div class="form-group col-sm-6">
                                    <label>Contract:</label>
