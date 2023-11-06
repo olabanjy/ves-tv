@@ -2,11 +2,19 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from decouple import config
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "zamari.settings.prod")
+
+    in_production = config("IN_PRODUCTION", default=False, cast=bool)
+
+    if in_production:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "zamari.settings.prod")
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "zamari.settings.dev")
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

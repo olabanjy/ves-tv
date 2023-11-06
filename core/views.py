@@ -324,3 +324,10 @@ def inactive_account(request):
 
     context = {}
     return render(request, template, context)
+
+
+def vendor_landing_page(request):
+    template = "core/vendor_landing.html"
+
+    context = {}
+    return render(request, template, context)
