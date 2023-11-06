@@ -27,6 +27,14 @@
             <li><a href="/vendor-home/{{request.user.profile.user_code}}" target="_blank" class="text-primary"><i class="ri-arrow-right-line"></i><span>Visit my site</span></a></li>
             <li class="active active-menu"><a href="{% url 'vendor:vendor-dashboard' %}" class="iq-waves-effect"><i class="las la-home iq-arrow-left"></i><span>Dashboard</span></a></li>
 
+            <li>
+               <a href="#my-channels" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>My Channels</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
+               <ul id="my-channels" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                  <li><a href="{% url 'vendor:channel-list' %}"  ><i class="las la-user-plus"></i> <span>All Channels </span>  </a>
+                  <li><a href="{% url 'vendor:vendor-add-channel' %}"   ><i class="las la-user-plus"></i> <span>Create Channel </span>  </a>
+               </ul>
+            </li>
+
              <li>
                 <a href="#my-contents" class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-film"></i><span>My Contents</span><i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                 <ul id="my-contents" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
@@ -38,6 +46,7 @@
                     </ul>
 
                     </li>
+
                    <li><a href="#show"  class="iq-waves-effect collapsed" data-toggle="collapse" aria-expanded="false"><i class="las la-eye"></i><span>Shows</span> <i class="ri-arrow-right-s-line iq-arrow-right"></i></a>
                     <ul id="show" class="iq-submenu collapse" data-parent="#my-contents">
                         <li><a href="#"><i class="las la-user-plus"></i>Add new</a></li>

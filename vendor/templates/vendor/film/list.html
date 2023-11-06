@@ -25,6 +25,7 @@
                                <th>Title</th>
                                <th>Genre</th>
                                <th>Category</th>
+                               <th>Channel</th>
                                <th>Upload date</th>
                                <th>Language</th>
                                <th >Status</th>
@@ -50,6 +51,7 @@
                                </td>
                                <td>{{vid.genre.name}}</td>
                                <td>{{vid.category.name}}</td>
+                               <td> {% if vid.channel %} {{vid.channel.display_name}} {% else %} None {% endif %}</td>
                                <td>{{vid.created_at}}</td>
                                <td>{{vid.language}}</td>
                                <td>
