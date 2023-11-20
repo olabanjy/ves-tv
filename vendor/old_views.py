@@ -36,7 +36,7 @@ def after_login(request):
         admin_profile.role == user_choices.Roles.SuperAdmin.value
         or admin_profile.role == user_choices.Roles.SystemAdmin.value
     ):
-        return redirect("core:home")
+        return redirect("vendor:super-admin-dashboard")
 
 
 @login_required

@@ -4,11 +4,16 @@ from django.contrib.auth.decorators import login_required
 
 app_name = "vendor"
 
-urlpatterns = [
-    path("after_login/", after_login, name="after_login"),
+
+admin_urls = [
+    path("super-admin-dashboard/", super_admin_dashboard, name="super-admin-dashboard"),
+    path("user-list/", user_list, name="user-list"),
+    path("user-subs/", user_subs, name="user-subs"),
+]
+
+vendor_urls = [
     path("dashboard/", vendor_dashboard, name="vendor-dashboard"),
     path("pending-verification/", pending_verification, name="pending-verification"),
-    path("super-admin-dashboard/", super_admin_dashboard, name="super-admin-dashboard"),
     path("vendor/film/list/", film_list, name="vendor-film-list"),
     path("vendor/channel/list/", channel_list, name="channel-list"),
     path("vendor/channel/update/<channel_id>", update_channel, name="update-channel"),
@@ -32,3 +37,12 @@ urlpatterns = [
     path("complete_onboarding/", complete_onboarding, name="complete_onboarding"),
     path("submit_contract/", submit_contract, name="submit_contract"),
 ]
+
+
+urlpatterns = (
+    admin_urls
+    + vendor_urls
+    + [
+        path("after_login/", after_login, name="after_login"),
+    ]
+)

@@ -50,6 +50,11 @@ class Homepage(View):
             "favorite_channel": favorite_channel,
         }
 
+        try:
+            Visit.objects.create(request_body=json.dumps(dict(request.headers)))
+        except Exception:
+            pass
+
         return render(request, template, context)
 
 
@@ -138,6 +143,11 @@ def content_detail(request, slug=None):
         the_content.watch_times += 1
         the_content.save()
 
+        # channel too
+        if the_content.channel:
+            the_content.channel.total_views += 1
+            the_content.channel.save()
+
         active_user = fetch_active_user(request)
         if active_user:
             watched_content_qs = WatchedContent.objects.filter(
@@ -149,6 +159,7 @@ def content_detail(request, slug=None):
                 watched_content.save()
             else:
                 WatchedContent.objects.create(user=active_user, content=the_content)
+
     except Exception as e:
         print(e)
         pass
