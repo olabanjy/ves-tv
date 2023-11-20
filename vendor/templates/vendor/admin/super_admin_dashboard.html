@@ -1,0 +1,202 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block content %}
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-lg-12">
+             <div class="row">
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                      <div class="iq-card-body">
+                         <div class="d-flex align-items-center justify-content-between">
+                            <div class="iq-cart-text text-capitalize">
+                               <p class="mb-0">
+                                  view
+                               </p>
+                            </div>
+                            <div class="icon iq-icon-box-top rounded-circle bg-primary">
+                               <i class="las la-eye"></i>
+                            </div>
+                         </div>
+                         <div class="d-flex align-items-center justify-content-between mt-3">
+                            <h4 class=" mb-0">{{viewCount}}</h4>
+
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                      <div class="iq-card-body">
+                         <div class="d-flex align-items-center justify-content-between">
+                            <div class="iq-cart-text text-capitalize">
+                               <p class="mb-0 font-size-14">
+                                 Active Subscription
+                               </p>
+                            </div>
+                            <div class="icon iq-icon-box-top rounded-circle bg-warning">
+                               <i class="lar la-star"></i>
+                            </div>
+                         </div>
+                         <div class="d-flex align-items-center justify-content-between mt-3">
+                            <h4 class=" mb-0">{{activeSubscribtion}} </h4>
+
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                      <div class="iq-card-body">
+                         <div class="d-flex align-items-center justify-content-between">
+                            <div class="iq-cart-text text-capitalize">
+                               <p class="mb-0 font-size-14">
+                                  Users
+                               </p>
+                            </div>
+                            <div class="icon iq-icon-box-top rounded-circle bg-info">
+                               <i class="las la-download"></i>
+                            </div>
+                         </div>
+                         <div class="d-flex align-items-center justify-content-between mt-3">
+                            <h4 class=" mb-0">{{allUsers}}</h4>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="col-sm-6 col-lg-6 col-xl-3">
+                   <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+                      <div class="iq-card-body">
+                         <div class="d-flex align-items-center justify-content-between">
+                            <div class="iq-cart-text text-uppercase">
+                               <p class="mb-0 font-size-14">
+                                  Visitors
+                               </p>
+                            </div>
+                            <div class="icon iq-icon-box-top rounded-circle bg-success">
+                               <i class="lar la-user"></i>
+                            </div>
+                         </div>
+                         <div class="d-flex align-items-center justify-content-between mt-3">
+                            <h4 class=" mb-0">{{visits}} </h4>
+
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+
+
+
+
+
+             <div class="iq-card">
+               <div class="iq-card-header d-flex justify-content-between align-items-center">
+                  <div class="iq-header-title">
+                     <h4 class="card-title">Top Rated Channels </h4>
+                  </div>
+                  <div id="top-rated-item-slick-arrow" class="slick-aerrow-block  iq-rtl-direction"></div>
+               </div>
+               <div class="iq-card-body">
+                  {% if topChannel %}
+                  <ul class="list-unstyled row top-rated-item mb-0 iq-rtl-direction">
+                     {% for item in topChannel %}
+                     <li class="col-sm-6 col-lg-4 col-xl-3 iq-rated-box">
+                        <div class="iq-card mb-0">
+                           <div class="iq-card-body p-0">
+                              <div class="iq-thumb">
+                                 <a href="javascript:void(0)">
+                                    <img src="{{item.thumbnail.url}}" class="img-fluid w-100 img-border-radius" alt="">
+                                 </a>
+                              </div>
+                              <div class="iq-feature-list">
+                                 <h6 class="font-weight-600 mb-0">{{item.display_name}} </h6>
+
+                                 <div class="d-flex align-items-center my-2 iq-ltr-direction">
+                                    <p class="mb-0 mr-2"><i class="lar la-eye mr-1"></i> {{item.total_views}}</p>
+
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </li>
+                     {% endfor %}
+
+
+
+                  </ul>
+                  {% endif %}
+               </div>
+            </div>
+
+          </div>
+
+
+
+
+
+       </div>
+       <div class="row">
+
+
+          <div class="col-sm-12">
+             <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">Most watched contents </h4>
+                   </div>
+
+                </div>
+                <div class="iq-card-body">
+                   <div class="table-responsive">
+                      <table class="data-tables table movie_table" style="width:100%">
+                         <thead>
+                            <tr>
+                               <th style="width:20%;">Title</th>
+                               <th style="width:10%;">Watch Time</th>
+                               <th style="width:20%;">Genre</th>
+                               <th style="width:10%;">Category</th>
+                               <th style="width:10%;">Vendor</th>
+                               <th style="width:20%;">Date Added</th>
+                               <th style="width:10%;"><i class="lar la-heart"></i></th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                           {% if top10contents %}
+                           {% for item in top10contents %}
+                            <tr>
+                               <td>
+                                  <div class="media align-items-center">
+                                     <div class="iq-movie">
+                                        <a href="javascript:void(0);"><img src="{{item.img_poster.url}}" class="img-border-radius avatar-40 img-fluid" alt=""></a>
+                                     </div>
+                                     <div class="media-body text-white text-left ml-3">
+                                        <p class="mb-0">{{item.title}}</p>
+                                        <small>{{item.timedelta}}</small>
+                                     </div>
+                                  </div>
+                               </td>
+                               <td><i class="lar la-eye mr-2"></i> {{item.watch_times}} </td>
+                               <td>{{item.genre.name}}</td>
+                               <td>
+                                 {{item.category.name}}
+                               </td>
+                               <td>{% if item.vendor %} {{item.vendor.company_name}} {% else %} VES TV {% endif %} </td>
+                               <td>{{item.created_at}}</td>
+                               <td></td>
+                            </tr>
+                            {% endfor %}
+                            {% endif %}
+                         </tbody>
+                      </table>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+ </div>
+
+
+ {% endblock content %}

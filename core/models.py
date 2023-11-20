@@ -178,3 +178,7 @@ class Likes(models.Model):
 
     def __str__(self):
         return f"{self.msisdn}"
+
+
+class Visit(models.Model):
+    request_body = models.CharField(max_length=500, blank=True, null=True)

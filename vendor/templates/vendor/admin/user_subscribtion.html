@@ -1,0 +1,67 @@
+{% extends 'vendor/base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div id="content-page" class="content-page">
+    <div class="container-fluid">
+       <div class="row">
+          <div class="col-sm-12">
+             <div class="iq-card">
+                <div class="iq-card-header d-flex justify-content-between">
+                   <div class="iq-header-title">
+                      <h4 class="card-title">User Subscrbtion</h4>
+                   </div>
+                </div>
+                <div class="iq-card-body">
+                   <div class="table-view">
+                      <table class="data-tables table movie_table" style="width:100%">
+                         <thead>
+                            <tr>
+                               <th style="width: 30%;">MSISDN</th>
+                               <th style="width: 15%;">Status</th>
+                               <th style="width: 20%;">Start Date </th>
+                               <th style="width: 20%;">End Date </th>
+                               <th style="width: 15%;">Action</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                            {% if allSub %}
+                            {% for sub in allSub %}
+
+                            <tr>
+
+
+                               <td>{{sub.user.phone}}</td>
+                               <td>
+                                {% if sub.sub_active %}
+                                <span class="badge iq-bg-success">Active</span>
+                                {% else %}
+                                <span class="badge iq-bg-danger">In Active</span>
+                                {% endif %}
+
+                            </td>
+                               <td>{{sub.starts_date}} </td>
+
+
+                               <td>{{sub.ends_date}}</td>
+                               <td>
+
+                                   </td>
+
+                                  </tr>
+                                  {% endfor %}
+
+                                  {% endif %}
+                                                             </tbody>
+                                                          </table>
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+
+
+{% endblock content %}
