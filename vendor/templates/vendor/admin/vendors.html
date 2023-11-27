@@ -45,8 +45,7 @@
                                <td>{{user.contact_phone}} </td>
                                <td>{{user.created_at}} </td>
                                <td>
-                                <a target="_blank" href="{{user.vendor_contracts.contract_file.url}}"> View contract document </a>
-
+                                <a target="_blank" href="{% if user.vendor_contracts.contract_file %} {{user.vendor_contracts.contract_file.url}}{% else %}#{% endif %}"> View contract document </a>
                                  </td>
                                <td>
 
