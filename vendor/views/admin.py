@@ -5,11 +5,14 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
 from core.models import Content, WatchedContent, Likes, Visit
-from users.models import UserSubscribtion, UserProfile
-from vendor.models import Channel
+from users.models import UserSubscribtion, UserProfile, Profile
+from users import choices as ums_choices
+from vendor.models import Channel, Contracts
+
+from django.shortcuts import get_object_or_404
 
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
@@ -78,3 +81,58 @@ def user_subs(request):
     }
 
     return render(request, template, context)
+
+
+@login_required
+def all_contents(request):
+    template = "vendor/admin/content_list.html"
+
+    all_contents = Content.objects.all()
+
+    context = {
+        "all_contents": all_contents,
+    }
+
+    return render(request, template, context)
+
+
+@login_required
+def all_vendors(request):
+    template = "vendor/admin/vendors.html"
+
+    all_vendors = Profile.objects.filter(role=ums_choices.Roles.Vendor.value).all()
+
+    context = {
+        "all_vendors": all_vendors,
+    }
+
+    return render(request, template, context)
+
+
+@login_required
+def approve_content(request, id):
+    try:
+        the_content = get_object_or_404(Content, pk=id)
+        the_content.verified = True
+        the_content.save()
+    except Exception as ex:
+        print(ex)
+
+    return redirect("vendor:content-list")
+
+
+@login_required
+def approve_vendor(request, id):
+    try:
+        the_vendor = get_object_or_404(Profile, pk=id)
+        the_vendor.verified = True
+        the_vendor.onboarded = True
+        the_vendor.save()
+
+        the_vendor.vendor_contracts.signed = True
+        the_vendor.vendor_contracts.save()
+
+    except Exception as ex:
+        print(ex)
+
+    return redirect("vendor:vendor-list")

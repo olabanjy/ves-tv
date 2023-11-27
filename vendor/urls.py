@@ -8,7 +8,11 @@ app_name = "vendor"
 admin_urls = [
     path("super-admin-dashboard/", super_admin_dashboard, name="super-admin-dashboard"),
     path("user-list/", user_list, name="user-list"),
+    path("vendor-list/", all_vendors, name="vendor-list"),
     path("user-subs/", user_subs, name="user-subs"),
+    path("content-list/", all_contents, name="content-list"),
+    path("approve-content/<id>/", approve_content, name="approve-content"),
+    path("approve-vendor/<id>/", approve_vendor, name="approve-vendor"),
 ]
 
 vendor_urls = [

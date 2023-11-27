@@ -9,7 +9,9 @@ from django.db.models.signals import post_save
 
 
 class Contracts(models.Model):
-    vendor = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    vendor = models.OneToOneField(
+        Profile, on_delete=models.CASCADE, related_name="vendor_contracts"
+    )
     contract_file = models.FileField(
         upload_to="vendor/contracts", blank=True, null=True
     )
