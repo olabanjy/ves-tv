@@ -37,23 +37,36 @@ from .subscriptionManager import mtnSubscribe, mtnUnSubscribe
 import json
 import xmltodict
 
+import string
+import random
+
 
 def subscribe(request):
-    if "Msisdn" in request.headers:
-        msisdn = request.headers["Msisdn"]
-        # get user msisdn
 
-        sub = mtnSubscribe(msisdn)
+    N = 7
 
-        if sub != False:
-            print("Subscribtion Successfull")
-            return redirect("core:awaiting_response")
-        else:
-            print("Subscribtion UnSuccessfull")
-            return redirect("core:onboarding")
-    else:
-        return redirect("core:onboarding")
-        # return redirect("users:awaiting_response")
+    # using random.choices()
+    # generating random strings
+    res = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
+
+    redirect_url = f"http://ng-app.com/CloudIntegrated/VESTV-24-No-23410220000022939-web?trxId={res}"
+
+    return redirect(redirect_url)
+    # if "Msisdn" in request.headers:
+    #     msisdn = request.headers["Msisdn"]
+    #     # get user msisdn
+
+    #     sub = mtnSubscribe(msisdn)
+
+    #     if sub != False:
+    #         print("Subscribtion Successfull")
+    #         return redirect("core:awaiting_response")
+    #     else:
+    #         print("Subscribtion UnSuccessfull")
+    #         return redirect("core:onboarding")
+    # else:
+    #     return redirect("core:onboarding")
+    #     # return redirect("users:awaiting_response")
 
 
 def cancelSubscribtion(request):
