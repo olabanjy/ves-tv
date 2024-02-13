@@ -230,7 +230,14 @@ class CreateFilm(View):
 def show_list(request):
     template = "vendor/show/list.html"
 
-    context = {}
+    show_cat = ContentCategory.objects.filter(
+        slug__in=["tv-series", "playlist", "series"]
+    )
+    my_shows = Content.objects.filter(
+        vendor=request.user.profile, category__in=show_cat
+    )
+
+    context = {"my_shows": my_shows}
 
     return render(request, template, context)
 
