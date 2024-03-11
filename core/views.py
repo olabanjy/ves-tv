@@ -355,14 +355,12 @@ def campaign_url(request):
             msisdn = msisdn.replace("0", "234", 1)
 
         # save the clickID and msisdn
-        try:
 
-            new_promo_hit = CampaignTracker.objects.create(
-                msisdn=msisdn, partner=partner, click_id=click_id
-            )
-            print("new promo hit at", new_promo_hit)
-        except Exception as ex:
-            print(ex)
-            pass
+        new_promo_hit = CampaignTracker.objects.create(msisdn=msisdn)
+        if click_id:
+            new_promo_hit.click_id = click_id
+        if partner:
+            new_promo_hit.partner = partner
+        new_promo_hit.save()
 
     return redirect("core:home")
