@@ -6,6 +6,7 @@ from .models import *
 admin.site.register(Profile)
 admin.site.register(WebhookBackup)
 admin.site.register(Subscribtion)
+admin.site.register(CampaignTracker)
 
 
 admin.site.register(UserProfile)
