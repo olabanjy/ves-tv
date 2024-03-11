@@ -149,7 +149,6 @@ def data_sync(request):
                     postbackUrl = "https://postback.level23.nl/?currency=USD&handler=11349&hash=63857b26c564dd6b79e5a2fb1bb209e8&tracker="
                     send_postback = requests.get(postbackUrl)
                     print(send_postback)
-                    pass
                 except:
                     pass
                 return HttpResponse(200)
