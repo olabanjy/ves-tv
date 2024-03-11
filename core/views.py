@@ -10,7 +10,7 @@ import json
 from django.http import JsonResponse
 from users.decorators import allowed_users
 from users.utils import fetch_active_user
-from users.models import Profile
+from users.models import Profile, CampaignTracker
 from users.choices import Roles as user_roles
 from vendor.models import Channel
 
@@ -342,3 +342,25 @@ def vendor_landing_page(request):
 
     context = {}
     return render(request, template, context)
+
+
+def campaign_url(request):
+    partner = request.GET.get("partner", None)
+    click_id = request.GET.get("clickid", None)
+    print(partner, click_id)
+
+    if "Msisdn" in request.headers:
+        msisdn = request.headers["Msisdn"]
+        if msisdn.startswith("0") and len(msisdn) == 11:
+            msisdn = msisdn.replace("0", "234", 1)
+
+        # save the clickID and msisdn
+
+        new_promo_hit = CampaignTracker.objects.create(msisdn=msisdn)
+        if click_id:
+            new_promo_hit.click_id = click_id
+        if partner:
+            new_promo_hit.partner = partner
+        new_promo_hit.save
+
+    return redirect("core:home")
