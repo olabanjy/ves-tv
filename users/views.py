@@ -146,7 +146,11 @@ def data_sync(request):
                 theUser.save()
 
                 try:
-                    postbackUrl = "https://postback.level23.nl/?currency=USD&handler=11349&hash=63857b26c564dd6b79e5a2fb1bb209e8&tracker="
+                    # check campaign tracker is msisdn is there
+                    find_promo_msisdn = CampaignTracker.objects.filter(
+                        msisdn=msisdn
+                    ).first()
+                    postbackUrl = f"https://postback.level23.nl/?currency=USD&handler=11349&hash=63857b26c564dd6b79e5a2fb1bb209e8&tracker={find_promo_msisdn.click_id}"
                     send_postback = requests.get(postbackUrl)
                     print(send_postback)
                 except:
