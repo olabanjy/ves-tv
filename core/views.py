@@ -13,6 +13,7 @@ from users.utils import fetch_active_user
 from users.models import Profile, CampaignTracker
 from users.choices import Roles as user_roles
 from vendor.models import Channel
+import string, random
 
 
 # Create your views here.
@@ -349,6 +350,14 @@ def campaign_url(request):
     click_id = request.GET.get("clickid", None)
     print(partner, click_id)
 
+    N = 7
+
+    # using random.choices()
+    # generating random strings
+    res = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
+
+    redirect_url = f"http://ng-app.com/CloudIntegrated/VESTV-24-No-23410220000022939-web?trxId={res}"
+
     if "Msisdn" in request.headers:
         msisdn = request.headers["Msisdn"]
         if msisdn.startswith("0") and len(msisdn) == 11:
@@ -363,4 +372,4 @@ def campaign_url(request):
             new_promo_hit.partner = partner
         new_promo_hit.save()
 
-    return redirect("core:home")
+    return redirect(redirect_url)
