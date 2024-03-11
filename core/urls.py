@@ -20,6 +20,6 @@ urlpatterns = [
     path("inactive_account/", inactive_account, name="inactive_account"),
     path("awaiting_response/", awaiting_response, name="awaiting_response"),
     path("onboarding/", onboarding, name="onboarding"),
-    path("campaign/", campaign_url, name="onboarding"),
+    path("campaign/", campaign_url, name="campaign"),
     path("become-a-vendor/", vendor_landing_page, name="vendor_landing_page"),
 ]
