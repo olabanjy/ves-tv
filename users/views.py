@@ -152,6 +152,8 @@ def data_sync(request):
                     ).first()
                     postbackUrl = f"https://postback.level23.nl/?currency=USD&handler=11349&hash=63857b26c564dd6b79e5a2fb1bb209e8&tracker={find_promo_msisdn.click_id}"
                     send_postback = requests.get(postbackUrl)
+                    find_promo_msisdn.converted = True
+                    find_promo_msisdn.save()
                     print(send_postback)
                 except:
                     pass
