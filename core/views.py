@@ -365,6 +365,11 @@ def campaign_url(request):
 
         # save the clickID and msisdn
 
+        try:
+            CampaignTracker.objects.filter(msisdn=msisdn).delete()
+        except Exception as ex:
+            print(ex)
+
         new_promo_hit = CampaignTracker.objects.create(msisdn=msisdn)
         if click_id:
             new_promo_hit.click_id = click_id
