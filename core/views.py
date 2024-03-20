@@ -15,6 +15,8 @@ from users.choices import Roles as user_roles
 from vendor.models import Channel
 import string, random
 
+from users.subscriptionManager import HML
+
 
 # Create your views here.
 
@@ -29,6 +31,10 @@ def error500(request):
 
 class Homepage(View):
     def get(self, request):
+
+        HMLClient = HML()
+        checkTelco = HMLClient.checkNetwork("07042411717")
+        print(checkTelco)
         popular = (
             Content.objects.filter(
                 verified=True, status=choices.VerificationStatus.Approved.value
@@ -348,15 +354,9 @@ def vendor_landing_page(request):
 def campaign_url(request):
     partner = request.GET.get("partner", None)
     click_id = request.GET.get("clickid", None)
-    print(partner, click_id)
+    telco = request.GET.get("telco", None)
 
-    N = 7
 
-    # using random.choices()
-    # generating random strings
-    res = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
-
-    redirect_url = f"http://ng-app.com/CloudIntegrated/VESTV-24-No-23410220000022939-web?trxId={res}"
 
     if "Msisdn" in request.headers:
         msisdn = request.headers["Msisdn"]
@@ -375,6 +375,31 @@ def campaign_url(request):
             new_promo_hit.click_id = click_id
         if partner:
             new_promo_hit.partner = partner
+        if telco:
+            new_promo_hit.telco = telco
         new_promo_hit.save()
 
-    return redirect(redirect_url)
+        if telco and telco != 'MTN':
+            # subscribe airtel
+            client = HML()
+            checkNetwork = client.checkNetwork(msisdn)
+            if checkNetwork == "AIRTEL":
+                sub = client.subscribe(msisdn, choices.Telco.AIRTEL.value)
+                if sub != False:
+                    print("Subscribtion Successfull")
+                    return redirect("core:awaiting_response")
+                return redirect("core:onboarding")
+            return redirect('core:home')
+        else:
+            N = 7
+
+            # using random.choices()
+            # generating random strings
+            res = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
+
+            redirect_url = f"http://ng-app.com/CloudIntegrated/VESTV-24-No-23410220000022939-web?trxId={res}"
+            return redirect(redirect_url)
+    else:
+        return redirect('core:home')
+
+

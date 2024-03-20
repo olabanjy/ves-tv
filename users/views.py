@@ -1,41 +1,25 @@
-from django.contrib import messages
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import (
     HttpResponse,
-    HttpResponseRedirect,
-    HttpResponseForbidden,
-    HttpResponseServerError,
-    JsonResponse,
 )
 from django.views.decorators.http import require_POST
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, reverse, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView, View
+
+from django.shortcuts import redirect
+
 from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse
-from django.core.mail import EmailMultiAlternatives, send_mail, EmailMessage
-from django.template.loader import render_to_string
-from django.template import RequestContext
-from django.utils.encoding import force_bytes
-from django.utils.timezone import make_aware
-from paystackapi.paystack import Paystack
-from django.db.models import Sum
-from django.core import serializers
-from django.core.serializers.json import DjangoJSONEncoder
-from django.utils.timezone import make_aware
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
-import time, re, random, string, math
-from decimal import Decimal
-from datetime import timedelta, date, datetime, time
-from dateutil.relativedelta import relativedelta
+
+
+import random, string
+
+from datetime import datetime
+
 from .models import *
-from .subscriptionManager_old import subscribeManager
-from .subscriptionManager import mtnSubscribe, mtnUnSubscribe
+
+from .subscriptionManager import HML
 import json
-import xmltodict
+
+from . import choices
+
 
 import requests
 
@@ -44,41 +28,48 @@ import random
 
 
 def subscribe(request):
+    # fetch msisdn
+    # if mtn, use secureD redirect
+    # if airtel, call endpoint
+    client = HML()
+    if "Msisdn" in request.headers:
+        msisdn = request.headers["Msisdn"]
+        # get user msisdn
 
-    N = 7
+        checkNetwork = client.checkNetwork(msisdn)
+        if checkNetwork == "AIRTEL":
+            sub = client.subscribe(msisdn, choices.Telco.AIRTEL.value)
+            if sub != False:
+                print("Subscribtion Successfull")
+                return redirect("core:awaiting_response")
+            return redirect("core:onboarding")
+        # elif checkNetwork == "MTN":
+        else:
+            # send to secureD for redirection
+            N = 7
+            res = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
 
-    # using random.choices()
-    # generating random strings
-    res = "".join(random.choices(string.ascii_lowercase + string.digits, k=N))
+            redirect_url = f"http://ng-app.com/CloudIntegrated/VESTV-24-No-23410220000022939-web?trxId={res}"
 
-    redirect_url = f"http://ng-app.com/CloudIntegrated/VESTV-24-No-23410220000022939-web?trxId={res}"
+            return redirect(redirect_url)
 
-    return redirect(redirect_url)
-    # if "Msisdn" in request.headers:
-    #     msisdn = request.headers["Msisdn"]
-    #     # get user msisdn
-
-    #     sub = mtnSubscribe(msisdn)
-
-    #     if sub != False:
-    #         print("Subscribtion Successfull")
-    #         return redirect("core:awaiting_response")
-    #     else:
-    #         print("Subscribtion UnSuccessfull")
-    #         return redirect("core:onboarding")
-    # else:
-    #     return redirect("core:onboarding")
-    #     # return redirect("users:awaiting_response")
+    return redirect("core:onboarding")
 
 
 def cancelSubscribtion(request):
     if "Msisdn" in request.headers:
         msisdn = request.headers["Msisdn"]
         # get user msisdn
+        client = HML()
 
-        sub = mtnUnSubscribe(msisdn)
+        checkNetwork = client.checkNetwork(msisdn)
+        if checkNetwork == "AIRTEL":
+            unSub = client.unSubscribe(msisdn, choices.Telco.AIRTEL.value)
+        # elif checkNetwork == "MTN":
+        else:
+            unSub = client.unSubscribe(msisdn, choices.Telco.MTN.value)
 
-        if sub != False:
+        if unSub != False:
             print("Un-Subscribtion Successfull")
             return redirect("core:home")
         else:
@@ -86,18 +77,6 @@ def cancelSubscribtion(request):
             return redirect("core:home")
     else:
         return redirect("users:onboarding")
-
-
-@login_required
-def after_signup(request):
-    # get user msisdn
-    msisdn = request.user.profile.phone
-    sub = mtnSubscribe(msisdn)
-    print(sub)
-    # check subscription status
-    ###########
-
-    return redirect("core:awaiting_response")
 
 
 # DATA SYNC
@@ -115,6 +94,11 @@ def data_sync(request):
         pass
     try:
         if the_data["telco"] == "MTN":
+            try:
+                new_sync.telco = "MTN"
+                new_sync.save()
+            except:
+                pass
             not_type = the_data[
                 "type"
             ]  # UNSUBSCRIPTION_NOTIFICATION, SYNC_NOTIFICATION
@@ -130,6 +114,8 @@ def data_sync(request):
 
             # fetch user
             theUser, created = UserProfile.objects.get_or_create(phone=msisdn)
+            theUser.telco = "MTN"
+            theUser.save()
             userSub, created = UserSubscribtion.objects.get_or_create(user=theUser)
             if not_type == "SYNC_NOTIFICATION":
                 start_date = the_data["details"]["date"]
@@ -198,6 +184,14 @@ def data_sync(request):
                 return HttpResponse(200)
             else:
                 return HttpResponse(200)
+        elif the_data["telco"] == "AIRTEL":
+            try:
+                new_sync.telco = "AIRTEL"
+                new_sync.save()
+            except:
+                pass
+            # handle access
+            return HttpResponse(200)
         else:
             return HttpResponse(200)
     except Exception as e:

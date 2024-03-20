@@ -23,3 +23,22 @@ _readable_roles = {
 
 
 ROLE_CHOICES = [(d.value, _readable_roles[d.value]) for d in Roles]
+
+
+@unique
+class Telco(DocEnum):
+    """
+    Telco Choices
+    """
+
+    MTN = "MTN", "MTN"
+    AIRTEL = "AIRTEL", "AIRTEL"
+
+
+_readable_telcos = {
+    Telco.MTN.value: _("MTN"),
+    Telco.AIRTEL.value: _("AIRTEL"),
+}
+
+
+TELCO_CHOICES = [(d.value, _readable_telcos[d.value]) for d in Telco]
