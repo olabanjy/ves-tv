@@ -89,6 +89,7 @@ post_save.connect(profile_receiver, sender=settings.AUTH_USER_MODEL)
 
 class WebhookBackup(models.Model):
     req_body = models.TextField(blank=True, null=True)
+    telco = models.CharField(max_length=20, blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -119,8 +120,12 @@ class UserProfile(models.Model):
     test_phase = models.CharField(
         max_length=200, choices=TEST_PHASE, default="live_prod"
     )
+    telco = models.CharField(max_length=20, blank=True, null=True)
     sub_status = models.CharField(max_length=200, choices=SUB_STATUS, default="no_sub")
     created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.phone}"
 
 
 class UserSubscribtion(models.Model):
@@ -145,6 +150,7 @@ class CampaignTracker(models.Model):
     msisdn = models.CharField(max_length=200, blank=True, null=True)
     partner = models.CharField(max_length=200, blank=True, null=True)
     click_id = models.CharField(max_length=200, blank=True, null=True)
+    telco = models.CharField(max_length=200, blank=True, null=True)
     req_body = models.TextField(blank=True, null=True)
     converted = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
